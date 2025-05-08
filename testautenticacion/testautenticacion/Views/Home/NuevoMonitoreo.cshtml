@@ -1,0 +1,108 @@
+﻿@{
+    ViewBag.Title = "View";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <!-- Configuración de metadatos y codificación -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Formulario de Registro</title>
+
+    <!-- Inclusión de biblioteca Bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <style>
+        /* Estilo de fondo con color vino tinto */
+        body {
+            background-color: #800020; /* Rojo vino claro */
+            color: white;
+        }
+
+        /* Contenedor del formulario con efectos de transparencia y sombra */
+        .form-container {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+            max-width: 100%;
+            margin: auto;
+            margin-top: 50px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Contenedor principal del formulario -->
+        <div class="form-container">
+            <!-- Título del formulario -->
+            <h2 class="text-center">Registro</h2>
+
+            <!-- Formulario de registro con método POST -->
+            <form class="row g-3" method="post" action="@Url.Action("NuevoMonitoreo", "Home")">
+                <!-- Campo de Fecha -->
+                <div class="col-md-2">
+                    <label for="fecha" class="form-label">Fecha</label>
+                    <input type="date" class="form-control" id="fecha" name="Fecha" required>
+                </div>
+
+                <!-- Campo de Nombre -->
+                <div class="col-md-2">
+                    <label for="nombre" class="form-label">Nombre</label>
+                    <input type="text" class="form-control" id="nombre" name="Nombre" required>
+                </div>
+
+                <!-- Campo de Docente -->
+                <div class="col-md-2">
+                    <label for="docente" class="form-label">Docente</label>
+                    <input type="text" class="form-control" id="docente" name="Docente" required>
+                </div>
+
+                <!-- Campo de Hora -->
+                <div class="col-md-2">
+                    <label for="hora" class="form-label">Hora</label>
+                    <input type="time" class="form-control" id="hora" name="Hora" required>
+                </div>
+
+                <!-- Campo de Aula -->
+                <div class="col-md-2">
+                    <label for="aula" class="form-label">Aula</label>
+                    <input type="text" class="form-control" id="aula" name="Aula" required>
+                </div>
+
+                <!-- Selector de Estado -->
+                <div class="col-md-2">
+                    <label for="estado" class="form-label">Estado</label>
+                    <select class="form-select" id="estado" name="Estado" required>
+                        <option value="">Seleccione una opción</option>
+                        <option value="todo_bien">Todo bien</option>
+                        <option value="nadie_en_aula">Nadie en aula</option>
+                        <option value="problema_detectado">Problema detectado</option>
+                    </select>
+                </div>
+
+                <!-- Campo de Comentarios -->
+                <div class="col-md-2">
+                    <label for="comentarios" class="form-label">Comentarios</label>
+                    <input type="text" class="form-control" id="comentarios" name="Comentarios">
+                </div>
+
+                <!-- Campo de Feedback -->
+                <div class="col-md-2">
+                    <label for="feedback" class="form-label">Feedback</label>
+                    <input type="text" class="form-control" id="feedback" name="Feedback">
+                </div>
+
+                <!-- Botón de envío -->
+                <div class="col-12">
+                    <button type="submit" class="btn btn-light w-100">Registrar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Inclusión de script de Bootstrap -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

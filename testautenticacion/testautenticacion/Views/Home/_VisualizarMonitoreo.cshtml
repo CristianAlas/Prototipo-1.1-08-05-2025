@@ -1,0 +1,58 @@
+﻿@model testautenticacion.Models.RegistrosMonitoreo
+@{
+    ViewBag.Title = "_VisualizarMonitoreo";
+    Layout = null;
+    var monitoreo = ViewBag.Monitoreo as testautenticacion.Models.MonitoreosProgramados;
+}
+
+<div class="modal-content">
+    <div class="modal-header">
+        <h5 class="modal-title">Detalles del Monitoreo</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+    </div>
+    <div class="modal-body">
+        <!-- Información del monitoreo programado -->
+        <div class="mb-4 p-3 bg-light rounded">
+            <h6 class="fw-bold">Datos del Monitoreo Programado</h6>
+            <div class="row g-2">
+                <div class="col-md-6">
+                    <p class="mb-1"><strong>Responsable:</strong> @monitoreo.Responsable</p>
+                    <p class="mb-1"><strong>Materia:</strong> @monitoreo.Materia</p>
+                    <p class="mb-1"><strong>Docente:</strong> @monitoreo.Docente</p>
+                    <p class="mb-1"><strong>Aula:</strong> @monitoreo.Aula</p>
+                    <p class="mb-1"><strong>Fecha:</strong> @monitoreo.Fecha.ToString("dd/MM/yyyy")</p>
+                </div>
+                <div class="col-md-6">
+                    <p class="mb-1"><strong>Hora Monitoreo:</strong> @monitoreo.HoraInicio.ToString(@"hh\:mm") - @monitoreo.HoraFin.ToString(@"hh\:mm")</p>
+                    <p class="mb-1"><strong>Recorrido:</strong> @monitoreo.Recorrido</p>
+                    <p class="mb-1"><strong>Jornada:</strong> @monitoreo.Jornada</p>
+                    <p class="mb-1"><strong>Ciclo:</strong> @monitoreo.Ciclo</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Información del registro de monitoreo -->
+        <div class="mb-3">
+            <h6 class="fw-bold">Detalles del Registro</h6>
+            <p class="mb-1"><strong>Fecha de registro:</strong> @Model.Fecha.ToString("dd/MM/yyyy HH:mm")</p>
+            <p class="mb-1"><strong>Estado:</strong> <span class="badge bg-primary">@Model.Estado</span></p>
+
+            <div class="mt-3">
+                <h6>Comentarios:</h6>
+                <div class="p-2 border rounded bg-white">
+                    @(string.IsNullOrEmpty(Model.Comentarios) ? "Sin comentarios" : Model.Comentarios)
+                </div>
+            </div>
+
+            <div class="mt-3">
+                <h6>Feedback:</h6>
+                <div class="p-2 border rounded bg-white">
+                    @(string.IsNullOrEmpty(Model.Feedback) ? "Sin feedback" : Model.Feedback)
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+    </div>
+</div>
