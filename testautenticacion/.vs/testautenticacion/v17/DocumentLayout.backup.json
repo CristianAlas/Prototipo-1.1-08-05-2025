@@ -3,12 +3,16 @@
   "WorkspaceRootPath": "C:\\Users\\Cristian\\Desktop\\C#\\prototipo tesis 2.0\\testautenticacion\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{E2FC27FE-40B3-4B41-B812-45167FD99EFF}|testautenticacion\\testautenticacion.csproj|c:\\users\\cristian\\desktop\\c#\\prototipo tesis 2.0\\testautenticacion\\testautenticacion\\logica\\lo_usuario.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{E2FC27FE-40B3-4B41-B812-45167FD99EFF}|testautenticacion\\testautenticacion.csproj|solutionrelative:testautenticacion\\logica\\lo_usuario.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{E2FC27FE-40B3-4B41-B812-45167FD99EFF}|testautenticacion\\testautenticacion.csproj|c:\\users\\cristian\\desktop\\c#\\prototipo tesis 2.0\\testautenticacion\\testautenticacion\\views\\home\\contact.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{E2FC27FE-40B3-4B41-B812-45167FD99EFF}|testautenticacion\\testautenticacion.csproj|solutionrelative:testautenticacion\\views\\home\\contact.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{E2FC27FE-40B3-4B41-B812-45167FD99EFF}|testautenticacion\\testautenticacion.csproj|C:\\Users\\Cristian\\Desktop\\C#\\prototipo tesis 2.0\\testautenticacion\\testautenticacion\\controllers\\homecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{E2FC27FE-40B3-4B41-B812-45167FD99EFF}|testautenticacion\\testautenticacion.csproj|solutionrelative:testautenticacion\\controllers\\homecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{E2FC27FE-40B3-4B41-B812-45167FD99EFF}|testautenticacion\\testautenticacion.csproj|c:\\users\\cristian\\desktop\\c#\\prototipo tesis 2.0\\testautenticacion\\testautenticacion\\logica\\lo_usuario.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{E2FC27FE-40B3-4B41-B812-45167FD99EFF}|testautenticacion\\testautenticacion.csproj|solutionrelative:testautenticacion\\logica\\lo_usuario.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{E2FC27FE-40B3-4B41-B812-45167FD99EFF}|testautenticacion\\testautenticacion.csproj|C:\\Users\\Cristian\\Desktop\\C#\\prototipo tesis 2.0\\testautenticacion\\testautenticacion\\web.config||{FA3CD31E-987B-443A-9B81-186104E8DAC1}",
@@ -22,8 +26,21 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 1,
+          "SelectedChildIndex": 0,
           "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "Contact.cshtml",
+              "DocumentMoniker": "C:\\Users\\Cristian\\Desktop\\C#\\prototipo tesis 2.0\\testautenticacion\\testautenticacion\\Views\\Home\\Contact.cshtml",
+              "RelativeDocumentMoniker": "testautenticacion\\Views\\Home\\Contact.cshtml",
+              "ToolTip": "C:\\Users\\Cristian\\Desktop\\C#\\prototipo tesis 2.0\\testautenticacion\\testautenticacion\\Views\\Home\\Contact.cshtml",
+              "RelativeToolTip": "testautenticacion\\Views\\Home\\Contact.cshtml",
+              "ViewState": "AgIAAFgAAAAAAAAAAAAAAHUAAAAWAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-05-08T02:38:03.026Z",
+              "EditorCaption": ""
+            },
             {
               "$type": "Document",
               "DocumentIndex": 1,
@@ -32,13 +49,14 @@
               "RelativeDocumentMoniker": "testautenticacion\\Controllers\\HomeController.cs",
               "ToolTip": "C:\\Users\\Cristian\\Desktop\\C#\\prototipo tesis 2.0\\testautenticacion\\testautenticacion\\Controllers\\HomeController.cs",
               "RelativeToolTip": "testautenticacion\\Controllers\\HomeController.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAABgAAACAAAAAAAAAAA==",
+              "ViewState": "AgIAAD4CAAAAAAAAAAAmwAICAAAiAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-04-29T03:24:09.39Z"
+              "WhenOpened": "2025-04-29T03:24:09.39Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 0,
+              "DocumentIndex": 2,
               "Title": "LO_Usuario.cs",
               "DocumentMoniker": "C:\\Users\\Cristian\\Desktop\\C#\\prototipo tesis 2.0\\testautenticacion\\testautenticacion\\logica\\LO_Usuario.cs",
               "RelativeDocumentMoniker": "testautenticacion\\logica\\LO_Usuario.cs",
@@ -51,7 +69,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
+              "DocumentIndex": 3,
               "Title": "Web.config",
               "DocumentMoniker": "C:\\Users\\Cristian\\Desktop\\C#\\prototipo tesis 2.0\\testautenticacion\\testautenticacion\\Web.config",
               "RelativeDocumentMoniker": "testautenticacion\\Web.config",
