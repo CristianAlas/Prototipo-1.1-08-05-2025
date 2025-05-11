@@ -4,7 +4,7 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
         <meta charset="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>@ViewBag.Title - Mi aplicación ASP.NET</title>
+        <title>@ViewBag.Title - Sistema de Monitoreo de clases UTEC</title>
         @Styles.Render("~/Content/css")
         @Scripts.Render("~/bundles/modernizr")
     </head>
@@ -25,16 +25,17 @@
                                 if (usuario.IdRol == testautenticacion.Models.Rol.Administrador)
                                 {
                                     <li>@Html.ActionLink("Inicio", "Index", "Home", new { area = "" }, new { @class = "nav-link" })</li>
-                                    <li>@Html.ActionLink("Filtro", "Filtro", "Home", new { area = "" }, new { @class = "nav-link" })</li>
-                                    <li>@Html.ActionLink("Acerca de", "About", "Home", new { area = "" }, new { @class = "nav-link" })</li>
-                                    <li>@Html.ActionLink("Contacto", "Contact", "Home", new { area = "" }, new { @class = "nav-link" })</li>
+                                    <li>@Html.ActionLink("Monitoreos", "Filtro", "Home", new { area = "" }, new { @class = "nav-link" })</li>
                                     <li>@Html.ActionLink("Reportes", "Reportes", "Home", new { area = "" }, new { @class = "nav-link" })</li>
+                                    <li>@Html.ActionLink("Acerca de", "About", "Home", new { area = "" }, new { @class = "nav-link" })</li>
+                                    <li>@Html.ActionLink("Soporte", "Contact", "Home", new { area = "" }, new { @class = "nav-link" })</li>
+
                                     <li>@Html.ActionLink("Cerrar Sesion", "CerrarSesion", "Home", new { area = "" }, new { @class = "nav-link" })</li>
                                 }
                                 else if (usuario.IdRol == testautenticacion.Models.Rol.Empleado)
                                 {
                                     <li>@Html.ActionLink("Inicio", "Index", "Home", new { area = "" }, new { @class = "nav-link" })</li>
-                                    <li>@Html.ActionLink("Filtro", "Filtro", "Home", new { area = "" }, new { @class = "nav-link" })</li>
+                                    <li>@Html.ActionLink("Monitoreos", "Filtro", "Home", new { area = "" }, new { @class = "nav-link" })</li>
                                     <li>@Html.ActionLink("Cerrar Sesion", "CerrarSesion", "Home", new { area = "" }, new { @class = "nav-link" })</li>
                                 }
                             }
@@ -59,7 +60,7 @@
             @RenderBody()
             <hr />
             <footer>
-                <p>&copy; @DateTime.Now.Year - Mi aplicación ASP.NET</p>
+                <p>&copy; @DateTime.Now.Year - Sistema de Monitoreo de Clases en el Area de Informatica y Ciencias Aplicadas</p>
             </footer>
         </div>
 

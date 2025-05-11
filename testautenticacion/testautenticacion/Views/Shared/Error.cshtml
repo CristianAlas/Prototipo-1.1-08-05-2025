@@ -1,14 +1,21 @@
 ﻿<!DOCTYPE html>
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <meta name="viewport" content="width=device-width" />
-    <title>Error</title>
+    <link href="~/Content/bootstrap.min.css" rel="stylesheet" />
+    <title>Error - Sistema de Monitoreo</title>
 </head>
-<body>
-    <hgroup>
-        <h1>Error.</h1>
-        <h2>Error al procesar la solicitud.</h2>
-    </hgroup>
+<body class="bg-light d-flex align-items-center justify-content-center vh-100">
+
+    <div class="text-center">
+        <h1 class="display-4 text-danger">¡Ups! Ocurrió un error</h1>
+        <p class="lead">No se pudo procesar la solicitud en este momento.</p>
+        <hr class="my-4">
+        <p>Por favor, intente nuevamente o contacte al soporte si el problema persiste.</p>
+        <a href="@Url.Action("Index", "Home")" class="btn btn-primary mt-3">
+            Volver al inicio
+        </a>
+    </div>
 </body>
 </html>
