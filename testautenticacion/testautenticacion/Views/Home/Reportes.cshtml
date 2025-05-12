@@ -6,7 +6,7 @@
 
 <h2 class="text-center mt-3">Supervisión 02-2025</h2>
 <h4 class="text-center text-muted">Informes de actividad académica</h4>
-<link href="~/Content/bootstrap.min.css" rel="stylesheet" />
+<!--<link href="~/Content/bootstrap.min.css" rel="stylesheet" />-->
 <div class="container mt-4">
     <form method="get" action="@Url.Action("Reportes")">
         <div class="row">
@@ -90,10 +90,10 @@
                                 <p><strong>Comentarios:</strong></p>
                                 <div id="comentarios" class="border p-2 rounded"></div>
                             </div>
-                            <div>
+                            <!--<div>
                                 <p><strong>Feedback:</strong></p>
                                 <div id="feedback" class="border p-2 rounded"></div>
-                            </div>
+                            </div>-->
                         </div>
 
                         <!-- Mensaje cuando no hay registro -->
@@ -108,11 +108,12 @@
 
     <div class="text-center mt-4">
         <a href="@Url.Action("GenerarPDF", "Home", new {
-            supervisor = ViewBag.SupervisorSeleccionado,
-            docente = ViewBag.DocenteSeleccionado,
-            aula = ViewBag.AulaSeleccionada,
-            fecha = ViewBag.FechaSeleccionada
-        })" class="btn btn-danger">Generar Reporte en PDF</a>
+        supervisor = ViewBag.SupervisorSeleccionado,
+        docente = ViewBag.DocenteSeleccionado,
+        aula = ViewBag.AulaSeleccionada,
+        fecha = ViewBag.FechaSeleccionada
+        })" class="btn btn-danger" id="btnGenerarReporte">Generar Reporte en PDF</a>
+
     </div>
 </div>
 
@@ -189,6 +190,24 @@
                     }
                 });
             }
+        });
+
+        // Cargar el valor actual al cargar la página
+        fetch('/Home/ObtenerContadorReporte')
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById("reporteContador").textContent = data.total;
+            });
+
+        // Incrementar el contador al hacer clic en el botón
+        document.getElementById("btnGenerarReporte").addEventListener("click", function () {
+            fetch('/Home/IncrementarContadorReporte', {
+                method: 'POST'
+            })
+                .then(response => response.json())
+                .then(data => {
+                    document.getElementById("reporteContador").textContent = data.total;
+                });
         });
     </script>
 }

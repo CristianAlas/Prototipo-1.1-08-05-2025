@@ -14,18 +14,30 @@ using Twilio.Types;
 using Twilio;
 using Twilio.Rest.Api.V2010.Account;
 using Rotativa;
+using System.Net;
 
 namespace testautenticacion.Controllers
 {
     [Authorize]
     public class HomeController : Controller
     {
-
-        //private string connectionString = "Data source=DESKTOP-1FFVD4R\\SQLEXPRESS; Initial Catalog=autentication; Integrated Security=true; MultipleActiveResultSets=True";
+        
         private static readonly string connectionString = ConfigurationManager.ConnectionStrings["MiConexion"].ConnectionString;
         public ActionResult Index()
         {
+
+            int totalReportes = 0;
+
+            using (SqlConnection conn = new SqlConnection(connectionString))
+            {
+                conn.Open();
+                SqlCommand cmd = new SqlCommand("SELECT Total FROM ReporteContador WHERE Id = 1", conn);
+                totalReportes = (int)cmd.ExecuteScalar();
+            }
+
+            ViewBag.TotalReportesGenerados = totalReportes;
             return View();
+
         }
 
         [PermisosRol(Rol.Administrador)]
@@ -60,41 +72,13 @@ namespace testautenticacion.Controllers
 
             using (SqlConnection conexion = new SqlConnection(connectionString))
             {
-                var query = @"SELECT Id, Materia, Docente, Responsable, Aula, HoraInicio, HoraFin, Fecha, Recorrido, Jornada, Ciclo 
-                      FROM MonitoreosProgramados WHERE 1=1";
-                var parameters = new List<SqlParameter>();
+                SqlCommand comando = new SqlCommand("sp_ObtenerMonitoreosProgramadosConFiltros", conexion);
+                comando.CommandType = CommandType.StoredProcedure;
 
-                if (fecha.HasValue)
-                {
-                    query += " AND CONVERT(date, Fecha) = CONVERT(date, @Fecha)";
-                    parameters.Add(new SqlParameter("@Fecha", fecha.Value));
-                }
-
-                if (!string.IsNullOrEmpty(docente))
-                {
-                    query += " AND Docente LIKE @Docente";
-                    parameters.Add(new SqlParameter("@Docente", "%" + docente + "%"));
-                }
-
-                if (!string.IsNullOrEmpty(aula))
-                {
-                    query += " AND Aula LIKE @Aula";
-                    parameters.Add(new SqlParameter("@Aula", "%" + aula + "%"));
-                }
-
-                if (!string.IsNullOrEmpty(recorrido))
-                {
-                    query += " AND LTRIM(RTRIM(LOWER(Recorrido))) = LOWER(@Recorrido)";
-                    parameters.Add(new SqlParameter("@Recorrido", recorrido.Trim().ToLower()));
-                }
-
-                query += " ORDER BY Fecha ASC, HoraInicio ASC";
-
-                SqlCommand comando = new SqlCommand(query, conexion);
-                foreach (var parameter in parameters)
-                {
-                    comando.Parameters.Add(parameter);
-                }
+                comando.Parameters.AddWithValue("@Fecha", fecha ?? (object)DBNull.Value);
+                comando.Parameters.AddWithValue("@Recorrido", string.IsNullOrWhiteSpace(recorrido) ? (object)DBNull.Value : recorrido.Trim().ToLower());
+                comando.Parameters.AddWithValue("@Docente", string.IsNullOrWhiteSpace(docente) ? (object)DBNull.Value : docente);
+                comando.Parameters.AddWithValue("@Aula", string.IsNullOrWhiteSpace(aula) ? (object)DBNull.Value : aula);
 
                 conexion.Open();
                 using (SqlDataReader reader = comando.ExecuteReader())
@@ -117,13 +101,13 @@ namespace testautenticacion.Controllers
                         });
                     }
                 }
-                // AQUÍ VA EL NUEVO CÓDIGO - después de cargar los monitoreos pero usando la misma conexión
+
+                // Segunda parte: verificar si tiene monitoreo en la tabla RegistrosMonitoreo
                 foreach (var monitoreo in monitoreos)
                 {
-                    string checkQuery = "SELECT TOP 1 1 FROM RegistrosMonitoreo WHERE MonitoreoProgramadoId = @Id";
-                    SqlCommand cmd = new SqlCommand(checkQuery, conexion);
-                    cmd.Parameters.AddWithValue("@Id", monitoreo.Id);
-                    monitoreo.TieneMonitoreo = cmd.ExecuteScalar() != null;
+                    SqlCommand checkCmd = new SqlCommand("SELECT TOP 1 1 FROM RegistrosMonitoreo WHERE MonitoreoProgramadoId = @Id", conexion);
+                    checkCmd.Parameters.AddWithValue("@Id", monitoreo.Id);
+                    monitoreo.TieneMonitoreo = checkCmd.ExecuteScalar() != null;
                 }
             }
 
@@ -196,16 +180,14 @@ namespace testautenticacion.Controllers
             {
                 using (SqlConnection conexion = new SqlConnection(connectionString))
                 {
-                    string query = @"INSERT INTO RegistrosMonitoreo 
-                               (MonitoreoProgramadoId, Fecha, Estado, Comentarios, Feedback) 
-                               VALUES (@MonitoreoProgramadoId, @Fecha, @Estado, @Comentarios, @Feedback)";
+                    SqlCommand comando = new SqlCommand("sp_GuardarMonitoreo", conexion);
+                    comando.CommandType = CommandType.StoredProcedure;
 
-                    SqlCommand comando = new SqlCommand(query, conexion);
                     comando.Parameters.AddWithValue("@MonitoreoProgramadoId", registro.MonitoreoProgramadoId);
-                    comando.Parameters.AddWithValue("@Fecha", registro.Fecha);
+                    comando.Parameters.AddWithValue("@Fecha", DateTime.Now);
                     comando.Parameters.AddWithValue("@Estado", registro.Estado);
-                    comando.Parameters.AddWithValue("@Comentarios", registro.Comentarios ?? (object)DBNull.Value);
-                    comando.Parameters.AddWithValue("@Feedback", registro.Feedback ?? (object)DBNull.Value);
+                    comando.Parameters.AddWithValue("@Comentarios", string.IsNullOrEmpty(registro.Comentarios) ? (object)DBNull.Value : registro.Comentarios);
+                    comando.Parameters.AddWithValue("@Feedback", string.IsNullOrEmpty(registro.Feedback) ? (object)DBNull.Value : registro.Feedback);
 
                     conexion.Open();
                     comando.ExecuteNonQuery();
@@ -228,53 +210,36 @@ namespace testautenticacion.Controllers
                 {
                     conexion.Open();
 
-                    // Obtener datos del monitoreo programado
-                    string queryMonitoreo = @"SELECT Id, Materia, Docente, Responsable, Aula, HoraInicio, HoraFin, 
-                                     Fecha, Recorrido, Jornada, Ciclo 
-                                     FROM MonitoreosProgramados WHERE Id = @Id";
+                    SqlCommand cmd = new SqlCommand("sp_ObtenerMonitoreoConRegistro", conexion);
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.AddWithValue("@Id", id);
 
-                    SqlCommand cmdMonitoreo = new SqlCommand(queryMonitoreo, conexion);
-                    cmdMonitoreo.Parameters.AddWithValue("@Id", id);
-
-                    using (SqlDataReader reader = cmdMonitoreo.ExecuteReader())
+                    using (SqlDataReader reader = cmd.ExecuteReader())
                     {
                         if (reader.Read())
                         {
                             monitoreo = new MonitoreosProgramados
                             {
-                                Id = Convert.ToInt32(reader["Id"]),
+                                Id = Convert.ToInt32(reader["MonitoreoId"]),
                                 Materia = reader["Materia"].ToString(),
                                 Docente = reader["Docente"].ToString(),
                                 Responsable = reader["Responsable"].ToString(),
                                 Aula = reader["Aula"].ToString(),
                                 HoraInicio = (TimeSpan)reader["HoraInicio"],
                                 HoraFin = (TimeSpan)reader["HoraFin"],
-                                Fecha = Convert.ToDateTime(reader["Fecha"]),
+                                Fecha = Convert.ToDateTime(reader["FechaMonitoreo"]),
                                 Recorrido = reader["Recorrido"].ToString(),
                                 Jornada = reader["Jornada"].ToString(),
                                 Ciclo = reader["Ciclo"].ToString()
                             };
-                        }
-                    }
 
-                    // Obtener datos del registro de monitoreo
-                    if (monitoreo != null)
-                    {
-                        string queryRegistro = @"SELECT Id, MonitoreoProgramadoId, Fecha, Estado, Comentarios, Feedback 
-                                       FROM RegistrosMonitoreo WHERE MonitoreoProgramadoId = @Id";
-
-                        SqlCommand cmdRegistro = new SqlCommand(queryRegistro, conexion);
-                        cmdRegistro.Parameters.AddWithValue("@Id", id);
-
-                        using (SqlDataReader reader = cmdRegistro.ExecuteReader())
-                        {
-                            if (reader.Read())
+                            if (reader["RegistroId"] != DBNull.Value)
                             {
                                 registro = new RegistrosMonitoreo
                                 {
-                                    Id = Convert.ToInt32(reader["Id"]),
-                                    MonitoreoProgramadoId = Convert.ToInt32(reader["MonitoreoProgramadoId"]),
-                                    Fecha = Convert.ToDateTime(reader["Fecha"]),
+                                    Id = Convert.ToInt32(reader["RegistroId"]),
+                                    MonitoreoProgramadoId = monitoreo.Id,
+                                    Fecha = Convert.ToDateTime(reader["FechaRegistro"]),
                                     Estado = reader["Estado"].ToString(),
                                     Comentarios = reader["Comentarios"] != DBNull.Value ? reader["Comentarios"].ToString() : null,
                                     Feedback = reader["Feedback"] != DBNull.Value ? reader["Feedback"].ToString() : null,
@@ -300,6 +265,7 @@ namespace testautenticacion.Controllers
                 return Content("Error: " + ex.Message);
             }
         }
+
 
         [PermisosRol(Rol.Administrador)]
         [HttpGet]
@@ -621,6 +587,52 @@ namespace testautenticacion.Controllers
 
             return Json(new { success = true });
         }
+        public ActionResult Lineamientos()
+        {
+            return View();
+        }
+        //>Endpoint para incrementar y retornar el valor actualizado:
+        [HttpPost]
+        public JsonResult IncrementarContadorReporte()
+        {
+            int nuevoTotal = 0;
+
+            using (SqlConnection conn = new SqlConnection(connectionString))
+            {
+                conn.Open();
+
+                string query = @"UPDATE ReporteContador SET Total = Total + 1, FechaActualizacion = GETDATE() WHERE Id = 1;
+            SELECT Total FROM ReporteContador WHERE Id = 1;
+        ";
+
+                SqlCommand cmd = new SqlCommand(query, conn);
+                nuevoTotal = (int)cmd.ExecuteScalar();
+            }
+
+            return Json(new { total = nuevoTotal });
+        }
+
+        //Consulta el valor a recargar la vista
+        [HttpGet]
+        public JsonResult ObtenerContadorReporte()
+        {
+            int total = 0;
+
+            using (SqlConnection conn = new SqlConnection(connectionString))
+            {
+                conn.Open();
+                SqlCommand cmd = new SqlCommand("SELECT Total FROM ReporteContador WHERE Id = 1", conn);
+                total = (int)cmd.ExecuteScalar();
+            }
+
+            return Json(new { total = total }, JsonRequestBehavior.AllowGet);
+        }
+
+
+
+
+
+
 
 
     }

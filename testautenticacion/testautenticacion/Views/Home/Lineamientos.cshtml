@@ -1,0 +1,65 @@
+﻿
+@{
+    ViewBag.Title = "Lineamientos";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div class="container mt-5 mb-5">
+    <link href="~/Content/bootstrap.min.css" rel="stylesheet" />
+    <div class="card shadow">
+        <div class="card-header bg-secondary text-white">
+            <h4 class="mb-0"><i class="fas fa-clipboard-list me-2"></i>Lineamientos del Sistema de Monitoreo</h4>
+        </div>
+        <div class="card-body">
+            <p class="text-muted">A continuación, se detallan las normas y buenas prácticas para el uso adecuado del sistema de monitoreo de clases.</p>
+
+            <hr />
+
+            <h5 class="text-primary"><i class="fas fa-check-circle me-2"></i>Acceso al Sistema</h5>
+            <ul>
+                <li>El sistema está habilitado únicamente para usuarios autorizados con credenciales institucionales.</li>
+                <li>Debe utilizarse desde un navegador actualizado para garantizar su correcto funcionamiento.</li>
+            </ul>
+
+            <h5 class="text-primary mt-4"><i class="fas fa-eye me-2"></i>Monitoreo de Clases</h5>
+            <ul>
+                <li>Los monitores deben registrar la asistencia y condiciones del aula en los horarios asignados.</li>
+                <li>Es obligatorio incluir comentarios cuando se detecten irregularidades o incidentes relevantes.</li>
+                <li>Una vez enviado un monitoreo, no podrá ser editado. Verifique cuidadosamente los datos antes de guardar.</li>
+            </ul>
+
+            <h5 class="text-primary mt-4"><i class="fas fa-clock me-2"></i>Horarios de Registro</h5>
+            <ul>
+                <li>Los registros deben realizarse dentro del horario del recorrido asignado:</li>
+                <ul>
+                    <li>Primer recorrido: 07:00 - 10:00</li>
+                    <li>Segundo recorrido: 10:00 - 13:00</li>
+                    <li>Jornada Vespertina (si aplica): 13:00 - 19:00</li>
+                </ul>
+            </ul>
+
+            <h5 class="text-primary mt-4"><i class="fas fa-exclamation-triangle me-2"></i>Responsabilidades</h5>
+            <ul>
+                <li>Es responsabilidad del monitor reportar cualquier ausencia injustificada de docentes.</li>
+                <li>Los datos deben ser ingresados con precisión. Cualquier falsificación será sancionada.</li>
+            </ul>
+
+            <h5 class="text-primary mt-4"><i class="fas fa-lock me-2"></i>Seguridad y Confidencialidad</h5>
+            <ul>
+                <li>No comparta su usuario ni contraseña con terceros.</li>
+                <li>Todos los registros quedan almacenados y auditados por el sistema para garantizar la transparencia.</li>
+            </ul>
+
+            <h5 class="text-primary mt-4"><i class="fas fa-lock me-2"></i>Emergencias</h5>
+            <ul>
+                <li>En caso de presentarse una emergencia durante su monitoreo, asegúrese de completar el formulario disponible en el botón flotante de <strong>"Emergencias"</strong>.</li>
+                <li>Todos los registros se almacenan automáticamente; describa la situación de forma clara y precisa.</li>
+                <li>Una vez enviado el reporte de emergencia, no podrá ser editado. Verifique cuidadosamente la información antes de enviarlo.</li>
+                <li>El registro debe realizarse únicamente después de haber solventado la emergencia y contactado al personal correspondiente para su resolución.</li>
+            </ul>
+
+            <div class="alert alert-info mt-5">
+                <strong>Nota:</strong> Para asistencia técnica o dudas sobre el uso del sistema, contactar al administrador institucional a través del correo: <a href="mailto:soporte@utec.edu.sv">soporte@utec.edu.sv</a>
+            </div>
+        </div>
+    </div>
+</div>

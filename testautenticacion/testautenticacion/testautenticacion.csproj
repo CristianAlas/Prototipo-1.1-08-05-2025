@@ -238,6 +238,7 @@
     <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="App_Browsers\qt.browser" />
     <None Include="Scripts\jquery-3.7.0.intellisense.js" />
+    <Content Include="Scripts\IndexScript.js" />
     <Content Include="Scripts\jquery-3.7.0.js" />
     <Content Include="Scripts\jquery-3.7.0.min.js" />
     <Content Include="Scripts\jquery-3.7.0.slim.js" />
@@ -271,6 +272,7 @@
     <Content Include="Views\Home\_VisualizarMonitoreo.cshtml" />
     <Content Include="Views\Home\Reportes.cshtml" />
     <Content Include="Views\Home\_ReportePDF.cshtml" />
+    <Content Include="Views\Home\Lineamientos.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
