@@ -275,41 +275,13 @@ namespace testautenticacion.Controllers
 
             using (SqlConnection conexion = new SqlConnection(connectionString))
             {
-                var query = @"SELECT mp.Id, mp.Materia, mp.Docente, mp.Responsable, mp.Aula, 
-                    mp.HoraInicio, mp.HoraFin, mp.Fecha, mp.Recorrido, mp.Jornada, mp.Ciclo 
-                    FROM MonitoreosProgramados mp WHERE 1=1";
-                var parameters = new List<SqlParameter>();
+                SqlCommand comando = new SqlCommand("sp_ObtenerMonitoreosFiltrados", conexion);
+                comando.CommandType = CommandType.StoredProcedure;
 
-                if (!string.IsNullOrEmpty(supervisor))
-                {
-                    query += " AND mp.Responsable LIKE @Supervisor";
-                    parameters.Add(new SqlParameter("@Supervisor", "%" + supervisor + "%"));
-                }
-
-                if (!string.IsNullOrEmpty(docente))
-                {
-                    query += " AND mp.Docente LIKE @Docente";
-                    parameters.Add(new SqlParameter("@Docente", "%" + docente + "%"));
-                }
-
-                if (!string.IsNullOrEmpty(aula))
-                {
-                    query += " AND mp.Aula LIKE @Aula";
-                    parameters.Add(new SqlParameter("@Aula", "%" + aula + "%"));
-                }
-
-                if (fecha.HasValue)
-                {
-                    query += " AND CONVERT(date, mp.Fecha) = CONVERT(date, @Fecha)";
-                    parameters.Add(new SqlParameter("@Fecha", fecha.Value));
-                }
-
-                SqlCommand comando = new SqlCommand(query, conexion);
-                comando.CommandTimeout = 120;  // Aumenta el tiempo de espera
-                foreach (var parameter in parameters)
-                {
-                    comando.Parameters.Add(parameter);
-                }
+                comando.Parameters.AddWithValue("@Supervisor", (object)supervisor ?? DBNull.Value);
+                comando.Parameters.AddWithValue("@Docente", (object)docente ?? DBNull.Value);
+                comando.Parameters.AddWithValue("@Aula", (object)aula ?? DBNull.Value);
+                comando.Parameters.AddWithValue("@Fecha", (object)fecha ?? DBNull.Value);
 
                 conexion.Open();
                 using (SqlDataReader reader = comando.ExecuteReader())
@@ -328,18 +300,10 @@ namespace testautenticacion.Controllers
                             Fecha = Convert.ToDateTime(reader["Fecha"]),
                             Recorrido = reader["Recorrido"].ToString(),
                             Jornada = reader["Jornada"].ToString(),
-                            Ciclo = reader["Ciclo"].ToString()
+                            Ciclo = reader["Ciclo"].ToString(),
+                            TieneMonitoreo = Convert.ToBoolean(reader["TieneMonitoreo"])
                         });
                     }
-                }
-
-                // Check if there's a monitoring record for each scheduled monitoring
-                foreach (var monitoreo in monitoreos)
-                {
-                    string checkQuery = "SELECT TOP 1 1 FROM RegistrosMonitoreo WHERE MonitoreoProgramadoId = @Id";
-                    SqlCommand cmd = new SqlCommand(checkQuery, conexion);
-                    cmd.Parameters.AddWithValue("@Id", monitoreo.Id);
-                    monitoreo.TieneMonitoreo = cmd.ExecuteScalar() != null;
                 }
             }
 
@@ -488,83 +452,58 @@ namespace testautenticacion.Controllers
 
             using (SqlConnection conexion = new SqlConnection(connectionString))
             {
-                var queryMonitoreos = @"SELECT mp.Id, mp.Materia, mp.Docente, mp.Responsable, mp.Aula, mp.Fecha 
-                                FROM MonitoreosProgramados mp WHERE 1=1";
-                var parameters = new List<SqlParameter>();
-
-                if (!string.IsNullOrEmpty(docente))
-                {
-                    queryMonitoreos += " AND mp.Docente LIKE @Docente";
-                    parameters.Add(new SqlParameter("@Docente", "%" + docente + "%"));
-                }
-
-                if (!string.IsNullOrEmpty(aula))
-                {
-                    queryMonitoreos += " AND mp.Aula LIKE @Aula";
-                    parameters.Add(new SqlParameter("@Aula", "%" + aula + "%"));
-                }
-
-                if (fecha.HasValue)
-                {
-                    queryMonitoreos += " AND CONVERT(date, mp.Fecha) = CONVERT(date, @Fecha)";
-                    parameters.Add(new SqlParameter("@Fecha", fecha.Value));
-                }
-
-                SqlCommand comandoMonitoreos = new SqlCommand(queryMonitoreos, conexion);
-                comandoMonitoreos.CommandTimeout = 120;
-                foreach (var parameter in parameters)
-                {
-                    comandoMonitoreos.Parameters.Add(parameter);
-                }
+                SqlCommand comando = new SqlCommand("sp_ObtenerMonitoreosConRegistros", conexion);
+                comando.CommandType = CommandType.StoredProcedure;
+                comando.Parameters.AddWithValue("@Docente", string.IsNullOrEmpty(docente) ? (object)DBNull.Value : docente);
+                comando.Parameters.AddWithValue("@Aula", string.IsNullOrEmpty(aula) ? (object)DBNull.Value : aula);
+                comando.Parameters.AddWithValue("@Fecha", fecha.HasValue ? (object)fecha.Value.Date : DBNull.Value);
 
                 conexion.Open();
-                using (SqlDataReader reader = comandoMonitoreos.ExecuteReader())
+                using (SqlDataReader reader = comando.ExecuteReader())
                 {
+                    var monitoreosDict = new Dictionary<int, MonitoreosProgramados>();
+
                     while (reader.Read())
                     {
-                        var monitoreo = new MonitoreosProgramados
+                        int monitoreoId = Convert.ToInt32(reader["MonitoreoId"]);
+                        if (!monitoreosDict.ContainsKey(monitoreoId))
                         {
-                            Id = Convert.ToInt32(reader["Id"]),
-                            Materia = reader["Materia"].ToString(),
-                            Docente = reader["Docente"].ToString(),
-                            Responsable = reader["Responsable"].ToString(),
-                            Aula = reader["Aula"].ToString(),
-                            Fecha = Convert.ToDateTime(reader["Fecha"])
-                        };
-
-                        modelo.Monitoreos.Add(monitoreo);
-
-                        // Obtener registros para cada monitoreo
-                        var queryRegistros = @"SELECT Id, MonitoreoProgramadoId, Fecha, Estado, Comentarios, Feedback 
-                                       FROM RegistrosMonitoreo WHERE MonitoreoProgramadoId = @Id";
-                        using (SqlCommand comandoRegistros = new SqlCommand(queryRegistros, conexion))
-                        {
-                            comandoRegistros.Parameters.AddWithValue("@Id", monitoreo.Id);
-                            using (SqlDataReader readerRegistros = comandoRegistros.ExecuteReader())
+                            var monitoreo = new MonitoreosProgramados
                             {
-                                while (readerRegistros.Read())
-                                {
-                                    var registro = new RegistrosMonitoreo
-                                    {
-                                        Id = Convert.ToInt32(readerRegistros["Id"]),
-                                        MonitoreoProgramadoId = Convert.ToInt32(readerRegistros["MonitoreoProgramadoId"]),
-                                        Fecha = Convert.ToDateTime(readerRegistros["Fecha"]),
-                                        Estado = readerRegistros["Estado"].ToString(),
-                                        Comentarios = readerRegistros["Comentarios"] != DBNull.Value ? readerRegistros["Comentarios"].ToString() : null,
-                                        Feedback = readerRegistros["Feedback"] != DBNull.Value ? readerRegistros["Feedback"].ToString() : null
-                                    };
+                                Id = monitoreoId,
+                                Materia = reader["Materia"].ToString(),
+                                Docente = reader["Docente"].ToString(),
+                                Responsable = reader["Responsable"].ToString(),
+                                Aula = reader["Aula"].ToString(),
+                                Fecha = Convert.ToDateTime(reader["Fecha"])
+                            };
+                            monitoreosDict[monitoreoId] = monitoreo;
+                            modelo.Monitoreos.Add(monitoreo);
+                        }
 
-                                    modelo.Registros.Add(registro);
-                                }
-                            }
+                        if (reader["RegistroId"] != DBNull.Value)
+                        {
+                            var registro = new RegistrosMonitoreo
+                            {
+                                Id = Convert.ToInt32(reader["RegistroId"]),
+                                MonitoreoProgramadoId = monitoreoId,
+                                Fecha = Convert.ToDateTime(reader["FechaRegistro"]),
+                                Estado = reader["Estado"].ToString(),
+                                Comentarios = reader["Comentarios"] != DBNull.Value ? reader["Comentarios"].ToString() : null,
+                                Feedback = reader["Feedback"] != DBNull.Value ? reader["Feedback"].ToString() : null
+                            };
+                            modelo.Registros.Add(registro);
                         }
                     }
                 }
             }
 
+            string nombreUsuario = User.Identity.Name?.Replace(" ", "_") ?? "Usuario";
+            string fechaHoy = DateTime.Now.ToString("yyyyMMdd");
+
             return new ViewAsPdf("_ReportePDF", modelo)
             {
-                FileName = "Reporte_Monitoreos.pdf",
+                FileName = $"Reporte_Monitoreos_{fechaHoy}_{nombreUsuario}.pdf",
                 PageSize = Rotativa.Options.Size.A4,
                 PageMargins = new Rotativa.Options.Margins(10, 10, 10, 10)
             };
