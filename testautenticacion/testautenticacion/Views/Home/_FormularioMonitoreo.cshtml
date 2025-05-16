@@ -6,10 +6,11 @@
 
 
 <div class="modal-content">
-        <div class="modal-header">
-            <h5 class="modal-title">Registrar Monitoreo</h5>
-            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-        </div>
+    <div class="modal-header">
+        <h5 class="modal-title">Registrar Monitoreo</h5>
+        <link href="~/Content/Style.css" rel="stylesheet" />
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+    </div>
         <form id="monitoreoForm" data-monitoreo-id="@Model.MonitoreoProgramadoId">
             <div class="modal-body">
                 <div class="mb-3">
@@ -25,10 +26,10 @@
                     <label class="form-label">Comentarios</label>
                     <textarea name="Comentarios" class="form-control" rows="3"></textarea>
                 </div>
-                <div class="mb-3">
+                <!--<div class="mb-3"> Solo se usara el campo de Comentarios ya que hay otro campo/tabla especifica para registrar emergencias
                     <label class="form-label">Feedback</label>
                     <textarea name="Feedback" class="form-control" rows="3"></textarea>
-                </div>
+                </div>-->
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
