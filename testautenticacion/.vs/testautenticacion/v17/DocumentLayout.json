@@ -1,18 +1,30 @@
 {
   "Version": 1,
-  "WorkspaceRootPath": "C:\\Users\\Rolan\\Documents\\Proyectos\\rolandoandrad3\\Sistema-de-Monitoreo-de-Clases-\\testautenticacion\\",
+  "WorkspaceRootPath": "C:\\Users\\Cristian\\Desktop\\C#\\Prototipo-1.1-08-05-2025\\testautenticacion\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{E2FC27FE-40B3-4B41-B812-45167FD99EFF}|testautenticacion\\testautenticacion.csproj|c:\\users\\rolan\\documents\\proyectos\\rolandoandrad3\\sistema-de-monitoreo-de-clases-\\testautenticacion\\testautenticacion\\views\\home\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
-      "RelativeMoniker": "D:0:0:{E2FC27FE-40B3-4B41-B812-45167FD99EFF}|testautenticacion\\testautenticacion.csproj|solutionrelative:testautenticacion\\views\\home\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+      "AbsoluteMoniker": "D:0:0:{E2FC27FE-40B3-4B41-B812-45167FD99EFF}|testautenticacion\\testautenticacion.csproj|c:\\users\\cristian\\desktop\\c#\\prototipo-1.1-08-05-2025\\testautenticacion\\testautenticacion\\web.config||{FA3CD31E-987B-443A-9B81-186104E8DAC1}",
+      "RelativeMoniker": "D:0:0:{E2FC27FE-40B3-4B41-B812-45167FD99EFF}|testautenticacion\\testautenticacion.csproj|solutionrelative:testautenticacion\\web.config||{FA3CD31E-987B-443A-9B81-186104E8DAC1}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{E2FC27FE-40B3-4B41-B812-45167FD99EFF}|testautenticacion\\testautenticacion.csproj|C:\\Users\\Rolan\\Documents\\Proyectos\\rolandoandrad3\\Sistema-de-Monitoreo-de-Clases-\\testautenticacion\\testautenticacion\\controllers\\homecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "AbsoluteMoniker": "D:0:0:{E2FC27FE-40B3-4B41-B812-45167FD99EFF}|testautenticacion\\testautenticacion.csproj|C:\\Users\\Cristian\\Desktop\\C#\\Prototipo-1.1-08-05-2025\\testautenticacion\\testautenticacion\\views\\shared\\_layout.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{E2FC27FE-40B3-4B41-B812-45167FD99EFF}|testautenticacion\\testautenticacion.csproj|solutionrelative:testautenticacion\\views\\shared\\_layout.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{E2FC27FE-40B3-4B41-B812-45167FD99EFF}|testautenticacion\\testautenticacion.csproj|C:\\Users\\Cristian\\Desktop\\C#\\Prototipo-1.1-08-05-2025\\testautenticacion\\testautenticacion\\models\\rol.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{E2FC27FE-40B3-4B41-B812-45167FD99EFF}|testautenticacion\\testautenticacion.csproj|solutionrelative:testautenticacion\\models\\rol.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{E2FC27FE-40B3-4B41-B812-45167FD99EFF}|testautenticacion\\testautenticacion.csproj|C:\\Users\\Cristian\\Desktop\\C#\\Prototipo-1.1-08-05-2025\\testautenticacion\\testautenticacion\\views\\home\\filtro.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{E2FC27FE-40B3-4B41-B812-45167FD99EFF}|testautenticacion\\testautenticacion.csproj|solutionrelative:testautenticacion\\views\\home\\filtro.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{E2FC27FE-40B3-4B41-B812-45167FD99EFF}|testautenticacion\\testautenticacion.csproj|C:\\Users\\Cristian\\Desktop\\C#\\Prototipo-1.1-08-05-2025\\testautenticacion\\testautenticacion\\controllers\\homecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{E2FC27FE-40B3-4B41-B812-45167FD99EFF}|testautenticacion\\testautenticacion.csproj|solutionrelative:testautenticacion\\controllers\\homecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{E2FC27FE-40B3-4B41-B812-45167FD99EFF}|testautenticacion\\testautenticacion.csproj|C:\\Users\\Rolan\\Documents\\Proyectos\\rolandoandrad3\\Sistema-de-Monitoreo-de-Clases-\\testautenticacion\\testautenticacion\\views\\home\\filtro.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
-      "RelativeMoniker": "D:0:0:{E2FC27FE-40B3-4B41-B812-45167FD99EFF}|testautenticacion\\testautenticacion.csproj|solutionrelative:testautenticacion\\views\\home\\filtro.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+      "AbsoluteMoniker": "D:0:0:{E2FC27FE-40B3-4B41-B812-45167FD99EFF}|testautenticacion\\testautenticacion.csproj|C:\\Users\\Cristian\\Desktop\\C#\\Prototipo-1.1-08-05-2025\\testautenticacion\\testautenticacion\\views\\home\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{E2FC27FE-40B3-4B41-B812-45167FD99EFF}|testautenticacion\\testautenticacion.csproj|solutionrelative:testautenticacion\\views\\home\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
     }
   ],
   "DocumentGroupContainers": [
@@ -22,46 +34,86 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 1,
+          "SelectedChildIndex": 3,
           "Children": [
+            {
+              "$type": "Bookmark",
+              "Name": "ST:128:0:{1fc202d4-d401-403c-9834-5b218574bb67}"
+            },
             {
               "$type": "Bookmark",
               "Name": "ST:0:0:{1c4feeaa-4718-4aa9-859d-94ce25d182ba}"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 0,
-              "Title": "Index.cshtml",
-              "DocumentMoniker": "C:\\Users\\Rolan\\Documents\\Proyectos\\rolandoandrad3\\Sistema-de-Monitoreo-de-Clases-\\testautenticacion\\testautenticacion\\Views\\Home\\Index.cshtml",
-              "RelativeDocumentMoniker": "testautenticacion\\Views\\Home\\Index.cshtml",
-              "ToolTip": "C:\\Users\\Rolan\\Documents\\Proyectos\\rolandoandrad3\\Sistema-de-Monitoreo-de-Clases-\\testautenticacion\\testautenticacion\\Views\\Home\\Index.cshtml",
-              "RelativeToolTip": "testautenticacion\\Views\\Home\\Index.cshtml",
-              "ViewState": "AgIAAHsAAAAAAAAAAAAAAAoAAABIAAAAAAAAAA==",
+              "DocumentIndex": 1,
+              "Title": "_Layout.cshtml",
+              "DocumentMoniker": "C:\\Users\\Cristian\\Desktop\\C#\\Prototipo-1.1-08-05-2025\\testautenticacion\\testautenticacion\\Views\\Shared\\_Layout.cshtml",
+              "RelativeDocumentMoniker": "testautenticacion\\Views\\Shared\\_Layout.cshtml",
+              "ToolTip": "C:\\Users\\Cristian\\Desktop\\C#\\Prototipo-1.1-08-05-2025\\testautenticacion\\testautenticacion\\Views\\Shared\\_Layout.cshtml",
+              "RelativeToolTip": "testautenticacion\\Views\\Shared\\_Layout.cshtml",
+              "ViewState": "AgIAACQAAAAAAAAAAAAAAE0AAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2025-05-12T03:29:57.339Z",
+              "WhenOpened": "2025-05-17T15:49:14.189Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "Web.config",
+              "DocumentMoniker": "C:\\Users\\Cristian\\Desktop\\C#\\Prototipo-1.1-08-05-2025\\testautenticacion\\testautenticacion\\Web.config",
+              "RelativeDocumentMoniker": "testautenticacion\\Web.config",
+              "ToolTip": "C:\\Users\\Cristian\\Desktop\\C#\\Prototipo-1.1-08-05-2025\\testautenticacion\\testautenticacion\\Web.config",
+              "RelativeToolTip": "testautenticacion\\Web.config",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAgAAAA8AAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000601|",
+              "WhenOpened": "2025-05-17T15:46:29.141Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
               "DocumentIndex": 2,
+              "Title": "Rol.cs",
+              "DocumentMoniker": "C:\\Users\\Cristian\\Desktop\\C#\\Prototipo-1.1-08-05-2025\\testautenticacion\\testautenticacion\\Models\\Rol.cs",
+              "RelativeDocumentMoniker": "testautenticacion\\Models\\Rol.cs",
+              "ToolTip": "C:\\Users\\Cristian\\Desktop\\C#\\Prototipo-1.1-08-05-2025\\testautenticacion\\testautenticacion\\Models\\Rol.cs",
+              "RelativeToolTip": "testautenticacion\\Models\\Rol.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA8AAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-05-17T15:34:35.387Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "Index.cshtml",
+              "DocumentMoniker": "C:\\Users\\Cristian\\Desktop\\C#\\Prototipo-1.1-08-05-2025\\testautenticacion\\testautenticacion\\Views\\Home\\Index.cshtml",
+              "RelativeDocumentMoniker": "testautenticacion\\Views\\Home\\Index.cshtml",
+              "ToolTip": "C:\\Users\\Cristian\\Desktop\\C#\\Prototipo-1.1-08-05-2025\\testautenticacion\\testautenticacion\\Views\\Home\\Index.cshtml",
+              "RelativeToolTip": "testautenticacion\\Views\\Home\\Index.cshtml",
+              "ViewState": "AgIAADAAAAAAAAAAAAAAAAoAAABIAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-05-12T03:29:57.339Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
               "Title": "Filtro.cshtml",
-              "DocumentMoniker": "C:\\Users\\Rolan\\Documents\\Proyectos\\rolandoandrad3\\Sistema-de-Monitoreo-de-Clases-\\testautenticacion\\testautenticacion\\Views\\Home\\Filtro.cshtml",
+              "DocumentMoniker": "C:\\Users\\Cristian\\Desktop\\C#\\Prototipo-1.1-08-05-2025\\testautenticacion\\testautenticacion\\Views\\Home\\Filtro.cshtml",
               "RelativeDocumentMoniker": "testautenticacion\\Views\\Home\\Filtro.cshtml",
-              "ToolTip": "C:\\Users\\Rolan\\Documents\\Proyectos\\rolandoandrad3\\Sistema-de-Monitoreo-de-Clases-\\testautenticacion\\testautenticacion\\Views\\Home\\Filtro.cshtml",
+              "ToolTip": "C:\\Users\\Cristian\\Desktop\\C#\\Prototipo-1.1-08-05-2025\\testautenticacion\\testautenticacion\\Views\\Home\\Filtro.cshtml",
               "RelativeToolTip": "testautenticacion\\Views\\Home\\Filtro.cshtml",
-              "ViewState": "AgIAADMAAAAAAAAAAAAAACMAAAA2AAAAAAAAAA==",
+              "ViewState": "AgIAAE4AAAAAAAAAAAAAAB4AAAARAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
               "WhenOpened": "2025-05-12T02:28:18.319Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 4,
               "Title": "HomeController.cs",
-              "DocumentMoniker": "C:\\Users\\Rolan\\Documents\\Proyectos\\rolandoandrad3\\Sistema-de-Monitoreo-de-Clases-\\testautenticacion\\testautenticacion\\Controllers\\HomeController.cs",
+              "DocumentMoniker": "C:\\Users\\Cristian\\Desktop\\C#\\Prototipo-1.1-08-05-2025\\testautenticacion\\testautenticacion\\Controllers\\HomeController.cs",
               "RelativeDocumentMoniker": "testautenticacion\\Controllers\\HomeController.cs",
-              "ToolTip": "C:\\Users\\Rolan\\Documents\\Proyectos\\rolandoandrad3\\Sistema-de-Monitoreo-de-Clases-\\testautenticacion\\testautenticacion\\Controllers\\HomeController.cs",
+              "ToolTip": "C:\\Users\\Cristian\\Desktop\\C#\\Prototipo-1.1-08-05-2025\\testautenticacion\\testautenticacion\\Controllers\\HomeController.cs",
               "RelativeToolTip": "testautenticacion\\Controllers\\HomeController.cs",
-              "ViewState": "AgIAALoBAAAAAAAAAAAYwP0BAAAJAAAAAAAAAA==",
+              "ViewState": "AgIAALwBAAAAAAAAAAA3wDoCAAALAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-05-12T01:56:44.635Z"
             }

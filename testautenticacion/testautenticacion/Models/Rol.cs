@@ -9,6 +9,8 @@ namespace testautenticacion.Models
 	{
         //nos permite poner constantes
         Administrador = 1,
-        Empleado = 2,
+        Monitor = 2,
+        //
+        Coordinador = 4,
     }
 }
