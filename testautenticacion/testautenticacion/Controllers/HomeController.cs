@@ -442,7 +442,7 @@ namespace testautenticacion.Controllers
             }
         }
 
-        //[PermisosRol(Rol.Administrador | Rol.Coordinador | Rol.Monitor)]
+        [PermisosRol(Rol.Administrador | Rol.Coordinador | Rol.Monitor)]
         public ActionResult GenerarPDF(string supervisor, string docente, string aula, DateTime? fecha)
         {
             var modelo = new ReportePDFViewModel
@@ -510,7 +510,7 @@ namespace testautenticacion.Controllers
             };
         }
 
-        //[PermisosRol(Rol.Administrador | Rol.Coordinador | Rol.Monitor)]
+        [PermisosRol(Rol.Administrador | Rol.Coordinador | Rol.Monitor)]
         [HttpPost]
         public ActionResult GuardarReporte(string nombreArchivo, string datosReporte)
         {

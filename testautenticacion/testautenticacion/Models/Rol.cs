@@ -5,7 +5,8 @@ using System.Web;
 
 namespace testautenticacion.Models
 {
-	public enum Rol
+    [Flags]
+    public enum Rol
 	{
         //nos permite poner constantes
         Administrador = 1,

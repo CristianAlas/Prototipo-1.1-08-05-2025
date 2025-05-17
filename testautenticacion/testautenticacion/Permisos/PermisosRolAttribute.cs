@@ -23,13 +23,11 @@ namespace testautenticacion.Permisos
             {
                 Usuarios usuario = HttpContext.Current.Session["Usuario"] as Usuarios;
 
-                if (usuario.IdRol != this.idrol)
+                if (!this.idrol.HasFlag(usuario.IdRol))
                 {
                     filterContext.Result = new RedirectResult("~/Home/SinPermiso");
                 }
             }
-                
         }
-
     }
 }
