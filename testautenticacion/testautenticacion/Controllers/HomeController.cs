@@ -118,6 +118,8 @@ namespace testautenticacion.Controllers
             ViewBag.DocenteSeleccionado = docente;
             ViewBag.AulaSeleccionada = aula;
 
+            ViewBag.Usuario = Session["Usuario"];
+
             return View(monitoreos);
         }
 
@@ -655,7 +657,7 @@ namespace testautenticacion.Controllers
 
                 using (SqlConnection conexion = new SqlConnection(connectionString))
                 {
-                    string query = @"SELECT Id, MonitoreoProgramadoId, Fecha, Estado, Comentarios, Feedback 
+                    string query = @"SELECT Id, MonitoreoProgramadoId, Fecha, Estado, Comentarios 
                              FROM RegistrosMonitoreo WHERE MonitoreoProgramadoId = @Id";
 
                     SqlCommand cmd = new SqlCommand(query, conexion);
@@ -672,8 +674,7 @@ namespace testautenticacion.Controllers
                                 MonitoreoProgramadoId = Convert.ToInt32(reader["MonitoreoProgramadoId"]),
                                 Fecha = Convert.ToDateTime(reader["Fecha"]),
                                 Estado = reader["Estado"].ToString(),
-                                Comentarios = reader["Comentarios"]?.ToString(),
-                                Feedback = reader["Feedback"]?.ToString()
+                                Comentarios = reader["Comentarios"]?.ToString()
                             };
                         }
                     }
@@ -703,14 +704,14 @@ namespace testautenticacion.Controllers
                 using (SqlConnection conexion = new SqlConnection(connectionString))
                 {
                     string query = @"UPDATE RegistrosMonitoreo 
-                             SET Estado = @Estado, Comentarios = @Comentarios, Feedback = @Feedback 
+                             SET Estado = @Estado, Comentarios = @Comentarios 
                              WHERE Id = @Id";
 
                     SqlCommand comando = new SqlCommand(query, conexion);
                     comando.Parameters.AddWithValue("@Id", registro.Id);
                     comando.Parameters.AddWithValue("@Estado", registro.Estado);
                     comando.Parameters.AddWithValue("@Comentarios", registro.Comentarios != null ? (object)registro.Comentarios : DBNull.Value);
-                    comando.Parameters.AddWithValue("@Feedback", registro.Feedback != null ? (object)registro.Feedback : DBNull.Value);
+                    
 
 
                     conexion.Open();

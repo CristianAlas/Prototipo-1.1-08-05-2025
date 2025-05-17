@@ -11,14 +11,16 @@
         <link href="~/Content/Style.css" rel="stylesheet" />
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
     </div>
-        <form id="monitoreoForm" data-monitoreo-id="@Model.MonitoreoProgramadoId">
+        <form id="monitoreoForm">
+              @Html.HiddenFor(m => m.Id)
+              @Html.HiddenFor(m => m.MonitoreoProgramadoId)
             <div class="modal-body">
                 <div class="mb-3">
                     <label class="form-label">Estado</label>
                     <select name="Estado" class="form-select" required>
                         @foreach (var estado in ViewBag.Estados)
                         {
-                            <option value="@estado">@estado</option>
+                            <option value="@estado" @(estado == Model.Estado ? "selected" : "")>@estado</option>
                         }
                     </select>
                 </div>
