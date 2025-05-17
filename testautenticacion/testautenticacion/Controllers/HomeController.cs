@@ -15,6 +15,7 @@ using Twilio;
 using Twilio.Rest.Api.V2010.Account;
 using Rotativa;
 using System.Net;
+using System.Text;
 
 namespace testautenticacion.Controllers
 {
@@ -267,7 +268,7 @@ namespace testautenticacion.Controllers
         }
 
 
-        [PermisosRol(Rol.Administrador)]
+        [PermisosRol(Rol.Administrador | Rol.Coordinador | Rol.Monitor)]
         [HttpGet]
         public ActionResult Reportes(string supervisor, string docente, string aula, DateTime? fecha)
         {
@@ -441,7 +442,7 @@ namespace testautenticacion.Controllers
             }
         }
 
-        [PermisosRol(Rol.Administrador)]
+        //[PermisosRol(Rol.Administrador | Rol.Coordinador | Rol.Monitor)]
         public ActionResult GenerarPDF(string supervisor, string docente, string aula, DateTime? fecha)
         {
             var modelo = new ReportePDFViewModel
@@ -509,7 +510,7 @@ namespace testautenticacion.Controllers
             };
         }
 
-        [PermisosRol(Rol.Administrador)]
+        //[PermisosRol(Rol.Administrador | Rol.Coordinador | Rol.Monitor)]
         [HttpPost]
         public ActionResult GuardarReporte(string nombreArchivo, string datosReporte)
         {
@@ -567,13 +568,194 @@ namespace testautenticacion.Controllers
             return Json(new { total = total }, JsonRequestBehavior.AllowGet);
         }
 
-        ////////////////////////////cambios 17/05/2025 Cristian Alas//////////////////////////////
-        ///
+        //---------------------------cambios 17/05/2025 Cristian Alas---------------------------//
+
+        ////////////////////////////////////////// Generar CSV //////////////////////////////////////////
+        [PermisosRol(Rol.Administrador | Rol.Coordinador | Rol.Monitor)]
+        [HttpGet]
+        public ActionResult GenerarCSV(string supervisor, string docente, string aula, DateTime? fecha)
+        {
+            var registros = new List<string>();
+            registros.Add("Materia,Docente,Aula,Fecha,Responsable,Estado,Comentarios,Feedback");
+
+            using (SqlConnection conexion = new SqlConnection(connectionString))
+            {
+                var query = @"SELECT mp.Materia, mp.Docente, mp.Aula, mp.Fecha, mp.Responsable,
+                             rm.Estado, rm.Comentarios, rm.Feedback
+                      FROM MonitoreosProgramados mp
+                      LEFT JOIN RegistrosMonitoreo rm ON mp.Id = rm.MonitoreoProgramadoId
+                      WHERE 1=1";
+                var parameters = new List<SqlParameter>();
+
+                if (!string.IsNullOrEmpty(docente))
+                {
+                    query += " AND mp.Docente LIKE @Docente";
+                    parameters.Add(new SqlParameter("@Docente", "%" + docente + "%"));
+                }
+
+                if (!string.IsNullOrEmpty(aula))
+                {
+                    query += " AND mp.Aula LIKE @Aula";
+                    parameters.Add(new SqlParameter("@Aula", "%" + aula + "%"));
+                }
+
+                if (!string.IsNullOrEmpty(supervisor))
+                {
+                    query += " AND mp.Responsable LIKE @Supervisor";
+                    parameters.Add(new SqlParameter("@Supervisor", "%" + supervisor + "%"));
+                }
+
+                if (fecha.HasValue)
+                {
+                    query += " AND CONVERT(date, mp.Fecha) = CONVERT(date, @Fecha)";
+                    parameters.Add(new SqlParameter("@Fecha", fecha.Value));
+                }
+
+                SqlCommand comando = new SqlCommand(query, conexion);
+                comando.CommandTimeout = 120;
+                foreach (var param in parameters)
+                {
+                    comando.Parameters.Add(param);
+                }
+
+                conexion.Open();
+                using (SqlDataReader reader = comando.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        var linea = string.Join(",", new string[]
+                        {
+                    $"\"{reader["Materia"]}\"",
+                    $"\"{reader["Docente"]}\"",
+                    $"\"{reader["Aula"]}\"",
+                    $"\"{Convert.ToDateTime(reader["Fecha"]).ToString("yyyy-MM-dd")}\"",
+                    $"\"{reader["Responsable"]}\"",
+                    $"\"{reader["Estado"]?.ToString() ?? "N/A"}\"",
+                    $"\"{reader["Comentarios"]?.ToString().Replace("\"", "'") ?? "N/A"}\"",
+                    $"\"{reader["Feedback"]?.ToString().Replace("\"", "'") ?? "N/A"}\""
+                        });
+
+                        registros.Add(linea);
+                    }
+                }
+            }
+
+            var contenidoCSV = string.Join(Environment.NewLine, registros);
+            var buffer = Encoding.UTF8.GetBytes(contenidoCSV);
+            return File(buffer, "text/csv", "Reporte_Monitoreos.csv");
+        }
+
+        ////////////////////////////////////////// GET Actualizar monitoreo //////////////////////////////////////////
+        [HttpGet]
+        public ActionResult EditarMonitoreo(int id)
+        {
+            try
+            {
+                RegistrosMonitoreo registro = null;
+
+                using (SqlConnection conexion = new SqlConnection(connectionString))
+                {
+                    string query = @"SELECT Id, MonitoreoProgramadoId, Fecha, Estado, Comentarios, Feedback 
+                             FROM RegistrosMonitoreo WHERE MonitoreoProgramadoId = @Id";
+
+                    SqlCommand cmd = new SqlCommand(query, conexion);
+                    cmd.Parameters.AddWithValue("@Id", id);
+
+                    conexion.Open();
+                    using (SqlDataReader reader = cmd.ExecuteReader())
+                    {
+                        if (reader.Read())
+                        {
+                            registro = new RegistrosMonitoreo
+                            {
+                                Id = Convert.ToInt32(reader["Id"]),
+                                MonitoreoProgramadoId = Convert.ToInt32(reader["MonitoreoProgramadoId"]),
+                                Fecha = Convert.ToDateTime(reader["Fecha"]),
+                                Estado = reader["Estado"].ToString(),
+                                Comentarios = reader["Comentarios"]?.ToString(),
+                                Feedback = reader["Feedback"]?.ToString()
+                            };
+                        }
+                    }
+                }
+
+                if (registro == null)
+                {
+                    return HttpNotFound("Registro no encontrado");
+                }
+
+                ViewBag.Estados = new List<string> { "Todo bien", "Nadie en el aula", "Cerrado" };
+                return PartialView("_FormularioMonitoreo", registro); // misma vista que para crear
+            }
+            catch (Exception ex)
+            {
+                Response.StatusCode = 500;
+                return Content("Error: " + ex.Message);
+            }
+        }
+
+        ////////////////////////////////////////// POST Actualizar monitoreo //////////////////////////////////////////
+        [HttpPost]
+        public ActionResult GuardarEdicionMonitoreo(RegistrosMonitoreo registro)
+        {
+            if (ModelState.IsValid)
+            {
+                using (SqlConnection conexion = new SqlConnection(connectionString))
+                {
+                    string query = @"UPDATE RegistrosMonitoreo 
+                             SET Estado = @Estado, Comentarios = @Comentarios, Feedback = @Feedback 
+                             WHERE Id = @Id";
+
+                    SqlCommand comando = new SqlCommand(query, conexion);
+                    comando.Parameters.AddWithValue("@Id", registro.Id);
+                    comando.Parameters.AddWithValue("@Estado", registro.Estado);
+                    comando.Parameters.AddWithValue("@Comentarios", registro.Comentarios != null ? (object)registro.Comentarios : DBNull.Value);
+                    comando.Parameters.AddWithValue("@Feedback", registro.Feedback != null ? (object)registro.Feedback : DBNull.Value);
 
 
+                    conexion.Open();
+                    comando.ExecuteNonQuery();
+                }
 
+                return Json(new { success = true });
+            }
 
+            return Json(new { success = false, errors = ModelState.Values.SelectMany(v => v.Errors) });
+        }
 
+        ////////////////////////////////////////// Eliminar monitoreo //////////////////////////////////////////
+        [HttpPost]
+        [PermisosRol(Rol.Administrador | Rol.Coordinador)]
+        public ActionResult EliminarMonitoreo(int id)
+        {
+            try
+            {
+                using (SqlConnection conexion = new SqlConnection(connectionString))
+                {
+                    conexion.Open();
 
+                    // Eliminar primero el registro relacionado si existe
+                    string deleteRegistro = "DELETE FROM RegistrosMonitoreo WHERE MonitoreoProgramadoId = @Id";
+                    SqlCommand cmdReg = new SqlCommand(deleteRegistro, conexion);
+                    cmdReg.Parameters.AddWithValue("@Id", id);
+                    cmdReg.ExecuteNonQuery();
+
+                    // Luego el monitoreo programado
+                    string deleteMonitoreo = "DELETE FROM MonitoreosProgramados WHERE Id = @Id";
+                    SqlCommand cmdMon = new SqlCommand(deleteMonitoreo, conexion);
+                    cmdMon.Parameters.AddWithValue("@Id", id);
+                    int filasAfectadas = cmdMon.ExecuteNonQuery();
+
+                    if (filasAfectadas == 0)
+                        return HttpNotFound("No se encontró el monitoreo a eliminar.");
+                }
+
+                return new HttpStatusCodeResult(200);
+            }
+            catch (Exception ex)
+            {
+                return new HttpStatusCodeResult(500, "Error al eliminar: " + ex.Message);
+            }
+        }
     }
 }
