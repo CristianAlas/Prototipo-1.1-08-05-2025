@@ -41,7 +41,7 @@ namespace testautenticacion.Controllers
 
         }
 
-        [PermisosRol(Rol.Administrador)]
+        [PermisosRol(Rol.Administrador | Rol.Monitor | Rol.Coordinador)]
         public ActionResult About()
         {
             ViewBag.Message = "Bienvenido a la pagina About.";
@@ -49,7 +49,7 @@ namespace testautenticacion.Controllers
             return View();
         }
 
-        [PermisosRol(Rol.Administrador)]
+        [PermisosRol(Rol.Administrador | Rol.Coordinador)]
         public ActionResult Contact()
         {
             ViewBag.Message = "Bienvenido a la pagina Contact.";
@@ -128,13 +128,13 @@ namespace testautenticacion.Controllers
             return View();
         }
 
-        [PermisosRol(Rol.Administrador)]
+        //[PermisosRol(Rol.Administrador)]
         public ActionResult NuevoMonitoreo()
         {
             return View();
         }
 
-        [PermisosRol(Rol.Administrador)]
+        //[PermisosRol(Rol.Administrador)]
         [HttpGet]
         public ActionResult CrearMonitoreo(int id)
         {
@@ -173,7 +173,7 @@ namespace testautenticacion.Controllers
             }
         }
 
-        [PermisosRol(Rol.Administrador)]
+        //[PermisosRol(Rol.Administrador)]
         [HttpPost]
         public ActionResult GuardarMonitoreo(RegistrosMonitoreo registro)
         {

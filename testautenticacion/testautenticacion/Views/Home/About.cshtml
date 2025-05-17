@@ -7,8 +7,44 @@
 <head>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
-    <link href="~/Content/StyleAbout.css" rel="stylesheet" />
-    
+    <style>
+        .about-header {
+            background: linear-gradient(135deg, #2c3e50 0%, #3498db 100%);
+            color: white;
+            padding: 4rem 0;
+            margin-bottom: 3rem;
+        }
+
+        .feature-card {
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 15px rgba(0,0,0,0.05);
+            height: 100%;
+            transition: transform 0.2s;
+            padding: 2rem;
+        }
+
+            .feature-card:hover {
+                transform: translateY(-5px);
+            }
+
+        .icon-wrapper {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: #f8f9fa;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .team-section {
+            background-color: #f8f9fa;
+            padding: 4rem 0;
+            margin-top: 3rem;
+        }
+    </style>
 </head>
 <body>
     <main>
@@ -26,8 +62,8 @@
         <section class="container mb-5">
             <div class="row g-4">
                 <div class="col-md-4">
-                    <div class="aboutfeature-card">
-                        <div class="abouticon-wrapper">
+                    <div class="feature-card">
+                        <div class="icon-wrapper">
                             <i class="fas fa-chart-line fa-lg text-primary"></i>
                         </div>
                         <h3 class="h4 mb-3">Monitoreo en Tiempo Real</h3>
@@ -35,8 +71,8 @@
                     </div>
                 </div>
                 <div class="col-md-4">
-                    <div class="aboutfeature-card">
-                        <div class="abouticon-wrapper">
+                    <div class="feature-card">
+                        <div class="icon-wrapper">
                             <i class="fas fa-file-alt fa-lg text-primary"></i>
                         </div>
                         <h3 class="h4 mb-3">Reportes Detallados</h3>
@@ -44,8 +80,8 @@
                     </div>
                 </div>
                 <div class="col-md-4">
-                    <div class="aboutfeature-card">
-                        <div class="abouticon-wrapper">
+                    <div class="feature-card">
+                        <div class="icon-wrapper">
                             <i class="fas fa-bell fa-lg text-primary"></i>
                         </div>
                         <h3 class="h4 mb-3">Sistema de Alertas</h3>
@@ -55,7 +91,7 @@
             </div>
         </section>
 
-        <section class="aboutteam-section">
+        <section class="team-section">
             <div class="container">
                 <div class="row justify-content-center mb-5">
                     <div class="col-lg-8 text-center">
@@ -90,6 +126,70 @@
                     </div>
                 </div>
             </div>
+        </section>
+    </main>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/js/bootstrap.bundle.min.js"></script>
+
+</body>
+</html>*@
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>En Construcción - Sistema de Monitoreo</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: #7b002c;
+        }
+
+        .maintenance-section {
+            color: white;
+            padding: 6rem 1rem 3rem 1rem;
+            text-align: center;
+        }
+
+        .maintenance-icon {
+            font-size: 5rem;
+            color: #ffc107;
+            margin-bottom: 1rem;
+        }
+
+        .maintenance-content {
+            background: white;
+            margin-top: -3rem;
+            padding: 3rem;
+            border-radius: 1rem;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+        }
+
+            .maintenance-content h2 {
+                color: #7b0000;
+            }
+
+            .maintenance-content p {
+                color: #6c757d;
+            }
+    </style>
+</head>
+<body>
+    <main>
+        <section class="maintenance-section">
+            <div class="container">
+                <i class="fas fa-tools maintenance-icon"></i>
+                <h1 class="display-5 fw-bold">Página en Construcción</h1>
+                <p class="lead">Estamos trabajando para ofrecerte esta sección muy pronto.</p>
+            </div>
+        </section>
+
+        <section class="container maintenance-content">
+            <h2>Lineamientos del Sistema</h2>
+            <p>La sección de acerca del sistema estará disponible próximamente. Nuestro equipo se encuentra en fase de redacción y revisión para asegurar que toda la información sea clara, útil y actualizada.</p>
+            <hr>
+            <p class="mb-0"><i class="fas fa-hourglass-half me-2 text-warning"></i> Gracias por tu paciencia.</p>
         </section>
     </main>
 

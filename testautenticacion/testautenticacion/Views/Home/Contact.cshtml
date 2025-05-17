@@ -5,10 +5,58 @@
 <!DOCTYPE html>
 <html>
 <head>
+    <meta charset="utf-8" />
+    <title>@ViewBag.Title - Sistema de Monitoreo</title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
-    <link href="~/Content/bootstrap.min.css" rel="stylesheet" />
-    <link href="~/Content/StyleContact.css" rel="stylesheet" />
+
+    <style>
+        body {
+            background-color: #7b002c;
+        }
+
+        .contact-header {
+            background-color: #7b0000;
+            padding: 3rem 0;
+            color: white;
+            position: relative;
+        }
+
+        .contact-card {
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+        }
+
+            .contact-card:hover {
+                transform: translateY(-5px);
+                box-shadow: 0 12px 40px rgba(0, 0, 0, 0.15);
+            }
+
+        .contact-icon {
+            width: 50px;
+            height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 12px;
+            background-color: #7b0000;
+            color: white;
+            font-size: 1.25rem;
+            margin-right: 1rem;
+        }
+
+        .contact-link {
+            color: #7b0000;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+            .contact-link:hover {
+                color: #600000;
+            }
+    </style>
 </head>
 <body>
     <main>
@@ -29,9 +77,9 @@
                             <div>
                                 <h3 class="h5 mb-3">Dirección Corporativa</h3>
                                 <p class="mb-4">
-                                    One Microsoft Way<br>
-                                    Redmond, WA 98052-6399<br>
-                                    <span class="text-muted">Tel:</span> 425.555.0100
+                                    One Innovation Path<br>
+                                    Administración, WA 9052-6399<br>
+                                    <span class="text-muted">Tel:</span> 4555-0100
                                 </p>
                             </div>
                         </div>
@@ -45,19 +93,27 @@
                                 <i class="fas fa-envelope"></i>
                             </div>
                             <div>
-                                <h3 class="h5 mb-3">Departamentos</h3>
-                                <p class="mb-2">
-                                    <strong>Soporte</strong><br>
-                                    <a href="mailto:Support@example.com" class="contact-link">
-                                        Support@example.com
+                                <h3 class="h5 mb-3">Departamento de Soporte</h3>
+                                <div class="mb-3">
+                                    <strong>Desarrollador de Software</strong><br>
+                                    <a href="mailto:cristian.alas@gmail.com" class="contact-link">
+                                        cristian.alas@gmail.com
                                     </a>
-                                </p>
-                                <p class="mb-0">
-                                    <strong>Marketing</strong><br>
-                                    <a href="mailto:Marketing@example.com" class="contact-link">
-                                        Marketing@example.com
+                                </div>
+
+                                <div class="mb-3">
+                                    <strong>Desarrollador de Software</strong><br>
+                                    <a href="mailto:rolandro.andrade@gmail.com" class="contact-link">
+                                        rolandro.andrade@gmail.com
                                     </a>
-                                </p>
+                                </div>
+
+                                <div class="mb-0">
+                                    <strong>Desarrollador de Software</strong><br>
+                                    <a href="mailto:alejandro.estrada@gmail.com" class="contact-link">
+                                        alejandro.estrada@gmail.com
+                                    </a>
+                                </div>
                             </div>
                         </div>
                     </div>
