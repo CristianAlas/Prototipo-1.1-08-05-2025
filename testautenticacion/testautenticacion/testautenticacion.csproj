@@ -190,6 +190,7 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="logica\LO_Usuario.cs" />
+    <Compile Include="Models\Emergencia.cs" />
     <Compile Include="Models\MonitoreosProgramados.cs" />
     <Compile Include="Models\Registros.cs" />
     <Compile Include="Models\RegistrosMonitoreo.cs" />
