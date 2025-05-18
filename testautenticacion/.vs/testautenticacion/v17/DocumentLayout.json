@@ -3,11 +3,15 @@
   "WorkspaceRootPath": "C:\\Users\\Alejandro\\Documents\\proyecto con fork\\sistema_monitoreoclases\\testautenticacion\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{E2FC27FE-40B3-4B41-B812-45167FD99EFF}|testautenticacion\\testautenticacion.csproj|c:\\users\\alejandro\\documents\\proyecto con fork\\sistema_monitoreoclases\\testautenticacion\\testautenticacion\\models\\emergencia.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "AbsoluteMoniker": "D:0:0:{E2FC27FE-40B3-4B41-B812-45167FD99EFF}|testautenticacion\\testautenticacion.csproj|c:\\users\\alejandro\\documents\\proyecto con fork\\sistema_monitoreoclases\\testautenticacion\\testautenticacion\\logica\\cod_emergencia.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{E2FC27FE-40B3-4B41-B812-45167FD99EFF}|testautenticacion\\testautenticacion.csproj|solutionrelative:testautenticacion\\logica\\cod_emergencia.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{E2FC27FE-40B3-4B41-B812-45167FD99EFF}|testautenticacion\\testautenticacion.csproj|C:\\Users\\Alejandro\\Documents\\proyecto con fork\\sistema_monitoreoclases\\testautenticacion\\testautenticacion\\models\\emergencia.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{E2FC27FE-40B3-4B41-B812-45167FD99EFF}|testautenticacion\\testautenticacion.csproj|solutionrelative:testautenticacion\\models\\emergencia.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{E2FC27FE-40B3-4B41-B812-45167FD99EFF}|testautenticacion\\testautenticacion.csproj|c:\\users\\alejandro\\documents\\proyecto con fork\\sistema_monitoreoclases\\testautenticacion\\testautenticacion\\controllers\\accesocontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "AbsoluteMoniker": "D:0:0:{E2FC27FE-40B3-4B41-B812-45167FD99EFF}|testautenticacion\\testautenticacion.csproj|C:\\Users\\Alejandro\\Documents\\proyecto con fork\\sistema_monitoreoclases\\testautenticacion\\testautenticacion\\controllers\\accesocontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{E2FC27FE-40B3-4B41-B812-45167FD99EFF}|testautenticacion\\testautenticacion.csproj|solutionrelative:testautenticacion\\controllers\\accesocontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
@@ -71,6 +75,19 @@
             {
               "$type": "Document",
               "DocumentIndex": 0,
+              "Title": "COD_Emergencia.cs",
+              "DocumentMoniker": "C:\\Users\\Alejandro\\Documents\\proyecto con fork\\sistema_monitoreoclases\\testautenticacion\\testautenticacion\\logica\\COD_Emergencia.cs",
+              "RelativeDocumentMoniker": "testautenticacion\\logica\\COD_Emergencia.cs",
+              "ToolTip": "C:\\Users\\Alejandro\\Documents\\proyecto con fork\\sistema_monitoreoclases\\testautenticacion\\testautenticacion\\logica\\COD_Emergencia.cs",
+              "RelativeToolTip": "testautenticacion\\logica\\COD_Emergencia.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAACwAAAAJAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-05-18T18:48:16.353Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
               "Title": "Emergencia.cs",
               "DocumentMoniker": "C:\\Users\\Alejandro\\Documents\\proyecto con fork\\sistema_monitoreoclases\\testautenticacion\\testautenticacion\\Models\\Emergencia.cs",
               "RelativeDocumentMoniker": "testautenticacion\\Models\\Emergencia.cs",
@@ -78,12 +95,11 @@
               "RelativeToolTip": "testautenticacion\\Models\\Emergencia.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAA8AAAABAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-05-18T18:43:59.599Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-05-18T18:43:59.599Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 2,
               "Title": "AccesoController.cs",
               "DocumentMoniker": "C:\\Users\\Alejandro\\Documents\\proyecto con fork\\sistema_monitoreoclases\\testautenticacion\\testautenticacion\\Controllers\\AccesoController.cs",
               "RelativeDocumentMoniker": "testautenticacion\\Controllers\\AccesoController.cs",
@@ -91,12 +107,11 @@
               "RelativeToolTip": "testautenticacion\\Controllers\\AccesoController.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAoAAAAnAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-05-18T18:26:23.327Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-05-18T18:26:23.327Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 4,
+              "DocumentIndex": 5,
               "Title": "Web.config",
               "DocumentMoniker": "C:\\Users\\Alejandro\\Documents\\proyecto con fork\\sistema_monitoreoclases\\testautenticacion\\testautenticacion\\Web.config",
               "RelativeDocumentMoniker": "testautenticacion\\Web.config",
@@ -109,7 +124,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 5,
+              "DocumentIndex": 6,
               "Title": "About.cshtml",
               "DocumentMoniker": "C:\\Users\\Alejandro\\Documents\\proyecto con fork\\sistema_monitoreoclases\\testautenticacion\\testautenticacion\\Views\\Home\\About.cshtml",
               "RelativeDocumentMoniker": "testautenticacion\\Views\\Home\\About.cshtml",
@@ -121,7 +136,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
+              "DocumentIndex": 3,
               "Title": "HomeController.cs",
               "DocumentMoniker": "C:\\Users\\Alejandro\\Documents\\proyecto con fork\\sistema_monitoreoclases\\testautenticacion\\testautenticacion\\Controllers\\HomeController.cs",
               "RelativeDocumentMoniker": "testautenticacion\\Controllers\\HomeController.cs",
@@ -133,7 +148,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 3,
+              "DocumentIndex": 4,
               "Title": "Index.cshtml",
               "DocumentMoniker": "C:\\Users\\Alejandro\\Documents\\proyecto con fork\\sistema_monitoreoclases\\testautenticacion\\testautenticacion\\Views\\Home\\Index.cshtml",
               "RelativeDocumentMoniker": "testautenticacion\\Views\\Home\\Index.cshtml",
@@ -145,7 +160,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 8,
+              "DocumentIndex": 9,
               "Title": "Rol.cs",
               "DocumentMoniker": "C:\\Users\\Alejandro\\Documents\\proyecto con fork\\sistema_monitoreoclases\\testautenticacion\\testautenticacion\\Models\\Rol.cs",
               "RelativeDocumentMoniker": "testautenticacion\\Models\\Rol.cs",
@@ -157,7 +172,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 6,
+              "DocumentIndex": 7,
               "Title": "Reportes.cshtml",
               "DocumentMoniker": "C:\\Users\\Alejandro\\Documents\\proyecto con fork\\sistema_monitoreoclases\\testautenticacion\\testautenticacion\\Views\\Home\\Reportes.cshtml",
               "RelativeDocumentMoniker": "testautenticacion\\Views\\Home\\Reportes.cshtml",
@@ -169,7 +184,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 7,
+              "DocumentIndex": 8,
               "Title": "_FormularioMonitoreo.cshtml",
               "DocumentMoniker": "C:\\Users\\Alejandro\\Documents\\proyecto con fork\\sistema_monitoreoclases\\testautenticacion\\testautenticacion\\Views\\Home\\_FormularioMonitoreo.cshtml",
               "RelativeDocumentMoniker": "testautenticacion\\Views\\Home\\_FormularioMonitoreo.cshtml",
@@ -181,7 +196,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 9,
+              "DocumentIndex": 10,
               "Title": "RegistrosMonitoreo.cs",
               "DocumentMoniker": "C:\\Users\\Alejandro\\Documents\\proyecto con fork\\sistema_monitoreoclases\\testautenticacion\\testautenticacion\\Models\\RegistrosMonitoreo.cs",
               "RelativeDocumentMoniker": "testautenticacion\\Models\\RegistrosMonitoreo.cs",
