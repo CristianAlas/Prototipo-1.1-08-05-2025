@@ -15,6 +15,10 @@ namespace testautenticacion.Controllers
         // GET: Acceso
         public ActionResult Index()
         {
+            if (Session["Usuario"] != null)
+            {
+                return RedirectToAction("Index", "Home");
+            }
             return View();
         }
 

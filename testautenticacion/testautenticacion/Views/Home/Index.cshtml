@@ -1,7 +1,21 @@
-﻿@{
+﻿@model testautenticacion.Models.Emergencia
+
+@{
     ViewBag.Title = "Home Page";
 }
+@if (TempData["Exito"] != null)
+{
+    <div class="alert alert-success">
+        @TempData["Exito"]
+    </div>
+}
 
+@if (TempData["Error"] != null)
+{
+    <div class="alert alert-danger">
+        @TempData["Error"]
+    </div>
+}
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -14,6 +28,56 @@
     <script src="~/Scripts/IndexScript.js"></script>
 </head>
 <body>
+    <!-- boton de emergencia con icono  -->
+    <button type="button" class="btn btn-danger rounded-circle position-fixed" style="bottom: 20px; right: 20px; z-index: 1050; width: 60px; height: 60px;" data-bs-toggle="modal" data-bs-target="#Emergencia">
+        <i class="fas fa-exclamation-triangle fa-lg"></i>
+    </button>
+    <!-- Modal frm de emergencia -->
+    <div class="modal fade" id="Emergencia" tabindex="-1" aria-labelledby="EmergenciaLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <form id="emergenciaFrm" method="post" action="@Url.Action("GuardarEmergencia", "Home")">
+                    <div class="modal-header bg-danger text-white">
+                        <h5 class="modal-title" id="formEmergenciaLabel">
+                            <i class="fas fa-exclamation-triangle me-2"></i>Formulario de Emergencia
+                        </h5>
+                        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="mb-3">
+                            <label for="NombreMonitor" class="form-label">Nombre</label>
+                            <input type="text" id="NombreMonitor" name="NombreMonitor" class="form-control"
+                                   value="@Model.NombreMonitor" readonly />
+                        </div>
+                        <div class="mb-3">
+                            <label for="Edificio" class="form-label">Edificio</label>
+                            <select id="Edificio" name="Edificio" class="form-select" required>
+                                <option value="">Seleccione un edificio</option>
+                                <option value="Simon Bolivar">Simón Bolívar</option>
+                                <option value="Francisco Morazan">Francisco Morazán</option>
+                                <option value="Giuseppe Garibaldi">Giuseppe Garibaldi</option>
+                                <option value="Benito Juárez">Benito Juárez</option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label for="FechaHora" class="form-label">Fecha de Registro</label>
+                            <input type="datetime-local" id="FechaHora" name="FechaHora" class="form-control"
+                                   value="@Model.FechaHora.ToString("yyyy-MM-ddTHH:mm")" readonly required />
+                        </div>
+                        <div class="mb-3">
+                            <label for="Comentarios" class="form-label">Comentarios</label>
+                            <textarea id="Comentarios" name="Comentarios" class="form-control" rows="3" maxlength="500"
+                                      placeholder="Escriba cuál es la emergencia..."></textarea>
+                            <small id="comentariosHelp" class="form-text text-muted">Procure ser breve y claro.</small>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-primary">Enviar Emergencia</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
     <div class="container py-4">
         <!-- Header -->
         <div class="row align-items-center mb-4">
@@ -178,5 +242,14 @@
     </div>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/js/bootstrap.bundle.min.js"></script>
+    <script>
+
+        var fechaInput = document.getElementById('fecha');
+
+        // Cuando el modal se muestra, establecemos la fecha actual
+        $('#Emergencia').on('shown.bs.modal', function () {
+            fechaInput.value = new Date().toISOString().slice(0, 16); // Establecer la fecha y hora actual
+        });
+    </script>
 </body>
 </html>
