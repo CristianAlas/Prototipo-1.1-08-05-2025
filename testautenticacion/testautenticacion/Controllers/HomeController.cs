@@ -16,6 +16,7 @@ using Twilio.Rest.Api.V2010.Account;
 using Rotativa;
 using System.Net;
 using System.Text;
+using testautenticacion.logica;
 
 namespace testautenticacion.Controllers
 {
@@ -27,6 +28,7 @@ namespace testautenticacion.Controllers
         public ActionResult Index()
         {
 
+            //Obtener total de reportes
             int totalReportes = 0;
 
             using (SqlConnection conn = new SqlConnection(connectionString))
@@ -37,8 +39,24 @@ namespace testautenticacion.Controllers
             }
 
             ViewBag.TotalReportesGenerados = totalReportes;
-            return View();
+            //return View();
 
+            //Obtener usuario de la sesión y crear el modelo
+            var usuario = Session["Usuario"] as Usuarios;
+
+            var modelo = new Emergencia
+            {
+                NombreMonitor = usuario != null ? usuario.Nombres : "",
+                FechaHora = DateTime.Now
+            };
+
+            if (usuario != null)
+            {
+                ViewBag.NombreUsuario = usuario.Nombres;
+            }
+
+            // Retornar vista con el modelo
+            return View(modelo);
         }
 
         [PermisosRol(Rol.Administrador | Rol.Monitor | Rol.Coordinador)]
@@ -756,6 +774,71 @@ namespace testautenticacion.Controllers
             catch (Exception ex)
             {
                 return new HttpStatusCodeResult(500, "Error al eliminar: " + ex.Message);
+            }
+        }
+        [HttpGet]
+        public ActionResult CrearEmergencia()
+        {
+            var usuario = Session["Usuario"] as Usuarios;
+            if (usuario == null)
+            {
+                return RedirectToAction("Index", "Acceso");
+            }
+
+            ViewBag.NombreUsuario = usuario.Nombres;
+
+            var modelo = new Emergencia
+            {
+                NombreMonitor = usuario.Nombres,
+                FechaHora = DateTime.Now
+            };
+
+            return View(modelo);
+        }
+
+        [HttpPost]
+        public ActionResult GuardarEmergencia(Emergencia emergencia)
+        {
+            try
+            {
+                if (string.IsNullOrEmpty(emergencia.NombreMonitor))
+                {
+                    TempData["Error"] = "El nombre es requerido.";
+                    return RedirectToAction("Index", "Home");
+                }
+
+                if (string.IsNullOrEmpty(emergencia.Edificio))
+                {
+                    TempData["Error"] = "El edificio es requerido.";
+                    return RedirectToAction("Index", "Home");
+                }
+
+                if (emergencia.FechaHora == DateTime.MinValue)
+                {
+                    TempData["Error"] = "La fecha es requerida.";
+                    return RedirectToAction("Index", "Home");
+                }
+
+                if (string.IsNullOrEmpty(emergencia.Comentarios))
+                {
+                    emergencia.Comentarios = "Sin comentarios";
+                }
+
+                COD_Emergencia logica = new COD_Emergencia();
+                logica.GuardarEmergencia(
+                    emergencia.NombreMonitor,
+                    emergencia.Edificio,
+                    emergencia.FechaHora,
+                    emergencia.Comentarios
+                );
+
+                TempData["Exito"] = "Emergencia enviada con éxito.";
+                return RedirectToAction("Index", "Home");
+            }
+            catch (Exception ex)
+            {
+                TempData["Error"] = "Hubo un problema al enviar la emergencia: " + ex.Message;
+                return RedirectToAction("Index", "Home");
             }
         }
     }
