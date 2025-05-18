@@ -532,24 +532,26 @@
                     </tbody>
                 </table>
             </div>
-
-            <div class="text-center mt-5">
-                <a href="@Url.Action("GenerarPDF", "Home", new {
+            <div>
+                <div class="text-center mt-2">
+                    <a href="@Url.Action("GenerarPDF", "Home", new {
+                        supervisor = ViewBag.SupervisorSeleccionado,
+                        docente = ViewBag.DocenteSeleccionado,
+                        aula = ViewBag.AulaSeleccionada,
+                        fecha = ViewBag.FechaSeleccionada
+                        })"
+                       class="btn btn-danger">Generar Reporte en PDF</a>
+                </div>
+                <div class="text-center mt-6">
+                    <a href="@Url.Action("GenerarCSV", "Home", new {
                     supervisor = ViewBag.SupervisorSeleccionado,
                     docente = ViewBag.DocenteSeleccionado,
                     aula = ViewBag.AulaSeleccionada,
                     fecha = ViewBag.FechaSeleccionada
                     })"
-                   class="btn btn-danger">Generar Reporte en PDF</a>
-                <a href="@Url.Action("GenerarCSV", "Home", new {
-                    supervisor = ViewBag.SupervisorSeleccionado,
-                    docente = ViewBag.DocenteSeleccionado,
-                    aula = ViewBag.AulaSeleccionada,
-                    fecha = ViewBag.FechaSeleccionada
-                    })"
-                   class="btn btn-success mt-3">Generar Reporte en CSV</a>
+                       class="btn btn-success mt-3">Generar Reporte en CSV</a>
+                </div>
             </div>
-        </div>
     </div>
 
     <!-- MODAL PARA VISUALIZAR DETALLES -->
