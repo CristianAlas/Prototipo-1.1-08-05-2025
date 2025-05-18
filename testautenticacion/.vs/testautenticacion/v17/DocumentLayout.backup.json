@@ -3,11 +3,15 @@
   "WorkspaceRootPath": "C:\\Users\\Alejandro\\Documents\\proyecto con fork\\sistema_monitoreoclases\\testautenticacion\\",
   "Documents": [
     {
+      "AbsoluteMoniker": "D:0:0:{E2FC27FE-40B3-4B41-B812-45167FD99EFF}|testautenticacion\\testautenticacion.csproj|c:\\users\\alejandro\\documents\\proyecto con fork\\sistema_monitoreoclases\\testautenticacion\\testautenticacion\\views\\home\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{E2FC27FE-40B3-4B41-B812-45167FD99EFF}|testautenticacion\\testautenticacion.csproj|solutionrelative:testautenticacion\\views\\home\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
       "AbsoluteMoniker": "D:0:0:{E2FC27FE-40B3-4B41-B812-45167FD99EFF}|testautenticacion\\testautenticacion.csproj|C:\\Users\\Alejandro\\Documents\\proyecto con fork\\sistema_monitoreoclases\\testautenticacion\\testautenticacion\\controllers\\homecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{E2FC27FE-40B3-4B41-B812-45167FD99EFF}|testautenticacion\\testautenticacion.csproj|solutionrelative:testautenticacion\\controllers\\homecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{E2FC27FE-40B3-4B41-B812-45167FD99EFF}|testautenticacion\\testautenticacion.csproj|c:\\users\\alejandro\\documents\\proyecto con fork\\sistema_monitoreoclases\\testautenticacion\\testautenticacion\\logica\\cod_emergencia.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "AbsoluteMoniker": "D:0:0:{E2FC27FE-40B3-4B41-B812-45167FD99EFF}|testautenticacion\\testautenticacion.csproj|C:\\Users\\Alejandro\\Documents\\proyecto con fork\\sistema_monitoreoclases\\testautenticacion\\testautenticacion\\logica\\cod_emergencia.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{E2FC27FE-40B3-4B41-B812-45167FD99EFF}|testautenticacion\\testautenticacion.csproj|solutionrelative:testautenticacion\\logica\\cod_emergencia.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
@@ -17,10 +21,6 @@
     {
       "AbsoluteMoniker": "D:0:0:{E2FC27FE-40B3-4B41-B812-45167FD99EFF}|testautenticacion\\testautenticacion.csproj|C:\\Users\\Alejandro\\Documents\\proyecto con fork\\sistema_monitoreoclases\\testautenticacion\\testautenticacion\\controllers\\accesocontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{E2FC27FE-40B3-4B41-B812-45167FD99EFF}|testautenticacion\\testautenticacion.csproj|solutionrelative:testautenticacion\\controllers\\accesocontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{E2FC27FE-40B3-4B41-B812-45167FD99EFF}|testautenticacion\\testautenticacion.csproj|C:\\Users\\Alejandro\\Documents\\proyecto con fork\\sistema_monitoreoclases\\testautenticacion\\testautenticacion\\views\\home\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
-      "RelativeMoniker": "D:0:0:{E2FC27FE-40B3-4B41-B812-45167FD99EFF}|testautenticacion\\testautenticacion.csproj|solutionrelative:testautenticacion\\views\\home\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{E2FC27FE-40B3-4B41-B812-45167FD99EFF}|testautenticacion\\testautenticacion.csproj|C:\\Users\\Alejandro\\Documents\\proyecto con fork\\sistema_monitoreoclases\\testautenticacion\\testautenticacion\\web.config||{FA3CD31E-987B-443A-9B81-186104E8DAC1}",
@@ -74,20 +74,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
-              "Title": "COD_Emergencia.cs",
-              "DocumentMoniker": "C:\\Users\\Alejandro\\Documents\\proyecto con fork\\sistema_monitoreoclases\\testautenticacion\\testautenticacion\\logica\\COD_Emergencia.cs",
-              "RelativeDocumentMoniker": "testautenticacion\\logica\\COD_Emergencia.cs",
-              "ToolTip": "C:\\Users\\Alejandro\\Documents\\proyecto con fork\\sistema_monitoreoclases\\testautenticacion\\testautenticacion\\logica\\COD_Emergencia.cs",
-              "RelativeToolTip": "testautenticacion\\logica\\COD_Emergencia.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAACwAAAAJAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-05-18T18:48:16.353Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 2,
+              "DocumentIndex": 3,
               "Title": "Emergencia.cs",
               "DocumentMoniker": "C:\\Users\\Alejandro\\Documents\\proyecto con fork\\sistema_monitoreoclases\\testautenticacion\\testautenticacion\\Models\\Emergencia.cs",
               "RelativeDocumentMoniker": "testautenticacion\\Models\\Emergencia.cs",
@@ -99,7 +86,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 3,
+              "DocumentIndex": 4,
               "Title": "AccesoController.cs",
               "DocumentMoniker": "C:\\Users\\Alejandro\\Documents\\proyecto con fork\\sistema_monitoreoclases\\testautenticacion\\testautenticacion\\Controllers\\AccesoController.cs",
               "RelativeDocumentMoniker": "testautenticacion\\Controllers\\AccesoController.cs",
@@ -136,7 +123,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 0,
+              "DocumentIndex": 1,
               "Title": "HomeController.cs",
               "DocumentMoniker": "C:\\Users\\Alejandro\\Documents\\proyecto con fork\\sistema_monitoreoclases\\testautenticacion\\testautenticacion\\Controllers\\HomeController.cs",
               "RelativeDocumentMoniker": "testautenticacion\\Controllers\\HomeController.cs",
@@ -144,20 +131,32 @@
               "RelativeToolTip": "testautenticacion\\Controllers\\HomeController.cs",
               "ViewState": "AgIAAAYAAAAAAAAAAAAAACkAAAAOAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-05-18T02:58:57.964Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-05-18T02:58:57.964Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 4,
+              "DocumentIndex": 0,
               "Title": "Index.cshtml",
               "DocumentMoniker": "C:\\Users\\Alejandro\\Documents\\proyecto con fork\\sistema_monitoreoclases\\testautenticacion\\testautenticacion\\Views\\Home\\Index.cshtml",
               "RelativeDocumentMoniker": "testautenticacion\\Views\\Home\\Index.cshtml",
               "ToolTip": "C:\\Users\\Alejandro\\Documents\\proyecto con fork\\sistema_monitoreoclases\\testautenticacion\\testautenticacion\\Views\\Home\\Index.cshtml",
               "RelativeToolTip": "testautenticacion\\Views\\Home\\Index.cshtml",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAABQAAAADAAAAAAAAAA==",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2025-05-18T02:56:34.169Z"
+              "WhenOpened": "2025-05-18T02:56:34.169Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "COD_Emergencia.cs",
+              "DocumentMoniker": "C:\\Users\\Alejandro\\Documents\\proyecto con fork\\sistema_monitoreoclases\\testautenticacion\\testautenticacion\\logica\\COD_Emergencia.cs",
+              "RelativeDocumentMoniker": "testautenticacion\\logica\\COD_Emergencia.cs",
+              "ToolTip": "C:\\Users\\Alejandro\\Documents\\proyecto con fork\\sistema_monitoreoclases\\testautenticacion\\testautenticacion\\logica\\COD_Emergencia.cs",
+              "RelativeToolTip": "testautenticacion\\logica\\COD_Emergencia.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAACwAAAAJAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-05-18T18:48:16.353Z"
             },
             {
               "$type": "Document",
