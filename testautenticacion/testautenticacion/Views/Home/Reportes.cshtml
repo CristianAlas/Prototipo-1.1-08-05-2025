@@ -79,6 +79,7 @@
             </div>
         </div>
     </form>
+    </div>
 
     <hr class="my-4">
 
@@ -179,5 +180,46 @@
                     alert('Ocurrió un error al cargar los detalles del monitoreo.');
                 });
         }
+        // Actualizador de contador de reportes en PDF
+        document.querySelector(".btn-danger").addEventListener("click", function (e) {
+            e.preventDefault();
+            const url = this.href;
+            fetch("/Home/IncrementarContadorPDF", {
+                method: "POST"
+            })
+                .then(res => res.json())
+                .then(data => {
+                    const pdfContador = document.getElementById("contadorPDF");
+                    if (pdfContador) {
+                        pdfContador.textContent = data.totalPDF;
+                    }
+                    window.location.href = url; // Luego de contar, redirige
+                })
+                .catch(error => {
+                    console.error("Error al actualizar contador PDF:", error);
+                    window.location.href = url;
+                });
+        });
+
+        // Actualizador de contador de reportes en CSV
+        document.querySelector(".btn-success").addEventListener("click", function (e) {
+            e.preventDefault();
+            const url = this.href;
+            fetch("/Home/IncrementarContadorCSV", {
+                method: "POST"
+            })
+                .then(res => res.json())
+                .then(data => {
+                    const csvContador = document.getElementById("contadorCSV");
+                    if (csvContador) {
+                        csvContador.textContent = data.totalCSV;
+                    }
+                    window.location.href = url;
+                })
+                .catch(error => {
+                    console.error("Error al actualizar contador CSV:", error);
+                    window.location.href = url;
+                });
+        });
     </script>
 }

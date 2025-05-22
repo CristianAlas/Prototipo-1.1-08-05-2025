@@ -30,7 +30,8 @@
                                 <label class="form-label">
                                     <i class="fas fa-calendar me-2"></i>Fecha
                                 </label>
-                                <input type="date" name="fecha" class="form-control" value="@ViewBag.FechaSeleccionada">
+                                <input type="date" name="fecha" class="form-control" value="@(ViewBag.FechaSeleccionada ?? DateTime.Now.ToString("yyyy-MM-dd"))">
+
                             </div>
 
                             <!-- Filtro por Recorrido -->
@@ -74,6 +75,15 @@
                     }
                 </div>
             </div>
+            @section Scripts {
+                <script>
+                    window.onload = function () {
+                        if (!window.location.search) {
+                            document.querySelector('form').submit();
+                        }
+                    }
+                </script>
+            }
 
             <!-- Tabla de Resultados -->
             <div class="card shadow">

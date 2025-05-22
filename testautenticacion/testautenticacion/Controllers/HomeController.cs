@@ -28,20 +28,53 @@ namespace testautenticacion.Controllers
         public ActionResult Index()
         {
 
-            //Obtener total de reportes
+            // Obtener total de reportes en PDF
             int totalReportes = 0;
+            int monitoreosCompletados = 0;
+            int monitoreosPendientes = 0;
+            int incidentesCriticos = 0;
 
             using (SqlConnection conn = new SqlConnection(connectionString))
             {
                 conn.Open();
-                SqlCommand cmd = new SqlCommand("SELECT Total FROM ReporteContador WHERE Id = 1", conn);
-                totalReportes = (int)cmd.ExecuteScalar();
+
+                // Reportes generados                
+                using (SqlCommand cmd = new SqlCommand("SELECT TotalPDF, TotalCSV FROM ReporteContador WHERE Id = 1", conn))
+                {
+                    SqlDataReader reader = cmd.ExecuteReader();
+                    if (reader.Read())
+                    {
+                        ViewBag.TotalPDF = reader.GetInt32(reader.GetOrdinal("TotalPDF"));
+                        ViewBag.TotalCSV = reader.GetInt32(reader.GetOrdinal("TotalCSV"));
+                    }
+                }
+                //Contador de emergencias
+                using (SqlCommand cmd1 = new SqlCommand("SELECT Count (*) FROM Emergencias", conn))
+                {
+                    incidentesCriticos = (int)cmd1.ExecuteScalar();
+                }
+                //Contador de Monitoreos completados y Monitoreos pendientes usando SP
+                using (SqlCommand cmd2 = new SqlCommand("ObtenerConteoMonitoreos", conn))
+                {
+                    cmd2.CommandType = CommandType.StoredProcedure;
+
+                    using (SqlDataReader reader = cmd2.ExecuteReader())
+                    {
+                        if (reader.Read())
+                        {
+                            monitoreosCompletados = reader.GetInt32(reader.GetOrdinal("MonitoreosCompletados"));
+                            monitoreosPendientes = reader.GetInt32(reader.GetOrdinal("MonitoreosPendientes"));
+                        }
+                    }
+                }
             }
 
             ViewBag.TotalReportesGenerados = totalReportes;
-            //return View();
+            ViewBag.MonitoreosCompletados = monitoreosCompletados;
+            ViewBag.MonitoreosPendientes = monitoreosPendientes;
+            ViewBag.IncidentesCriticos = incidentesCriticos;
 
-            //Obtener usuario de la sesión y crear el modelo
+            // Obtener usuario de la sesión y crear el modelo
             var usuario = Session["Usuario"] as Usuarios;
 
             var modelo = new Emergencia
@@ -55,7 +88,6 @@ namespace testautenticacion.Controllers
                 ViewBag.NombreUsuario = usuario.Nombres;
             }
 
-            // Retornar vista con el modelo
             return View(modelo);
         }
 
@@ -465,6 +497,7 @@ namespace testautenticacion.Controllers
         [PermisosRol(Rol.Administrador | Rol.Coordinador | Rol.Monitor)]
         public ActionResult GenerarPDF(string supervisor, string docente, string aula, DateTime? fecha)
         {
+
             var modelo = new ReportePDFViewModel
             {
                 Monitoreos = new List<MonitoreosProgramados>(),
@@ -522,12 +555,19 @@ namespace testautenticacion.Controllers
             string nombreUsuario = User.Identity.Name?.Replace(" ", "_") ?? "Usuario";
             string fechaHoy = DateTime.Now.ToString("yyyyMMdd");
 
-            return new ViewAsPdf("_ReportePDF", modelo)
+            try
             {
-                FileName = $"Reporte_Monitoreos_{fechaHoy}_{nombreUsuario}.pdf",
-                PageSize = Rotativa.Options.Size.A4,
-                PageMargins = new Rotativa.Options.Margins(10, 10, 10, 10)
-            };
+                return new ViewAsPdf("_ReportePDF", modelo)
+                {
+                    FileName = $"Reporte_Monitoreos_{fechaHoy}_{nombreUsuario}.pdf",
+                    PageSize = Rotativa.Options.Size.A4,
+                    PageMargins = new Rotativa.Options.Margins(10, 10, 10, 10)
+                };
+            }
+            catch (Exception ex)
+            {
+                return Content("Error al generar PDF: " + ex.Message);
+            }
         }
 
         [PermisosRol(Rol.Administrador | Rol.Coordinador | Rol.Monitor)]
@@ -551,6 +591,7 @@ namespace testautenticacion.Controllers
         {
             return View();
         }
+
         //>Endpoint para incrementar y retornar el valor actualizado:
         [HttpPost]
         public JsonResult IncrementarContadorReporte()
@@ -562,11 +603,18 @@ namespace testautenticacion.Controllers
                 conn.Open();
 
                 string query = @"UPDATE ReporteContador SET Total = Total + 1, FechaActualizacion = GETDATE() WHERE Id = 1;
-            SELECT Total FROM ReporteContador WHERE Id = 1;
-        ";
+                         SELECT Total FROM ReporteContador WHERE Id = 1;";
 
                 SqlCommand cmd = new SqlCommand(query, conn);
-                nuevoTotal = (int)cmd.ExecuteScalar();
+
+                using (var reader = cmd.ExecuteReader())
+                {
+                    // Saltamos el resultado del UPDATE
+                    if (reader.NextResult() && reader.Read())
+                    {
+                        nuevoTotal = reader.GetInt32(0);
+                    }
+                }
             }
 
             return Json(new { total = nuevoTotal });
@@ -587,6 +635,7 @@ namespace testautenticacion.Controllers
 
             return Json(new { total = total }, JsonRequestBehavior.AllowGet);
         }
+
 
         //---------------------------cambios 17/05/2025 Cristian Alas---------------------------//
 
@@ -703,7 +752,7 @@ namespace testautenticacion.Controllers
                     return HttpNotFound("Registro no encontrado");
                 }
 
-                ViewBag.Estados = new List<string> { "Todo bien", "Nadie en el aula", "Cerrado" };
+                ViewBag.Estados = new List<string> { "Todo bien", "Nadie en el aula", "Cerrado"};
                 return PartialView("_FormularioMonitoreo", registro); // misma vista que para crear
             }
             catch (Exception ex)
@@ -841,5 +890,53 @@ namespace testautenticacion.Controllers
                 return RedirectToAction("Index", "Home");
             }
         }
+
+
+        // Contador de reportes descargados en pdf y csv
+        [HttpPost]
+        public JsonResult IncrementarContadorPDF()
+        {
+            int totalPDF = 0;
+
+            using (SqlConnection conn = new SqlConnection(connectionString))
+            {
+                conn.Open();
+                string query = @"
+            UPDATE ReporteContador
+            SET TotalPDF = TotalPDF + 1, FechaActualizacion = GETDATE()
+            WHERE Id = 1;
+            SELECT TotalPDF FROM ReporteContador WHERE Id = 1;
+        ";
+
+                SqlCommand cmd = new SqlCommand(query, conn);
+                totalPDF = (int)cmd.ExecuteScalar();
+            }
+
+            return Json(new { totalPDF });
+        }
+
+        [HttpPost]
+        public JsonResult IncrementarContadorCSV()
+        {
+            int totalCSV = 0;
+
+            using (SqlConnection conn = new SqlConnection(connectionString))
+            {
+                conn.Open();
+                string query = @"
+            UPDATE ReporteContador
+            SET TotalCSV = TotalCSV + 1, FechaActualizacion = GETDATE()
+            WHERE Id = 1;
+            SELECT TotalCSV FROM ReporteContador WHERE Id = 1;
+        ";
+
+                SqlCommand cmd = new SqlCommand(query, conn);
+                totalCSV = (int)cmd.ExecuteScalar();
+            }
+
+            return Json(new { totalCSV });
+        }
+
+
     }
 }

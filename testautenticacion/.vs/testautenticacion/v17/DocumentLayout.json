@@ -3,8 +3,20 @@
   "WorkspaceRootPath": "C:\\Users\\Rolan\\Documents\\Proyectos\\rolandoandrad3\\Sistema-de-Monitoreo-de-Clases-\\testautenticacion\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{E2FC27FE-40B3-4B41-B812-45167FD99EFF}|testautenticacion\\testautenticacion.csproj|c:\\users\\rolan\\documents\\proyectos\\rolandoandrad3\\sistema-de-monitoreo-de-clases-\\testautenticacion\\testautenticacion\\views\\home\\about.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
-      "RelativeMoniker": "D:0:0:{E2FC27FE-40B3-4B41-B812-45167FD99EFF}|testautenticacion\\testautenticacion.csproj|solutionrelative:testautenticacion\\views\\home\\about.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+      "AbsoluteMoniker": "D:0:0:{E2FC27FE-40B3-4B41-B812-45167FD99EFF}|testautenticacion\\testautenticacion.csproj|c:\\users\\rolan\\documents\\proyectos\\rolandoandrad3\\sistema-de-monitoreo-de-clases-\\testautenticacion\\testautenticacion\\views\\home\\reportes.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{E2FC27FE-40B3-4B41-B812-45167FD99EFF}|testautenticacion\\testautenticacion.csproj|solutionrelative:testautenticacion\\views\\home\\reportes.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{E2FC27FE-40B3-4B41-B812-45167FD99EFF}|testautenticacion\\testautenticacion.csproj|c:\\users\\rolan\\documents\\proyectos\\rolandoandrad3\\sistema-de-monitoreo-de-clases-\\testautenticacion\\testautenticacion\\views\\home\\_reportepdf.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{E2FC27FE-40B3-4B41-B812-45167FD99EFF}|testautenticacion\\testautenticacion.csproj|solutionrelative:testautenticacion\\views\\home\\_reportepdf.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{E2FC27FE-40B3-4B41-B812-45167FD99EFF}|testautenticacion\\testautenticacion.csproj|c:\\users\\rolan\\documents\\proyectos\\rolandoandrad3\\sistema-de-monitoreo-de-clases-\\testautenticacion\\testautenticacion\\views\\home\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{E2FC27FE-40B3-4B41-B812-45167FD99EFF}|testautenticacion\\testautenticacion.csproj|solutionrelative:testautenticacion\\views\\home\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{E2FC27FE-40B3-4B41-B812-45167FD99EFF}|testautenticacion\\testautenticacion.csproj|C:\\Users\\Rolan\\Documents\\Proyectos\\rolandoandrad3\\Sistema-de-Monitoreo-de-Clases-\\testautenticacion\\testautenticacion\\controllers\\homecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{E2FC27FE-40B3-4B41-B812-45167FD99EFF}|testautenticacion\\testautenticacion.csproj|solutionrelative:testautenticacion\\controllers\\homecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
   "DocumentGroupContainers": [
@@ -14,7 +26,7 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 4,
+          "SelectedChildIndex": 6,
           "Children": [
             {
               "$type": "Bookmark",
@@ -34,15 +46,54 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 0,
-              "Title": "About.cshtml",
-              "DocumentMoniker": "C:\\Users\\Rolan\\Documents\\Proyectos\\rolandoandrad3\\Sistema-de-Monitoreo-de-Clases-\\testautenticacion\\testautenticacion\\Views\\Home\\About.cshtml",
-              "RelativeDocumentMoniker": "testautenticacion\\Views\\Home\\About.cshtml",
-              "ToolTip": "C:\\Users\\Rolan\\Documents\\Proyectos\\rolandoandrad3\\Sistema-de-Monitoreo-de-Clases-\\testautenticacion\\testautenticacion\\Views\\Home\\About.cshtml",
-              "RelativeToolTip": "testautenticacion\\Views\\Home\\About.cshtml",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAABUAAAAaAAAAAAAAAA==",
+              "DocumentIndex": 2,
+              "Title": "Index.cshtml",
+              "DocumentMoniker": "C:\\Users\\Rolan\\Documents\\Proyectos\\rolandoandrad3\\Sistema-de-Monitoreo-de-Clases-\\testautenticacion\\testautenticacion\\Views\\Home\\Index.cshtml",
+              "RelativeDocumentMoniker": "testautenticacion\\Views\\Home\\Index.cshtml",
+              "ToolTip": "C:\\Users\\Rolan\\Documents\\Proyectos\\rolandoandrad3\\Sistema-de-Monitoreo-de-Clases-\\testautenticacion\\testautenticacion\\Views\\Home\\Index.cshtml",
+              "RelativeToolTip": "testautenticacion\\Views\\Home\\Index.cshtml",
+              "ViewState": "AgIAAMAAAAAAAAAAAAAawNIAAAAsAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2025-05-20T02:34:12.29Z",
+              "WhenOpened": "2025-05-22T03:19:11.881Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "_ReportePDF.cshtml",
+              "DocumentMoniker": "C:\\Users\\Rolan\\Documents\\Proyectos\\rolandoandrad3\\Sistema-de-Monitoreo-de-Clases-\\testautenticacion\\testautenticacion\\Views\\Home\\_ReportePDF.cshtml",
+              "RelativeDocumentMoniker": "testautenticacion\\Views\\Home\\_ReportePDF.cshtml",
+              "ToolTip": "C:\\Users\\Rolan\\Documents\\Proyectos\\rolandoandrad3\\Sistema-de-Monitoreo-de-Clases-\\testautenticacion\\testautenticacion\\Views\\Home\\_ReportePDF.cshtml",
+              "RelativeToolTip": "testautenticacion\\Views\\Home\\_ReportePDF.cshtml",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-05-22T03:12:11.917Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "Reportes.cshtml",
+              "DocumentMoniker": "C:\\Users\\Rolan\\Documents\\Proyectos\\rolandoandrad3\\Sistema-de-Monitoreo-de-Clases-\\testautenticacion\\testautenticacion\\Views\\Home\\Reportes.cshtml",
+              "RelativeDocumentMoniker": "testautenticacion\\Views\\Home\\Reportes.cshtml",
+              "ToolTip": "C:\\Users\\Rolan\\Documents\\Proyectos\\rolandoandrad3\\Sistema-de-Monitoreo-de-Clases-\\testautenticacion\\testautenticacion\\Views\\Home\\Reportes.cshtml",
+              "RelativeToolTip": "testautenticacion\\Views\\Home\\Reportes.cshtml",
+              "ViewState": "AgIAAGMAAAAAAAAAAAAqwM8AAAAzAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-05-22T02:51:44.307Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "HomeController.cs",
+              "DocumentMoniker": "C:\\Users\\Rolan\\Documents\\Proyectos\\rolandoandrad3\\Sistema-de-Monitoreo-de-Clases-\\testautenticacion\\testautenticacion\\Controllers\\HomeController.cs",
+              "RelativeDocumentMoniker": "testautenticacion\\Controllers\\HomeController.cs",
+              "ToolTip": "C:\\Users\\Rolan\\Documents\\Proyectos\\rolandoandrad3\\Sistema-de-Monitoreo-de-Clases-\\testautenticacion\\testautenticacion\\Controllers\\HomeController.cs",
+              "RelativeToolTip": "testautenticacion\\Controllers\\HomeController.cs",
+              "ViewState": "AgIAABcAAAAAAAAAAAAxwAAAAAAFAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-05-21T04:15:05.707Z",
               "EditorCaption": ""
             }
           ]
