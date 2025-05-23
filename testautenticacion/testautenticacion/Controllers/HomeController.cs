@@ -708,10 +708,12 @@ namespace testautenticacion.Controllers
                     }
                 }
             }
+            string nombreUsuario = User.Identity.Name?.Replace(" ", "_") ?? "Usuario";
+            string fechaHoy = DateTime.Now.ToString("yyyyMMdd");
 
             var contenidoCSV = string.Join(Environment.NewLine, registros);
             var buffer = Encoding.UTF8.GetBytes(contenidoCSV);
-            return File(buffer, "text/csv", "Reporte_Monitoreos.csv");
+            return File(buffer, "text/csv", $"Reporte_Monitoreos_{fechaHoy}_{nombreUsuario}.csv");
         }
 
         ////////////////////////////////////////// GET Actualizar monitoreo //////////////////////////////////////////
