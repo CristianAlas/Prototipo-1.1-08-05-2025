@@ -117,7 +117,7 @@ namespace testautenticacion.Controllers
         }
 
         [HttpGet]
-        public ActionResult Filtro(DateTime? fecha, string recorrido, string docente, string aula)
+        public ActionResult Filtro(DateTime? fecha, string recorrido, string docente, string aula, string estado)
         {
             List<MonitoreosProgramados> monitoreos = new List<MonitoreosProgramados>();
 
@@ -158,8 +158,33 @@ namespace testautenticacion.Controllers
                 {
                     SqlCommand checkCmd = new SqlCommand("SELECT TOP 1 1 FROM RegistrosMonitoreo WHERE MonitoreoProgramadoId = @Id", conexion);
                     checkCmd.Parameters.AddWithValue("@Id", monitoreo.Id);
-                    monitoreo.TieneMonitoreo = checkCmd.ExecuteScalar() != null;
+                    object result = checkCmd.ExecuteScalar();
+                    monitoreo.TieneMonitoreo = result != null;
+
+                    string estadoActual = "Pendiente";
+
+                    if (monitoreo.TieneMonitoreo)
+                    {
+                        estadoActual = "Completado";
+                    }
+                    else if (monitoreo.Fecha.Date < DateTime.Today)
+                    {
+                        estadoActual = "Expirado";
+                    }
+
+                    monitoreo.EstadoMonitoreo = estadoActual;
+
+                    // Guardar el estado actualizado en la base de datos
+                    SqlCommand updateCmd = new SqlCommand("UPDATE MonitoreosProgramados SET EstadoMonitoreo = @Estado WHERE Id = @Id", conexion);
+                    updateCmd.Parameters.AddWithValue("@Estado", estadoActual);
+                    updateCmd.Parameters.AddWithValue("@Id", monitoreo.Id);
+                    updateCmd.ExecuteNonQuery();
                 }
+                if (!string.IsNullOrWhiteSpace(estado))
+                {
+                    monitoreos = monitoreos.Where(m => m.EstadoMonitoreo == estado).ToList();
+                }
+
             }
 
             ViewBag.Monitoreos = monitoreos;
@@ -167,6 +192,7 @@ namespace testautenticacion.Controllers
             ViewBag.RecorridoSeleccionado = recorrido;
             ViewBag.DocenteSeleccionado = docente;
             ViewBag.AulaSeleccionada = aula;
+            ViewBag.EstadoSeleccionado = estado;
 
             ViewBag.Usuario = Session["Usuario"];
 
@@ -986,23 +1012,20 @@ namespace testautenticacion.Controllers
 
         //    return View(monitoreo);
         //}
-        [PermisosRol(Rol.Administrador | Rol.Coordinador)]
+        ////////////////////////////////////////// Post Programar Monitoreo //////////////////////////////////////////
         [HttpPost]
+        [PermisosRol(Rol.Administrador | Rol.Coordinador)]
         public ActionResult ProgramarMonitoreo(MonitoreosProgramados monitoreo)
         {
-            // Validación manual: fecha no puede ser menor a hoy
-            if (monitoreo.Fecha < DateTime.Today)
-            {
-                ModelState.AddModelError("Fecha", "La fecha no puede ser anterior a hoy.");
-            }
-
             if (ModelState.IsValid)
             {
                 using (SqlConnection conexion = new SqlConnection(connectionString))
                 {
+                    monitoreo.EstadoMonitoreo = monitoreo.Fecha.Date < DateTime.Today ? "Expirado" : "Pendiente";
+
                     string query = @"INSERT INTO MonitoreosProgramados
-                        (Materia, Docente, Responsable, Aula, HoraInicio, HoraFin, Fecha, Recorrido, Jornada, Ciclo)
-                        VALUES (@Materia, @Docente, @Responsable, @Aula, @HoraInicio, @HoraFin, @Fecha, @Recorrido, @Jornada, @Ciclo)";
+                    (Materia, Docente, Responsable, Aula, HoraInicio, HoraFin, Fecha, Recorrido, Jornada, Ciclo, EstadoMonitoreo)
+                    VALUES (@Materia, @Docente, @Responsable, @Aula, @HoraInicio, @HoraFin, @Fecha, @Recorrido, @Jornada, @Ciclo, @EstadoMonitoreo)";
 
                     SqlCommand cmd = new SqlCommand(query, conexion);
                     cmd.Parameters.AddWithValue("@Materia", monitoreo.Materia);
@@ -1015,6 +1038,7 @@ namespace testautenticacion.Controllers
                     cmd.Parameters.AddWithValue("@Recorrido", monitoreo.Recorrido);
                     cmd.Parameters.AddWithValue("@Jornada", monitoreo.Jornada);
                     cmd.Parameters.AddWithValue("@Ciclo", monitoreo.Ciclo);
+                    cmd.Parameters.AddWithValue("@EstadoMonitoreo", monitoreo.EstadoMonitoreo);
 
                     conexion.Open();
                     cmd.ExecuteNonQuery();
@@ -1025,6 +1049,5 @@ namespace testautenticacion.Controllers
 
             return View(monitoreo);
         }
-
     }
 }

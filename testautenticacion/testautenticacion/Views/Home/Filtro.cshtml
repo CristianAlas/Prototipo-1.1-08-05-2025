@@ -62,6 +62,19 @@
                                 <input type="text" name="aula" class="form-control" value="@ViewBag.AulaSeleccionada" placeholder="Número de Aula">
                             </div>
 
+                            <!-- Filtro por Estado -->
+                            <div class="col-md-3">
+                                <label class="form-label">
+                                    <i class="fas fa-flag me-2"></i>Estado
+                                </label>
+                                <select name="estado" class="form-select">
+                                    <option value="">Todos</option>
+                                    <option value="Pendiente" @(ViewBag.EstadoSeleccionado == "Pendiente" ? "selected" : "")>Pendiente</option>
+                                    <option value="Completado" @(ViewBag.EstadoSeleccionado == "Completado" ? "selected" : "")>Completado</option>
+                                    <option value="Expirado" @(ViewBag.EstadoSeleccionado == "Expirado" ? "selected" : "")>Expirado</option>
+                                </select>
+                            </div>
+
                             <!-- Botones de acción -->
                             <div class="col-12 text-end">
                                 <a href="@Url.Action("Filtro")" class="btn btn-secondary me-2">
@@ -136,13 +149,18 @@
                                         <td>@monitoreo.Jornada</td>
                                         <td>@monitoreo.Ciclo</td>
                                         <td>
-                                            @if (monitoreo.TieneMonitoreo)
+                                            @switch (monitoreo.EstadoMonitoreo)
                                             {
-                                                <i class="fas fa-check-circle text-success" title="Monitoreo completado"></i>
-                                            }
-                                            else
-                                            {
-                                                <i class="fas fa-hourglass-half text-muted" title="Pendiente"></i>
+                                                case "Completado":
+                                                    <i class="fas fa-check-circle text-success" title="Completado"></i>
+                                                    break;
+                                                case "Expirado":
+                                                    <i class="fas fa-times-circle text-danger" title="Expirado"></i>
+                                                    break;
+                                                case "Pendiente":
+                                                default:
+                                                    <i class="fas fa-hourglass-half text-muted" title="Pendiente"></i>
+                                                    break;
                                             }
                                         </td>
                                         <td>

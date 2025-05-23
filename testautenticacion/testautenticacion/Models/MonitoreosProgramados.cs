@@ -19,6 +19,8 @@ namespace testautenticacion.Models
         public string Jornada { get; set; }
         public string Ciclo { get; set; }
 
+        public string EstadoMonitoreo { get; set; }
+
         public bool TieneMonitoreo { get; set; }
 
     }
