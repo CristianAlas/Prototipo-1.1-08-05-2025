@@ -98,143 +98,107 @@
 
         <!-- Metric Cards -->
         <div class="row g-4 mb-4">
-            <!-- Active Systems -->
-            <div class="col-12 col-sm-6 col-xl-3">
+            <!-- Monitoreos Completados -->
+            <div class="col-12 col-sm-6 col-md-3">
                 <div class="status-card p-4">
                     <div class="d-flex align-items-center mb-3">
-                        <span class="status-indicator status-active"></span>
-                        <span class="metric-label">Sistemas Activos</span>
+                        <span class="status-indicator status-active me-2"></span>
+                        <span class="metric-label">Monitoreos Completados</span>
                     </div>
-                    <div class="metric-value">24/25</div>
+                    <h2 class="mb-0 fw-bold text-black">
+                        @ViewBag.MonitoreosCompletados
+                    </h2>
                     <div class="text-success small mt-2">
-                        <i class="fas fa-arrow-up me-1"></i>99.6% Uptime
+                        <i class="fa-solid fa-chalkboard-user me-1"></i> Este ciclo
                     </div>
                 </div>
             </div>
 
-            <!-- Pending Alerts -->
-            <div class="col-12 col-sm-6 col-xl-3">
+            <!-- Monitoreos Pendientes -->
+            <div class="col-12 col-sm-6 col-md-3">
                 <div class="status-card p-4">
                     <div class="d-flex align-items-center mb-3">
-                        <span class="status-indicator status-warning"></span>
-                        <span class="metric-label">Alertas Pendientes</span>
+                        <span class="status-indicator status-warning me-2"></span>
+                        <span class="metric-label">Monitoreos Pendientes</span>
                     </div>
-                    <div class="metric-value">7</div>
+                    <h2 class="mb-0 fw-bold text-black">
+                        @ViewBag.MonitoreosPendientes
+                    </h2>
                     <div class="text-warning small mt-2">
-                        <i class="fas fa-clock me-1"></i>Últimas 24 horas
+                        <i class="fa-solid fa-hourglass-half me-1"></i> Este año
                     </div>
                 </div>
             </div>
 
-            <!-- Critical Incidents -->
-            <div class="col-12 col-sm-6 col-xl-3">
+            <!-- Incidentes Críticos -->
+            <div class="col-12 col-sm-6 col-md-3">
                 <div class="status-card p-4">
                     <div class="d-flex align-items-center mb-3">
-                        <span class="status-indicator status-error"></span>
+                        <span class="status-indicator status-error me-2"></span>
                         <span class="metric-label">Incidentes Críticos</span>
                     </div>
-                    <div class="metric-value">2</div>
+                    <h2 class="mb-0 fw-bold text-black">
+                        @ViewBag.IncidentesCriticos
+                    </h2>
                     <div class="text-danger small mt-2">
-                        <i class="fas fa-exclamation-triangle me-1"></i>Requieren atención
+                        <i class="fas fa-exclamation-triangle me-1"></i> Requiere atención
                     </div>
                 </div>
             </div>
 
-            <!-- Generated Reports -->
-            <div class="col-12 col-sm-6 col-xl-3">
+            <!-- Reportes Generados -->
+            <div class="col-12 col-sm-6 col-md-3">
                 <div class="status-card p-4">
                     <div class="d-flex align-items-center mb-3">
                         <i class="fas fa-chart-line text-primary me-2"></i>
                         <span class="metric-label">Reportes Generados</span>
                     </div>
-                    <div class="metric-value" id="reporteContador">@ViewBag.TotalReportesGenerados</div>
-                    <div class="text-muted small mt-2">
-                        <i class="fas fa-calendar me-1"></i>Este mes
+
+                    <!-- Contadores en línea -->
+                    <div class="d-flex justify-content-evenly">
+                        <!-- PDF -->
+                        <div class="me-3 text-center">
+                            <h2 class="mb-0 fw-bold text-black" id="contadorPDF">@ViewBag.TotalPDF</h2>
+                            <div class="text-muted small mt-2">
+                                <i class="fas fa-file-pdf me-1"></i> PDF
+                            </div>
+                        </div>
+
+                        <!-- CSV -->
+                        <div class="text-center">
+                            <h2 class="mb-0 fw-bold text-black" id="contadorCSV">@ViewBag.TotalCSV</h2>
+                            <div class="text-muted small mt-2">
+                                <i class="fas fa-file-csv me-1"></i> CSV
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
 
+
         </div>
+
 
         <!-- Main Content -->
         <div class="row g-4">
             <!-- Systems Table -->
-            <div class="col-12 col-xl-8">
+            <div class="col-12 col-xl-12">
                 <div class="status-card p-4">
-                    <h2 class="h5 mb-4">Sistemas Monitoreados</h2>
+                    <h2 class="h5 mb-4">Incidentes Críticos</h2>
                     <div class="table-responsive">
                         <table class="table table-hover">
                             <thead>
                                 <tr>
-                                    <th>Sistema</th>
-                                    <th>Estado</th>
-                                    <th>Última Actualización</th>
-                                    <th>Acciones</th>
+                                    <th>Monitor</th>
+                                    <th>Edificio</th>
+                                    <th>Fecha</th>
+                                    <th>Comentarios</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr>
-                                    <td>Servidor Principal</td>
-                                    <td><span class="status-indicator status-active"></span>Activo</td>
-                                    <td>Hace 5 minutos</td>
-                                    <td>
-                                        <button class="btn btn-sm btn-outline-primary">Ver Detalles</button>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>Base de Datos</td>
-                                    <td><span class="status-indicator status-warning"></span>Advertencia</td>
-                                    <td>Hace 2 minutos</td>
-                                    <td>
-                                        <button class="btn btn-sm btn-outline-primary">Ver Detalles</button>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>API Gateway</td>
-                                    <td><span class="status-indicator status-active"></span>Activo</td>
-                                    <td>Hace 1 minuto</td>
-                                    <td>
-                                        <button class="btn btn-sm btn-outline-primary">Ver Detalles</button>
-                                    </td>
-                                </tr>
+                                <!--LLenado de tabla de reportes criticos-->
                             </tbody>
                         </table>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Recent Reports -->
-            <div class="col-12 col-xl-4">
-                <div class="status-card p-4">
-                    <h2 class="h5 mb-4">Reportes Recientes</h2>
-                    <div class="d-flex flex-column gap-3">
-                        <a href="#" class="report-link">
-                            <div class="d-flex justify-content-between align-items-center">
-                                <div>
-                                    <h6 class="mb-1">Reporte Diario</h6>
-                                    <small class="text-muted">15 Feb 2025</small>
-                                </div>
-                                <i class="fas fa-download text-primary"></i>
-                            </div>
-                        </a>
-                        <a href="#" class="report-link">
-                            <div class="d-flex justify-content-between align-items-center">
-                                <div>
-                                    <h6 class="mb-1">Análisis Semanal</h6>
-                                    <small class="text-muted">14 Feb 2025</small>
-                                </div>
-                                <i class="fas fa-download text-primary"></i>
-                            </div>
-                        </a>
-                        <a href="#" class="report-link">
-                            <div class="d-flex justify-content-between align-items-center">
-                                <div>
-                                    <h6 class="mb-1">Reporte de Incidentes</h6>
-                                    <small class="text-muted">13 Feb 2025</small>
-                                </div>
-                                <i class="fas fa-download text-primary"></i>
-                            </div>
-                        </a>
                     </div>
                 </div>
             </div>

@@ -1,15 +1,21 @@
 ﻿<!DOCTYPE html>
     <html>
     <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
         <meta charset="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>@ViewBag.Title - Sistema de Monitoreo de clases UTEC</title>
         @Styles.Render("~/Content/css")
         @Scripts.Render("~/bundles/modernizr")
+        <style>
+            .custom-navbar {
+                background-color: #451723 !important;
+            }
+        </style>
     </head>
+
     <body>
-        <nav class="navbar navbar-expand-sm navbar-dark bg-dark">
+        <nav class="navbar navbar-expand-sm navbar-dark custom-navbar">
             <div class="container">
                 @Html.ActionLink("Sistema de Monitoreo Utec", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
 
@@ -46,7 +52,7 @@
                                 <li class="nav-item">@Html.ActionLink("Monitoreos", "Filtro", "Home", null, new { @class = "nav-link" })</li>
                                 <li class="nav-item">@Html.ActionLink("Reportes", "Reportes", "Home", null, new { @class = "nav-link" })</li>
                                 <li class="nav-item">@Html.ActionLink("Lineamientos", "Lineamientos", "Home", null, new { @class = "nav-link" })</li>
-                                
+
                             }
                             else if (usuario.IdRol == testautenticacion.Models.Rol.Coordinador)
                             {
