@@ -363,7 +363,7 @@ namespace testautenticacion.Controllers
             ViewBag.SupervisorSeleccionado = supervisor;
             ViewBag.DocenteSeleccionado = docente;
             ViewBag.AulaSeleccionada = aula;
-            ViewBag.FechaSeleccionada = fecha?.ToString("yyyy-MM-dd");
+            ViewBag.FechaSeleccionada = fecha?.ToString("yyyy-MM-dd") ?? DateTime.Today.ToString("yyyy-MM-dd");
 
             return View(monitoreos);
         }

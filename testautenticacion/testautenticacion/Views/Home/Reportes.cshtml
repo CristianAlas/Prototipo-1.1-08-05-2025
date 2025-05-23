@@ -53,33 +53,38 @@
 </div>
 
 <div class="content-container">
-    <form method="get" action="@Url.Action("Reportes")">
-        <div class="row gy-2">
-            <div class="col-12 col-md-3">
-                <label for="supervisor">Supervisor:</label>
+    <form id="filtroForm" method="get" action="@Url.Action("Reportes")">
+        <div class="row gy-3">
+            <!-- Primera fila -->
+            <div class="col-12 col-md-4">
+                <label for="supervisor" class="form-label">Supervisor:</label>
                 <input type="text" id="supervisor" name="supervisor" class="form-control" placeholder="Supervisor" value="@ViewBag.SupervisorSeleccionado">
             </div>
-            <div class="col-12 col-md-3">
-                <label for="docente">Docente:</label>
+            <div class="col-12 col-md-4">
+                <label for="docente" class="form-label">Docente:</label>
                 <input type="text" id="docente" name="docente" class="form-control" placeholder="Docente" value="@ViewBag.DocenteSeleccionado">
             </div>
-            <div class="col-12 col-md-2">
-                <label for="aula">Aula:</label>
+            <div class="col-12 col-md-4">
+                <label for="aula" class="form-label">Aula:</label>
                 <input type="text" id="aula" name="aula" class="form-control" placeholder="Aula" value="@ViewBag.AulaSeleccionada">
             </div>
-            <div class="col-12 col-md-2">
-                <label for="fecha">Fecha:</label>
-                <input type="date" id="fecha" name="fecha" class="form-control" placeholder="Fecha" value="@ViewBag.FechaSeleccionada">
+
+            <!-- Segunda fila -->
+            <div class="col-12 col-md-4">
+                <label for="fecha" class="form-label">Fecha:</label>
+                <input type="date" id="fecha" name="fecha" class="form-control" value="@ViewBag.FechaSeleccionada">
             </div>
-            <div class="col-12 col-md-2 d-flex align-items-end justify-content-between">
-                <a href="@Url.Action("Reportes")" class="btn btn-secondary me-1" style="flex: 0.48;">
+            <div class="col-12 col-md-8 d-flex align-items-end justify-content-end gap-2">
+                <a href="@Url.Action("Reportes")" class="btn btn-secondary">
                     <i class="fas fa-undo me-1"></i>Limpiar
                 </a>
-                <button type="submit" class="btn btn-primary" style="flex: 0.48;">Buscar</button>
+                <button type="submit" class="btn btn-primary">
+                    <i class="fas fa-search me-1"></i>Buscar
+                </button>
             </div>
         </div>
     </form>
-    </div>
+</div>
 
     <hr class="my-4">
 
@@ -220,6 +225,21 @@
                     console.error("Error al actualizar contador CSV:", error);
                     window.location.href = url;
                 });
+        });
+
+        // cargar automaticamente los reportes del dia seleccionado
+        document.addEventListener("DOMContentLoaded", function () {
+            const params = new URLSearchParams(window.location.search);
+
+            // Solo enviar el formulario automáticamente si no hay filtros activos
+            const supervisor = params.get("supervisor");
+            const docente = params.get("docente");
+            const aula = params.get("aula");
+            const fecha = params.get("fecha");
+
+            if (!supervisor && !docente && !aula && !fecha) {
+                document.getElementById("filtroform").submit();
+            }
         });
     </script>
 }
