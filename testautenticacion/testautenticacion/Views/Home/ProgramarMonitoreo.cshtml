@@ -1,0 +1,100 @@
+﻿@model testautenticacion.Models.MonitoreosProgramados
+@{
+    ViewBag.Title = "ProgramarMonitoreo";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container mt-4">
+    <div class="card shadow">
+        <div class="card-header bg-dark text-white">
+            <h4 class="mb-0">Programar Monitoreo</h4>
+        </div>
+        <div class="card-body">
+            @using (Html.BeginForm("ProgramarMonitoreo", "Home", FormMethod.Post))
+            {
+                <div class="row g-3">
+                    <div class="col-md-6">
+                        <label>Materia</label>
+                        @Html.TextBoxFor(m => m.Materia, new { @class = "form-control", required = "required" })
+                    </div>
+                    <div class="col-md-6">
+                        <label>Docente</label>
+                        @Html.TextBoxFor(m => m.Docente, new { @class = "form-control", required = "required" })
+                    </div>
+                    <div class="col-md-6">
+                        <label>Responsable</label>
+                        @Html.TextBoxFor(m => m.Responsable, new { @class = "form-control", required = "required" })
+                    </div>
+                    <div class="col-md-6">
+                        <label>Aula</label>
+                        @Html.TextBoxFor(m => m.Aula, new { @class = "form-control", required = "required" })
+                    </div>
+                    <div class="col-md-6">
+                        <label>Hora Inicio</label>
+                        @Html.TextBoxFor(m => m.HoraInicio, "{0:hh\\:mm}", new { @class = "form-control", type = "time", required = "required" })
+                    </div>
+                    <div class="col-md-6">
+                        <label>Hora Fin</label>
+                        @Html.TextBoxFor(m => m.HoraFin, "{0:hh\\:mm}", new { @class = "form-control", type = "time", required = "required" })
+                    </div>
+                    <div class="col-md-6">
+                        <label>Fecha</label>
+                        @Html.TextBoxFor(m => m.Fecha, "{0:yyyy-MM-dd}", new
+                        {
+                            @class = "form-control",
+                            type = "date",
+                            required = "required",
+                            min = DateTime.Now.ToString("yyyy-MM-dd")
+                        })
+                        @Html.ValidationMessageFor(m => m.Fecha, "", new { @class = "text-danger" })
+                    </div>
+
+                    <div class="col-md-6">
+                        <label>Recorrido</label>
+                        @Html.TextBoxFor(m => m.Recorrido, new { @class = "form-control", required = "required" })
+                    </div>
+                    <div class="col-md-6">
+                        <label>Jornada</label>
+                        @Html.TextBoxFor(m => m.Jornada, new { @class = "form-control", required = "required" })
+                    </div>
+                    <div class="col-md-6">
+                        <label>Ciclo</label>
+                        @Html.TextBoxFor(m => m.Ciclo, new { @class = "form-control", required = "required" })
+                    </div>
+                </div>
+
+                <div class="mt-4 text-end">
+                    <a href="@Url.Action("Filtro", "Home")" class="btn btn-secondary">Cancelar</a>
+                    <button type="submit" class="btn btn-primary">Guardar</button>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+    document.querySelector('form').addEventListener('submit', function (e) {
+        e.preventDefault();
+
+        Swal.fire({
+            title: '¿Programar monitoreo?',
+            text: 'Este monitoreo quedará registrado como pendiente.',
+            icon: 'question',
+            showCancelButton: true,
+            confirmButtonText: 'Sí, programar',
+            cancelButtonText: 'Cancelar',
+            confirmButtonColor: '#198754',
+            cancelButtonColor: '#6c757d'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                this.submit(); // envía el formulario normalmente
+            }
+        });
+    });
+    </script>
+}
+
+
+

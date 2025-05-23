@@ -939,6 +939,92 @@ namespace testautenticacion.Controllers
             return Json(new { totalCSV });
         }
 
+        //cambios 22/05/2023
+
+        [PermisosRol(Rol.Administrador | Rol.Coordinador)]
+        [HttpGet]
+        public ActionResult ProgramarMonitoreo()
+        {
+            var monitoreo = new MonitoreosProgramados
+            {
+                Fecha = DateTime.Today
+            };
+
+            return View(monitoreo);
+        }
+
+        //[PermisosRol(Rol.Administrador | Rol.Coordinador)]
+        //[HttpPost]
+        //public ActionResult ProgramarMonitoreo(MonitoreosProgramados monitoreo)
+        //{
+        //    if (ModelState.IsValid)
+        //    {
+        //        using (SqlConnection conexion = new SqlConnection(connectionString))
+        //        {
+        //            string query = @"INSERT INTO MonitoreosProgramados
+        //(Materia, Docente, Responsable, Aula, HoraInicio, HoraFin, Fecha, Recorrido, Jornada, Ciclo)
+        //VALUES (@Materia, @Docente, @Responsable, @Aula, @HoraInicio, @HoraFin, @Fecha, @Recorrido, @Jornada, @Ciclo)";
+
+        //            SqlCommand cmd = new SqlCommand(query, conexion);
+        //            cmd.Parameters.AddWithValue("@Materia", monitoreo.Materia);
+        //            cmd.Parameters.AddWithValue("@Docente", monitoreo.Docente);
+        //            cmd.Parameters.AddWithValue("@Responsable", monitoreo.Responsable);
+        //            cmd.Parameters.AddWithValue("@Aula", monitoreo.Aula);
+        //            cmd.Parameters.AddWithValue("@HoraInicio", monitoreo.HoraInicio);
+        //            cmd.Parameters.AddWithValue("@HoraFin", monitoreo.HoraFin);
+        //            cmd.Parameters.AddWithValue("@Fecha", monitoreo.Fecha);
+        //            cmd.Parameters.AddWithValue("@Recorrido", monitoreo.Recorrido);
+        //            cmd.Parameters.AddWithValue("@Jornada", monitoreo.Jornada);
+        //            cmd.Parameters.AddWithValue("@Ciclo", monitoreo.Ciclo);
+
+        //            conexion.Open();
+        //            cmd.ExecuteNonQuery();
+        //        }
+
+        //        return RedirectToAction("Filtro");
+        //    }
+
+        //    return View(monitoreo);
+        //}
+        [PermisosRol(Rol.Administrador | Rol.Coordinador)]
+        [HttpPost]
+        public ActionResult ProgramarMonitoreo(MonitoreosProgramados monitoreo)
+        {
+            // Validación manual: fecha no puede ser menor a hoy
+            if (monitoreo.Fecha < DateTime.Today)
+            {
+                ModelState.AddModelError("Fecha", "La fecha no puede ser anterior a hoy.");
+            }
+
+            if (ModelState.IsValid)
+            {
+                using (SqlConnection conexion = new SqlConnection(connectionString))
+                {
+                    string query = @"INSERT INTO MonitoreosProgramados
+                        (Materia, Docente, Responsable, Aula, HoraInicio, HoraFin, Fecha, Recorrido, Jornada, Ciclo)
+                        VALUES (@Materia, @Docente, @Responsable, @Aula, @HoraInicio, @HoraFin, @Fecha, @Recorrido, @Jornada, @Ciclo)";
+
+                    SqlCommand cmd = new SqlCommand(query, conexion);
+                    cmd.Parameters.AddWithValue("@Materia", monitoreo.Materia);
+                    cmd.Parameters.AddWithValue("@Docente", monitoreo.Docente);
+                    cmd.Parameters.AddWithValue("@Responsable", monitoreo.Responsable);
+                    cmd.Parameters.AddWithValue("@Aula", monitoreo.Aula);
+                    cmd.Parameters.AddWithValue("@HoraInicio", monitoreo.HoraInicio);
+                    cmd.Parameters.AddWithValue("@HoraFin", monitoreo.HoraFin);
+                    cmd.Parameters.AddWithValue("@Fecha", monitoreo.Fecha);
+                    cmd.Parameters.AddWithValue("@Recorrido", monitoreo.Recorrido);
+                    cmd.Parameters.AddWithValue("@Jornada", monitoreo.Jornada);
+                    cmd.Parameters.AddWithValue("@Ciclo", monitoreo.Ciclo);
+
+                    conexion.Open();
+                    cmd.ExecuteNonQuery();
+                }
+
+                return RedirectToAction("Filtro");
+            }
+
+            return View(monitoreo);
+        }
 
     }
 }

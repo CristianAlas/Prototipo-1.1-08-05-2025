@@ -98,6 +98,14 @@
                             }
                         </small>
                     </div>
+                    @if (ViewBag.Usuario != null &&
+                    (ViewBag.Usuario.IdRol == testautenticacion.Models.Rol.Administrador ||
+                    ViewBag.Usuario.IdRol == testautenticacion.Models.Rol.Coordinador))
+                    {
+                        <a href="@Url.Action("ProgramarMonitoreo", "Home")" class="btn btn-success">
+                            <i class="fas fa-plus"></i> Programar Monitoreo
+                        </a>
+                    }
                 </div>
                 <div class="card-body">
                     <div class="table-responsive">

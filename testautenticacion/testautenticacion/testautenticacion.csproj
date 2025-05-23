@@ -275,6 +275,7 @@
     <Content Include="Views\Home\Reportes.cshtml" />
     <Content Include="Views\Home\_ReportePDF.cshtml" />
     <Content Include="Views\Home\Lineamientos.cshtml" />
+    <Content Include="Views\Home\ProgramarMonitoreo.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
