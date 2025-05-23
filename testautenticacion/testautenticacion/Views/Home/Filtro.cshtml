@@ -165,41 +165,51 @@
                                         </td>
                                         <td>
                                             <div class="btn-group">
-                                                <a class="btn btn-sm btn-dark"
-                                                   data-bs-toggle="tooltip"
-                                                   title="Editar reporte"
-                                                   data-monitoreo-id="@monitoreo.Id"
-                                                   onclick="openEditarModal(this)">
-                                                    <i class="fas fa-file-alt"></i>Editar
-                                                </a>
-                                                @if (monitoreo.TieneMonitoreo)
+                                                @if (monitoreo.EstadoMonitoreo != "Expirado")
                                                 {
-                                                    <button class="btn btn-sm btn-info ms-1"
-                                                            data-bs-toggle="tooltip"
-                                                            title="Ver detalles del monitoreo"
-                                                            data-monitoreo-id="@monitoreo.Id"
-                                                            onclick="openVisualizarModal(this)">
-                                                        <i class="fas fa-eye"></i>Ver
-                                                    </button>
+                                                    <a class="btn btn-sm btn-dark"
+                                                       data-bs-toggle="tooltip"
+                                                       title="Editar reporte"
+                                                       data-monitoreo-id="@monitoreo.Id"
+                                                       onclick="openEditarModal(this)">
+                                                        <i class="fas fa-file-alt"></i>Editar
+                                                    </a>
+
+                                                    if (monitoreo.TieneMonitoreo)
+                                                    {
+                                                        <button class="btn btn-sm btn-info ms-1"
+                                                                data-bs-toggle="tooltip"
+                                                                title="Ver detalles del monitoreo"
+                                                                data-monitoreo-id="@monitoreo.Id"
+                                                                onclick="openVisualizarModal(this)">
+                                                            <i class="fas fa-eye"></i>Ver
+                                                        </button>
+                                                    }
+                                                    else
+                                                    {
+                                                        <button class="btn btn-sm btn-info ms-1"
+                                                                data-bs-toggle="tooltip"
+                                                                title="Crear monitoreo"
+                                                                data-monitoreo-id="@monitoreo.Id"
+                                                                onclick="openMonitoreoModal(this)">
+                                                            <i class="fas fa-edit"></i>Monitoreo
+                                                        </button>
+                                                    }
+                                                    if (ViewBag.Usuario != null && ViewBag.Usuario.IdRol != testautenticacion.Models.Rol.Monitor)
+                                                    {
+                                                        <button class="btn btn-sm btn-danger ms-1"
+                                                                onclick="eliminarMonitoreo(@monitoreo.Id)">
+                                                            <i class="fas fa-trash-alt"></i> Eliminar
+                                                        </button>
+                                                    }
                                                 }
                                                 else
                                                 {
-                                                    <button class="btn btn-sm btn-info ms-1"
-                                                            data-bs-toggle="tooltip"
-                                                            title="Crear monitoreo"
-                                                            data-monitoreo-id="@monitoreo.Id"
-                                                            onclick="openMonitoreoModal(this)">
-                                                        <i class="fas fa-edit"></i>Monitoreo
-                                                    </button>
+                                                    <!-- 🔒 Aquí aparece el ícono cuando el monitoreo está expirado -->
+                                                    <span class="text-muted" data-bs-toggle="tooltip" title="Acciones deshabilitadas: monitoreo expirado">
+                                                        <i class="fas fa-lock"></i>
+                                                    </span>
                                                 }
-                                                @if (ViewBag.Usuario != null && ViewBag.Usuario.IdRol != testautenticacion.Models.Rol.Monitor)
-                                                {
-                                                    <button class="btn btn-sm btn-danger ms-1"
-                                                            onclick="eliminarMonitoreo(@monitoreo.Id)">
-                                                        <i class="fas fa-trash-alt"></i> Eliminar
-                                                    </button>
-                                                }
-
                                             </div>
                                         </td>
                                     </tr>
@@ -221,6 +231,7 @@
         </div>
 
         <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/js/bootstrap.bundle.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
         <script>
             // Inicializar tooltips
             var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
@@ -234,7 +245,7 @@
                     console.log("ID del monitoreo:", monitoreoId);
 
                     if (!monitoreoId) {
-                        alert("Error: No se pudo obtener el ID del monitoreo");
+                        Swal.fire('Error', 'No se pudo obtener el ID del monitoreo.', 'error');
                         return;
                     }
 
@@ -242,7 +253,6 @@
 
                     fetch(`/Home/CrearMonitoreo/${monitoreoId}`)
                         .then(response => {
-                            console.log("Status code:", response.status);
                             if (!response.ok) {
                                 return response.text().then(text => {
                                     throw new Error(`Error ${response.status}: ${text}`);
@@ -254,52 +264,59 @@
                             if (!html || html.trim() === "") {
                                 throw new Error("La respuesta está vacía");
                             }
+
                             document.querySelector('#monitoreoModal .modal-content').innerHTML = html;
                             modal.show();
 
-                            // Configurar el formulario
                             const form = document.getElementById('monitoreoForm');
                             if (form) {
                                 form.addEventListener('submit', function (e) {
                                     e.preventDefault();
 
-                                    if (!confirm("¿Estás seguro de que deseas registrar este monitoreo?")) return;
+                                    Swal.fire({
+                                        title: '¿Registrar monitoreo?',
+                                        text: 'Este monitoreo se guardará como completado.',
+                                        icon: 'question',
+                                        showCancelButton: true,
+                                        confirmButtonText: 'Sí, guardar',
+                                        cancelButtonText: 'Cancelar',
+                                        confirmButtonColor: '#198754',
+                                        cancelButtonColor: '#6c757d'
+                                    }).then((result) => {
+                                        if (result.isConfirmed) {
+                                            const formData = new FormData(form);
+                                            formData.append('MonitoreoProgramadoId', monitoreoId);
+                                            formData.append('Fecha', new Date().toISOString());
 
-                                    const formData = new FormData(this);
-                                    formData.append('MonitoreoProgramadoId', monitoreoId);
-                                    formData.append('Fecha', new Date().toISOString());
-
-                                    fetch('/Home/GuardarMonitoreo', {
-                                        method: 'POST',
-                                        body: formData
-                                    })
-                                        .then(response => response.json())
-                                        .then(data => {
-                                            if (data.success) {
-                                                modal.hide();
-                                                // Al recargar la página se mostrará el botón "Ver" en lugar de "Monitoreo"
-                                                window.location.reload();
-                                            } else {
-                                                alert('Error al guardar el monitoreo: ' +
-                                                    (data.errors ? JSON.stringify(data.errors) : 'Verificar datos'));
-                                            }
-                                        })
-                                        .catch(error => {
-                                            console.error('Error al guardar:', error);
-                                            alert('Error al guardar el monitoreo: ' + error.message);
-                                        });
+                                            fetch('/Home/GuardarMonitoreo', {
+                                                method: 'POST',
+                                                body: formData
+                                            })
+                                                .then(response => response.json())
+                                                .then(data => {
+                                                    if (data.success) {
+                                                        modal.hide();
+                                                        Swal.fire('Éxito', 'Monitoreo registrado correctamente.', 'success')
+                                                            .then(() => window.location.reload());
+                                                    } else {
+                                                        Swal.fire('Error', 'Error al guardar: ' + (data.errors ? JSON.stringify(data.errors) : 'Verifica los datos'), 'error');
+                                                    }
+                                                })
+                                                .catch(error => {
+                                                    Swal.fire('Error', 'Error al guardar el monitoreo: ' + error.message, 'error');
+                                                });
+                                        }
+                                    });
                                 });
                             } else {
                                 console.error("No se encontró el formulario en el HTML cargado");
                             }
                         })
                         .catch(error => {
-                            console.error('Error completo:', error);
-                            alert('Error al cargar el formulario: ' + error.message);
+                            Swal.fire('Error', 'Error al cargar el formulario: ' + error.message, 'error');
                         });
                 } catch (error) {
-                    console.error('Error general:', error);
-                    alert('Error general: ' + error.message);
+                    Swal.fire('Error', 'Error general: ' + error.message, 'error');
                 }
             }
 
@@ -363,49 +380,74 @@
                             form.addEventListener('submit', function (e) {
                                 e.preventDefault();
 
-                                if (!confirm("¿Estás seguro de que deseas actualizar este monitoreo?")) return;
+                                Swal.fire({
+                                    title: '¿Actualizar monitoreo?',
+                                    text: 'Se guardarán los cambios realizados.',
+                                    icon: 'warning',
+                                    showCancelButton: true,
+                                    confirmButtonText: 'Sí, actualizar',
+                                    cancelButtonText: 'Cancelar',
+                                    confirmButtonColor: '#0d6efd',
+                                    cancelButtonColor: '#6c757d'
+                                }).then((result) => {
+                                    if (result.isConfirmed) {
+                                        const formData = new FormData(form);
+                                        formData.append('Id', monitoreoId);
 
-                                const formData = new FormData(form);
-                                formData.append('Id', monitoreoId); // asegúrate que el formulario tenga un input hidden con el ID
-
-                                fetch('/Home/GuardarEdicionMonitoreo', {
-                                    method: 'POST',
-                                    body: formData
-                                })
-                                    .then(resp => resp.json())
-                                    .then(data => {
-                                        if (data.success) {
-                                            modal.hide();
-                                            window.location.reload();
-                                        } else {
-                                            alert('Error al actualizar: ' + JSON.stringify(data.errors));
-                                        }
-                                    });
+                                        fetch('/Home/GuardarEdicionMonitoreo', {
+                                            method: 'POST',
+                                            body: formData
+                                        })
+                                            .then(resp => resp.json())
+                                            .then(data => {
+                                                if (data.success) {
+                                                    modal.hide();
+                                                    Swal.fire('Actualizado', 'Monitoreo actualizado correctamente.', 'success')
+                                                        .then(() => window.location.reload());
+                                                } else {
+                                                    Swal.fire('Error', 'Error al actualizar: ' + JSON.stringify(data.errors), 'error');
+                                                }
+                                            });
+                                    }
+                                });
                             });
                         }
                     })
-                    .catch(err => alert("Error: " + err.message));
+                    .catch(err => {
+                        Swal.fire('Error', err.message, 'error');
+                    });
             }
 
             function eliminarMonitoreo(id) {
-                if (confirm("¿Estás seguro de que deseas eliminar este monitoreo? Esta acción no se puede deshacer.")) {
-                    fetch(`/Home/EliminarMonitoreo/${id}`, {
-                        method: 'POST'
-                    })
-                        .then(response => {
-                            if (response.ok) {
-                                alert("Monitoreo eliminado correctamente.");
-                                window.location.reload();
-                            } else {
-                                return response.text().then(text => {
-                                    throw new Error(text);
-                                });
-                            }
+                Swal.fire({
+                    title: '¿Eliminar monitoreo?',
+                    text: 'Esta acción no se puede deshacer.',
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonText: 'Sí, eliminar',
+                    cancelButtonText: 'Cancelar',
+                    confirmButtonColor: '#dc3545',
+                    cancelButtonColor: '#6c757d'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        fetch(`/Home/EliminarMonitoreo/${id}`, {
+                            method: 'POST'
                         })
-                        .catch(error => {
-                            alert("Error al eliminar: " + error.message);
-                        });
-                }
+                            .then(response => {
+                                if (response.ok) {
+                                    Swal.fire('Eliminado', 'El monitoreo fue eliminado correctamente.', 'success')
+                                        .then(() => window.location.reload());
+                                } else {
+                                    return response.text().then(text => {
+                                        throw new Error(text);
+                                    });
+                                }
+                            })
+                            .catch(error => {
+                                Swal.fire('Error', 'Error al eliminar: ' + error.message, 'error');
+                            });
+                    }
+                });
             }
 
         </script>
