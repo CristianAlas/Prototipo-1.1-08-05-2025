@@ -25,7 +25,7 @@
                     <form action="@Url.Action("Index","Acceso")" method="post">
                         <div class="form-group">
                             <label class="form-label">Correo:</label>
-                            <input class="form-control" type="email" name="correo" placeholder="ejemplo@correo.com" required />
+                            <input class="form-control" type="email" name="correo" placeholder="ejemplo@mail.utec.edu.sv" required />
                         </div>
                         <div class="form-group">
                             <label class="form-label">Contraseña:</label>
@@ -35,7 +35,7 @@
                             <button type="submit" class="btn btn-ochre">Ingresar</button>
                         </div>
                         <div class="text-center mt-3">
-                            <a href="#" class="text-decoration-none" style="color: var(--ochre);">¿Olvidaste tu contraseña?</a>
+                            <a href="#" class="text-decoration-none" style="color: var(--ochre);" onclick="mostrarMensaje()">¿Olvidaste tu contraseña?</a>
                         </div>
                     </form>
                 </div>
@@ -43,5 +43,39 @@
         </div>
     </div>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/js/bootstrap.bundle.min.js"></script>
+    <div id="mensaje" style="
+  visibility: hidden;
+  background-color: #333;
+  color: #fff;
+  text-align: center;
+  border-radius: 5px;
+  padding: 10px;
+  position: fixed;
+  bottom: 30px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 1000;
+  opacity: 0;
+  transition: opacity 0.5s, visibility 0.5s;
+"></div>
+    <script>
+        function mostrarMensaje() {
+            const mensaje = document.getElementById("mensaje");
+
+            // Solo muestra el correo con enlace funcional
+            mensaje.innerHTML = `
+              ¿Necesitas ayuda? <br>
+              <a href="mailto:ejemplo@utec.edu.sv" style="color: #ffc107; text-decoration: underline;">Enviar correo a ejemplo@utec.edu.sv</a>
+            `;
+
+            mensaje.style.visibility = "visible";
+            mensaje.style.opacity = "1";
+
+            setTimeout(() => {
+                mensaje.style.opacity = "0";
+                mensaje.style.visibility = "hidden";
+            }, 5000); // visible por 5 segundos para que se de tiempo al darle click
+        }
+    </script>
 </body>
 </html>
