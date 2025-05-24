@@ -197,6 +197,22 @@
                             </thead>
                             <tbody>
                                 <!--LLenado de tabla de reportes criticos-->
+                                @if (ViewBag.ListaEmergencias != null)
+                                {
+                                    foreach (var item in (List<testautenticacion.Models.Emergencia>)ViewBag.ListaEmergencias)
+                                    {
+                                        <tr>
+                                            <td>@item.NombreMonitor</td>
+                                            <td>@item.Edificio</td>
+                                            <td>@item.FechaHora.ToString("dd/MM/yyyy HH:mm")</td>
+                                            <td>@item.Comentarios</td>
+                                        </tr>
+                                    }
+                                }
+                                else
+                                {
+                                    <tr><td colspan="4">No hay incidentes criticos.</td></tr>
+                                }
                             </tbody>
                         </table>
                     </div>

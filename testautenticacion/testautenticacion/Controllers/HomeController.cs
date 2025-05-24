@@ -25,6 +25,7 @@ namespace testautenticacion.Controllers
     {
         
         private static readonly string connectionString = ConfigurationManager.ConnectionStrings["MiConexion"].ConnectionString;
+        /*
         public ActionResult Index()
         {
 
@@ -90,7 +91,93 @@ namespace testautenticacion.Controllers
 
             return View(modelo);
         }
+        */
+        public ActionResult Index()
+        {
+            int totalReportes = 0;
+            int monitoreosCompletados = 0;
+            int monitoreosPendientes = 0;
+            int incidentesCriticos = 0;
+            var listaEmergencias = new List<Emergencia>();
 
+            using (SqlConnection conn = new SqlConnection(connectionString))
+            {
+                conn.Open();
+
+                // Reportes generados                
+                using (SqlCommand cmd = new SqlCommand("SELECT TotalPDF, TotalCSV FROM ReporteContador WHERE Id = 1", conn))
+                {
+                    using (SqlDataReader reader = cmd.ExecuteReader())
+                    {
+                        if (reader.Read())
+                        {
+                            ViewBag.TotalPDF = reader.GetInt32(reader.GetOrdinal("TotalPDF"));
+                            ViewBag.TotalCSV = reader.GetInt32(reader.GetOrdinal("TotalCSV"));
+                        }
+                    }
+                }
+
+                //Contador de emergencias
+                using (SqlCommand cmd1 = new SqlCommand("SELECT Count (*) FROM Emergencias", conn))
+                {
+                    incidentesCriticos = (int)cmd1.ExecuteScalar();
+                }
+
+                //Conteo de monitoreos
+                using (SqlCommand cmd2 = new SqlCommand("ObtenerConteoMonitoreos", conn))
+                {
+                    cmd2.CommandType = CommandType.StoredProcedure;
+                    using (SqlDataReader reader = cmd2.ExecuteReader())
+                    {
+                        if (reader.Read())
+                        {
+                            monitoreosCompletados = reader.GetInt32(reader.GetOrdinal("MonitoreosCompletados"));
+                            monitoreosPendientes = reader.GetInt32(reader.GetOrdinal("MonitoreosPendientes"));
+                        }
+                    }
+                }
+
+                // Lista de emergencias
+                using (SqlCommand cmd3 = new SqlCommand("SELECT Id, NombreMonitor, Edificio, FechaHora, Comentarios FROM Emergencias", conn))
+                {
+                    using (SqlDataReader reader = cmd3.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            listaEmergencias.Add(new Emergencia
+                            {
+                                Id = Convert.ToInt32(reader["Id"]),
+                                NombreMonitor = reader["NombreMonitor"].ToString(),
+                                Edificio = reader["Edificio"].ToString(),
+                                FechaHora = Convert.ToDateTime(reader["FechaHora"]),
+                                Comentarios = reader["Comentarios"].ToString()
+                            });
+                        }
+                    }
+                }
+            }
+
+            // ViewBags
+            ViewBag.TotalReportesGenerados = totalReportes;
+            ViewBag.MonitoreosCompletados = monitoreosCompletados;
+            ViewBag.MonitoreosPendientes = monitoreosPendientes;
+            ViewBag.IncidentesCriticos = incidentesCriticos;
+            ViewBag.ListaEmergencias = listaEmergencias;
+
+            // Usuario
+            var usuario = Session["Usuario"] as Usuarios;
+            var modelo = new Emergencia
+            {
+                NombreMonitor = usuario?.Nombres ?? "",
+                FechaHora = DateTime.Now
+            };
+            if (usuario != null)
+            {
+                ViewBag.NombreUsuario = usuario.Nombres;
+            }
+
+            return View(modelo);
+        }
         [PermisosRol(Rol.Administrador | Rol.Monitor | Rol.Coordinador)]
         public ActionResult About()
         {
