@@ -53,10 +53,28 @@
                             <label for="Edificio" class="form-label">Edificio</label>
                             <select id="Edificio" name="Edificio" class="form-select" required>
                                 <option value="">Seleccione un edificio</option>
-                                <option value="Simon Bolivar">Simón Bolívar</option>
-                                <option value="Francisco Morazan">Francisco Morazán</option>
-                                <option value="Giuseppe Garibaldi">Giuseppe Garibaldi</option>
+                                <option value="Anastasio Aquino">Anastasio Aquino</option>
                                 <option value="Benito Juárez">Benito Juárez</option>
+                                <option value="Casa del Estudiante (G'Nius)">Casa del Estudiante (G'Nius)</option>
+                                <option value="Casa del Estudiante Oriente">Casa del Estudiante Oriente</option>
+                                <option value="Claudia Lars">Claudia Lars</option>
+                                <option value="Dr. José Adolfo Araujo Romagoza">Dr. José Adolfo Araujo Romagoza</option>
+                                <option value="Federico García Lorca">Federico García Lorca</option>
+                                <option value="Francisco Morazan">Francisco Morazán</option>
+                                <option value="Gabriela Mistral">Gabriela Mistral</option>
+                                <option value="Giuseppe Garibaldi">Giuseppe Garibaldi</option>
+                                <option value="Jorge Luis Borges">Jorge Luis Borges</option>
+                                <option value="José Martí">José Martí</option>
+                                <option value="Simon Bolivar">Simón Bolívar</option>
+                                <option value="Los Fundadores">Los Fundadores</option>
+                                <option value="Polideportivo">Polideportivo</option>
+                                <option value="Casa 116">Casa 116</option>
+                                <option value="Casa 118">Casa 118</option>
+                                <option value="Casa 125">Casa 125</option>
+                                <option value="Casa 130">Casa 130</option>
+                                <option value="Casa 131">Casa 131</option>
+                                <option value="Casa 135">Casa 135</option>
+                                <option value="Casa 135 (2)">Casa 135 (2)</option>
                             </select>
                         </div>
                         <div class="mb-3">
@@ -223,6 +241,42 @@
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/js/bootstrap.bundle.min.js"></script>
     <script>
+
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $('#Edificio').on('change', function () {
+                var edificioSeleccionado = $(this).val();
+
+                if (edificioSeleccionado) {
+                    $.ajax({
+                        url: '@Url.Action("ObtenerAulas", "Home")',
+                        type: 'GET',
+                        data: { edificio: edificioSeleccionado },
+                        success: function (aulas) {
+                            var aulaSelect = $('#Aula');
+                            aulaSelect.empty(); // limpia opciones anteriores
+                            aulaSelect.append($('<option>', {
+                                value: '',
+                                text: 'Seleccione un aula'
+                            }));
+
+                            $.each(aulas, function (i, aula) {
+                                aulaSelect.append($('<option>', {
+                                    value: aula,
+                                    text: aula
+                                }));
+                            });
+                        },
+                        error: function () {
+                            alert('No se pudieron cargar las aulas.');
+                        }
+                    });
+                } else {
+                    $('#Aula').empty().append('<option value="">Seleccione un aula</option>');
+                }
+            });
+        });
 
         var fechaInput = document.getElementById('fecha');
 

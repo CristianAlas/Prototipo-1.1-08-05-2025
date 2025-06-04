@@ -4,41 +4,41 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<div class="container mt-4">
-    <div class="card shadow">
-        <div class="card-header bg-dark text-white">
+<div class="container mt-5 mb-5">
+    <div class="card shadow-lg border-0">
+        <div class="card-header text-white" style="background-color: #5D0A28">
             <h4 class="mb-0">Programar Monitoreo</h4>
         </div>
-        <div class="card-body">
+        <div class="card-body p-4">
             @using (Html.BeginForm("ProgramarMonitoreo", "Home", FormMethod.Post))
             {
-                <div class="row g-3">
+                <div class="row g-4">
                     <div class="col-md-6">
-                        <label>Materia</label>
-                        @Html.TextBoxFor(m => m.Materia, new { @class = "form-control", required = "required" })
+                        <label class="form-label fw-semibold">Materia</label>
+                        @Html.TextBoxFor(m => m.Materia, new { @class = "form-control", required = "required", placeholder = "Ej. Programación 1" })
                     </div>
                     <div class="col-md-6">
-                        <label>Docente</label>
-                        @Html.TextBoxFor(m => m.Docente, new { @class = "form-control", required = "required" })
+                        <label class="form-label fw-semibold">Docente</label>
+                        @Html.TextBoxFor(m => m.Docente, new { @class = "form-control", required = "required", placeholder = "Nombre del docente" })
                     </div>
                     <div class="col-md-6">
-                        <label>Responsable</label>
-                        @Html.TextBoxFor(m => m.Responsable, new { @class = "form-control", required = "required" })
+                        <label class="form-label fw-semibold">Aula</label>
+                        @Html.TextBoxFor(m => m.Aula, new { @class = "form-control", required = "required", placeholder = "Ej. 5-305" })
                     </div>
                     <div class="col-md-6">
-                        <label>Aula</label>
-                        @Html.TextBoxFor(m => m.Aula, new { @class = "form-control", required = "required" })
+                        <label class="form-label fw-semibold">Monitor responsable</label>
+                        @Html.DropDownListFor(m => m.Responsable, Model.Monitores, "Seleccione un monitor", new { @class = "form-select", required = "required" })
                     </div>
                     <div class="col-md-6">
-                        <label>Hora Inicio</label>
+                        <label class="form-label fw-semibold">Hora Inicio</label>
                         @Html.TextBoxFor(m => m.HoraInicio, "{0:hh\\:mm}", new { @class = "form-control", type = "time", required = "required" })
                     </div>
                     <div class="col-md-6">
-                        <label>Hora Fin</label>
+                        <label class="form-label fw-semibold">Hora Fin</label>
                         @Html.TextBoxFor(m => m.HoraFin, "{0:hh\\:mm}", new { @class = "form-control", type = "time", required = "required" })
                     </div>
                     <div class="col-md-6">
-                        <label>Fecha</label>
+                        <label class="form-label fw-semibold">Fecha</label>
                         @Html.TextBoxFor(m => m.Fecha, "{0:yyyy-MM-dd}", new
                         {
                             @class = "form-control",
@@ -46,53 +46,59 @@
                             required = "required",
                             min = DateTime.Now.ToString("yyyy-MM-dd")
                         })
-                        @Html.ValidationMessageFor(m => m.Fecha, "", new { @class = "text-danger" })
-                    </div>
-
-                    <div class="col-md-6">
-                        <label>Recorrido</label>
-                        @Html.TextBoxFor(m => m.Recorrido, new { @class = "form-control", required = "required" })
+                        @Html.ValidationMessageFor(m => m.Fecha, "", new { @class = "text-danger small" })
                     </div>
                     <div class="col-md-6">
-                        <label>Jornada</label>
-                        @Html.TextBoxFor(m => m.Jornada, new { @class = "form-control", required = "required" })
+                        <label class="form-label fw-semibold">Recorrido</label>
+                        @Html.TextBoxFor(m => m.Recorrido, new { @class = "form-control", required = "required", placeholder = "Ej. Vespertino" })
                     </div>
                     <div class="col-md-6">
-                        <label>Ciclo</label>
-                        @Html.TextBoxFor(m => m.Ciclo, new { @class = "form-control", required = "required" })
+                        <label class="form-label fw-semibold">Jornada</label>
+                        @Html.TextBoxFor(m => m.Jornada, new { @class = "form-control", required = "required", placeholder = "Ej. Sábado PM" })
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label fw-semibold">Ciclo</label>
+                        @Html.DropDownListFor(m => m.Ciclo, new SelectList(new[]
+                        {
+                            new { Value = "Ciclo 01", Text = "Ciclo 01" },
+                            new { Value = "Ciclo 02", Text = "Ciclo 02" },
+                            new { Value = "Ciclo 03", Text = "Ciclo 03" }
+                        }, "Value", "Text"), "Seleccione un ciclo", new { @class = "form-select", required = "required" })
                     </div>
                 </div>
 
                 <div class="mt-4 text-end">
-                    <a href="@Url.Action("Filtro", "Home")" class="btn btn-secondary">Cancelar</a>
-                    <button type="submit" class="btn btn-primary">Guardar</button>
+                    <a href="@Url.Action("Filtro", "Home")" class="btn btn-outline-secondary me-2">Cancelar</a>
+                    <button type="submit" class="btn btn-primary px-4">Guardar</button>
                 </div>
             }
         </div>
     </div>
 </div>
 
+
+
 @section Scripts {
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script>
-    document.querySelector('form').addEventListener('submit', function (e) {
-        e.preventDefault();
+        document.querySelector('form').addEventListener('submit', function (e) {
+            e.preventDefault();
 
-        Swal.fire({
-            title: '¿Programar monitoreo?',
-            text: 'Este monitoreo quedará registrado como pendiente.',
-            icon: 'question',
-            showCancelButton: true,
-            confirmButtonText: 'Sí, programar',
-            cancelButtonText: 'Cancelar',
-            confirmButtonColor: '#198754',
-            cancelButtonColor: '#6c757d'
-        }).then((result) => {
-            if (result.isConfirmed) {
-                this.submit(); // envía el formulario normalmente
-            }
+            Swal.fire({
+                title: '¿Programar monitoreo?',
+                text: 'Este monitoreo quedará registrado como pendiente.',
+                icon: 'question',
+                showCancelButton: true,
+                confirmButtonText: 'Sí, programar',
+                cancelButtonText: 'Cancelar',
+                confirmButtonColor: '#198754',
+                cancelButtonColor: '#6c757d'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    this.submit(); // envía el formulario normalmente
+                }
+            });
         });
-    });
     </script>
 }
 

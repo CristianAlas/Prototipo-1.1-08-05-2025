@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using System.Web.Mvc;
 
 namespace testautenticacion.Models
 {
@@ -20,8 +21,10 @@ namespace testautenticacion.Models
         public string Ciclo { get; set; }
 
         public string EstadoMonitoreo { get; set; }
-
         public bool TieneMonitoreo { get; set; }
+        //llenado de tabla para seleccionar responsable de monitoreo desde tabla usuarios
+        public IEnumerable<SelectListItem> Monitores { get; set; }
+
 
     }
 }

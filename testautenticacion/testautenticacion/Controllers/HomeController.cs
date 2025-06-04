@@ -25,73 +25,7 @@ namespace testautenticacion.Controllers
     {
         
         private static readonly string connectionString = ConfigurationManager.ConnectionStrings["MiConexion"].ConnectionString;
-        /*
-        public ActionResult Index()
-        {
-
-            // Obtener total de reportes en PDF
-            int totalReportes = 0;
-            int monitoreosCompletados = 0;
-            int monitoreosPendientes = 0;
-            int incidentesCriticos = 0;
-
-            using (SqlConnection conn = new SqlConnection(connectionString))
-            {
-                conn.Open();
-
-                // Reportes generados                
-                using (SqlCommand cmd = new SqlCommand("SELECT TotalPDF, TotalCSV FROM ReporteContador WHERE Id = 1", conn))
-                {
-                    SqlDataReader reader = cmd.ExecuteReader();
-                    if (reader.Read())
-                    {
-                        ViewBag.TotalPDF = reader.GetInt32(reader.GetOrdinal("TotalPDF"));
-                        ViewBag.TotalCSV = reader.GetInt32(reader.GetOrdinal("TotalCSV"));
-                    }
-                }
-                //Contador de emergencias
-                using (SqlCommand cmd1 = new SqlCommand("SELECT Count (*) FROM Emergencias", conn))
-                {
-                    incidentesCriticos = (int)cmd1.ExecuteScalar();
-                }
-                //Contador de Monitoreos completados y Monitoreos pendientes usando SP
-                using (SqlCommand cmd2 = new SqlCommand("ObtenerConteoMonitoreos", conn))
-                {
-                    cmd2.CommandType = CommandType.StoredProcedure;
-
-                    using (SqlDataReader reader = cmd2.ExecuteReader())
-                    {
-                        if (reader.Read())
-                        {
-                            monitoreosCompletados = reader.GetInt32(reader.GetOrdinal("MonitoreosCompletados"));
-                            monitoreosPendientes = reader.GetInt32(reader.GetOrdinal("MonitoreosPendientes"));
-                        }
-                    }
-                }
-            }
-
-            ViewBag.TotalReportesGenerados = totalReportes;
-            ViewBag.MonitoreosCompletados = monitoreosCompletados;
-            ViewBag.MonitoreosPendientes = monitoreosPendientes;
-            ViewBag.IncidentesCriticos = incidentesCriticos;
-
-            // Obtener usuario de la sesión y crear el modelo
-            var usuario = Session["Usuario"] as Usuarios;
-
-            var modelo = new Emergencia
-            {
-                NombreMonitor = usuario != null ? usuario.Nombres : "",
-                FechaHora = DateTime.Now
-            };
-
-            if (usuario != null)
-            {
-                ViewBag.NombreUsuario = usuario.Nombres;
-            }
-
-            return View(modelo);
-        }
-        */
+        
         public ActionResult Index()
         {
             int totalReportes = 0;
@@ -940,6 +874,32 @@ namespace testautenticacion.Controllers
                 return new HttpStatusCodeResult(500, "Error al eliminar: " + ex.Message);
             }
         }
+        private List<string> ObtenerEdificios()
+        {
+            var edificios = new List<string>();
+            string connectionString = ConfigurationManager.ConnectionStrings["MiConexion"].ConnectionString;
+
+            using (SqlConnection conn = new SqlConnection(connectionString))
+            {
+                conn.Open();
+                string query = "SELECT Nombre FROM Edificios";
+
+                using (SqlCommand cmd = new SqlCommand(query, conn))
+                {
+                    using (SqlDataReader reader = cmd.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            edificios.Add(reader["Nombre"].ToString());
+                        }
+                    }
+                }
+            }
+
+            return edificios;
+        }
+
+
         [HttpGet]
         public ActionResult CrearEmergencia()
         {
@@ -950,6 +910,7 @@ namespace testautenticacion.Controllers
             }
 
             ViewBag.NombreUsuario = usuario.Nombres;
+            ViewBag.Edificios = ObtenerEdificios(); // 
 
             var modelo = new Emergencia
             {
@@ -1007,6 +968,8 @@ namespace testautenticacion.Controllers
         }
 
 
+
+
         // Contador de reportes descargados en pdf y csv
         [HttpPost]
         public JsonResult IncrementarContadorPDF()
@@ -1053,6 +1016,30 @@ namespace testautenticacion.Controllers
         }
 
         //cambios 22/05/2023
+        private IEnumerable<SelectListItem> ObtenerMonitores()
+        {
+            var monitores = new List<SelectListItem>();
+
+            using (SqlConnection conexion = new SqlConnection(connectionString))
+            {
+                string query = "SELECT Nombres FROM USUARIOS WHERE IdRol = 2"; // 2 = Monitor
+
+                SqlCommand cmd = new SqlCommand(query, conexion);
+                conexion.Open();
+
+                SqlDataReader reader = cmd.ExecuteReader();
+                while (reader.Read())
+                {
+                    monitores.Add(new SelectListItem
+                    {
+                        Value = reader["Nombres"].ToString(), // si Responsable es string
+                        Text = reader["Nombres"].ToString()
+                    });
+                }
+            }
+
+            return monitores;
+        }
 
         [PermisosRol(Rol.Administrador | Rol.Coordinador)]
         [HttpGet]
@@ -1060,45 +1047,13 @@ namespace testautenticacion.Controllers
         {
             var monitoreo = new MonitoreosProgramados
             {
-                Fecha = DateTime.Today
+                Fecha = DateTime.Today,
+                Monitores = ObtenerMonitores()
             };
 
             return View(monitoreo);
         }
 
-        //[PermisosRol(Rol.Administrador | Rol.Coordinador)]
-        //[HttpPost]
-        //public ActionResult ProgramarMonitoreo(MonitoreosProgramados monitoreo)
-        //{
-        //    if (ModelState.IsValid)
-        //    {
-        //        using (SqlConnection conexion = new SqlConnection(connectionString))
-        //        {
-        //            string query = @"INSERT INTO MonitoreosProgramados
-        //(Materia, Docente, Responsable, Aula, HoraInicio, HoraFin, Fecha, Recorrido, Jornada, Ciclo)
-        //VALUES (@Materia, @Docente, @Responsable, @Aula, @HoraInicio, @HoraFin, @Fecha, @Recorrido, @Jornada, @Ciclo)";
-
-        //            SqlCommand cmd = new SqlCommand(query, conexion);
-        //            cmd.Parameters.AddWithValue("@Materia", monitoreo.Materia);
-        //            cmd.Parameters.AddWithValue("@Docente", monitoreo.Docente);
-        //            cmd.Parameters.AddWithValue("@Responsable", monitoreo.Responsable);
-        //            cmd.Parameters.AddWithValue("@Aula", monitoreo.Aula);
-        //            cmd.Parameters.AddWithValue("@HoraInicio", monitoreo.HoraInicio);
-        //            cmd.Parameters.AddWithValue("@HoraFin", monitoreo.HoraFin);
-        //            cmd.Parameters.AddWithValue("@Fecha", monitoreo.Fecha);
-        //            cmd.Parameters.AddWithValue("@Recorrido", monitoreo.Recorrido);
-        //            cmd.Parameters.AddWithValue("@Jornada", monitoreo.Jornada);
-        //            cmd.Parameters.AddWithValue("@Ciclo", monitoreo.Ciclo);
-
-        //            conexion.Open();
-        //            cmd.ExecuteNonQuery();
-        //        }
-
-        //        return RedirectToAction("Filtro");
-        //    }
-
-        //    return View(monitoreo);
-        //}
         ////////////////////////////////////////// Post Programar Monitoreo //////////////////////////////////////////
         [HttpPost]
         [PermisosRol(Rol.Administrador | Rol.Coordinador)]
@@ -1111,8 +1066,8 @@ namespace testautenticacion.Controllers
                     monitoreo.EstadoMonitoreo = monitoreo.Fecha.Date < DateTime.Today ? "Expirado" : "Pendiente";
 
                     string query = @"INSERT INTO MonitoreosProgramados
-                    (Materia, Docente, Responsable, Aula, HoraInicio, HoraFin, Fecha, Recorrido, Jornada, Ciclo, EstadoMonitoreo)
-                    VALUES (@Materia, @Docente, @Responsable, @Aula, @HoraInicio, @HoraFin, @Fecha, @Recorrido, @Jornada, @Ciclo, @EstadoMonitoreo)";
+            (Materia, Docente, Responsable, Aula, HoraInicio, HoraFin, Fecha, Recorrido, Jornada, Ciclo, EstadoMonitoreo)
+            VALUES (@Materia, @Docente, @Responsable, @Aula, @HoraInicio, @HoraFin, @Fecha, @Recorrido, @Jornada, @Ciclo, @EstadoMonitoreo)";
 
                     SqlCommand cmd = new SqlCommand(query, conexion);
                     cmd.Parameters.AddWithValue("@Materia", monitoreo.Materia);
@@ -1134,7 +1089,10 @@ namespace testautenticacion.Controllers
                 return RedirectToAction("Filtro");
             }
 
+            monitoreo.Monitores = ObtenerMonitores(); // repoblar si error
             return View(monitoreo);
         }
+
+
     }
 }
