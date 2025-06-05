@@ -874,31 +874,7 @@ namespace testautenticacion.Controllers
                 return new HttpStatusCodeResult(500, "Error al eliminar: " + ex.Message);
             }
         }
-        private List<string> ObtenerEdificios()
-        {
-            var edificios = new List<string>();
-            string connectionString = ConfigurationManager.ConnectionStrings["MiConexion"].ConnectionString;
-
-            using (SqlConnection conn = new SqlConnection(connectionString))
-            {
-                conn.Open();
-                string query = "SELECT Nombre FROM Edificios";
-
-                using (SqlCommand cmd = new SqlCommand(query, conn))
-                {
-                    using (SqlDataReader reader = cmd.ExecuteReader())
-                    {
-                        while (reader.Read())
-                        {
-                            edificios.Add(reader["Nombre"].ToString());
-                        }
-                    }
-                }
-            }
-
-            return edificios;
-        }
-
+        
 
         [HttpGet]
         public ActionResult CrearEmergencia()
@@ -910,7 +886,6 @@ namespace testautenticacion.Controllers
             }
 
             ViewBag.NombreUsuario = usuario.Nombres;
-            ViewBag.Edificios = ObtenerEdificios(); // 
 
             var modelo = new Emergencia
             {
@@ -1040,6 +1015,7 @@ namespace testautenticacion.Controllers
 
             return monitores;
         }
+        
 
         [PermisosRol(Rol.Administrador | Rol.Coordinador)]
         [HttpGet]
@@ -1047,12 +1023,112 @@ namespace testautenticacion.Controllers
         {
             var monitoreo = new MonitoreosProgramados
             {
-                Fecha = DateTime.Today,
-                Monitores = ObtenerMonitores()
-            };
+                Fecha = DateTime.Now.Date,
+                HoraInicio = new TimeSpan(13, 0, 0),
+                HoraFin = new TimeSpan(16, 0, 0),
+                Monitores = ObtenerMonitores(), // listar monitores de los usuarios con Rol Monitor
+                Edificio = ObtenerEdificios(),  // Listar edificios
+                Materias = ObtenerMaterias() //Listar materias
 
+            };
+            ViewBag.IdEdificio = monitoreo.Edificio;
             return View(monitoreo);
         }
+        //Logica para obtener la lista de materias
+        private List<SelectListItem> ObtenerMaterias()
+        {
+            var lista = new List<SelectListItem>();
+
+            string connectionString = ConfigurationManager.ConnectionStrings["MiConexion"].ConnectionString;
+            using (SqlConnection conn = new SqlConnection(connectionString))
+            {
+                conn.Open();
+                string query = "SELECT IdMateria, Nombre FROM Materias"; // Ajusta según tu tabla real
+
+                using (SqlCommand cmd = new SqlCommand(query, conn))
+                {
+                    using (SqlDataReader reader = cmd.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            lista.Add(new SelectListItem
+                            {
+                                Value = reader["IdMateria"].ToString(),
+                                Text = reader["Nombre"].ToString()
+                            });
+                        }
+                    }
+                }
+            }
+
+            return lista;
+        }
+        //acción que retorne las aulas en formato JSON según el idEdificio
+        [HttpGet]
+        public JsonResult ObtenerAulasPorEdificio(int? idEdificio)
+        {
+            if (idEdificio == null)
+            {
+                return Json(new { error = "ID no proporcionado" }, JsonRequestBehavior.AllowGet);
+            }
+            var aulas = new List<object>();
+
+            string connectionString = ConfigurationManager.ConnectionStrings["MiConexion"].ConnectionString;
+            using (SqlConnection conn = new SqlConnection(connectionString))
+            {
+                string query = "SELECT IdAula, Nombre FROM Aulas WHERE IdEdificio = @IdEdificio";
+                SqlCommand cmd = new SqlCommand(query, conn);
+                cmd.Parameters.AddWithValue("@IdEdificio", idEdificio);
+
+                conn.Open();
+                SqlDataReader reader = cmd.ExecuteReader();
+                while (reader.Read())
+                {
+                    aulas.Add(new
+                    {
+                        Id = reader["IdAula"],
+                        Nombre = reader["Nombre"].ToString()
+                    });
+                }
+            }
+
+            return Json(aulas, JsonRequestBehavior.AllowGet);
+        }
+
+
+
+
+
+        //logica para obtener la lista de edificios
+        private List<SelectListItem> ObtenerEdificios()
+        {
+            var edificios = new List<SelectListItem>();
+            string connectionString = ConfigurationManager.ConnectionStrings["MiConexion"].ConnectionString;
+
+            using (SqlConnection conn = new SqlConnection(connectionString))
+            {
+                conn.Open();
+                string query = "SELECT IdEdificio, Nombre FROM Edificios";
+
+                using (SqlCommand cmd = new SqlCommand(query, conn))
+                {
+                    using (SqlDataReader reader = cmd.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            edificios.Add(new SelectListItem
+                            {
+                                Value = reader["IdEdificio"].ToString(),     //captura el ID del edificio
+                                Text = reader["Nombre"].ToString()
+                            });
+                        }
+                    }
+                }
+            }
+
+            return edificios;
+        }
+
 
         ////////////////////////////////////////// Post Programar Monitoreo //////////////////////////////////////////
         [HttpPost]
@@ -1088,6 +1164,7 @@ namespace testautenticacion.Controllers
 
                 return RedirectToAction("Filtro");
             }
+            ViewBag.IdEdificio = ObtenerEdificios();
 
             monitoreo.Monitores = ObtenerMonitores(); // repoblar si error
             return View(monitoreo);

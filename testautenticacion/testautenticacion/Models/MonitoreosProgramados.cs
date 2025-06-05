@@ -12,9 +12,11 @@ namespace testautenticacion.Models
         public string Materia { get; set; }
         public string Docente { get; set; }
         public string Responsable { get; set; }
+        public List<SelectListItem> Edificio { get; set; } //usado para cargar la lista de edificios
+        public List<SelectListItem> Materias { get; set; } //usado para cargar la lisa de materias
         public string Aula { get; set; }
-        public TimeSpan HoraInicio { get; set; }  // Nuevo campo
-        public TimeSpan HoraFin { get; set; }     // Nuevo campo
+        public TimeSpan HoraInicio { get; set; }  // 
+        public TimeSpan HoraFin { get; set; }     //
         public DateTime Fecha { get; set; }
         public string Recorrido { get; set; }
         public string Jornada { get; set; }
@@ -24,6 +26,7 @@ namespace testautenticacion.Models
         public bool TieneMonitoreo { get; set; }
         //llenado de tabla para seleccionar responsable de monitoreo desde tabla usuarios
         public IEnumerable<SelectListItem> Monitores { get; set; }
+        public int IdAula { get; set; }
 
 
     }

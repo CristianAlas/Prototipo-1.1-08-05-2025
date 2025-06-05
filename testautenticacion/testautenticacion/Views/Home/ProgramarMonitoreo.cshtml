@@ -15,27 +15,31 @@
                 <div class="row g-4">
                     <div class="col-md-6">
                         <label class="form-label fw-semibold">Materia</label>
-                        @Html.TextBoxFor(m => m.Materia, new { @class = "form-control", required = "required", placeholder = "Ej. Programación 1" })
+                        @Html.DropDownListFor(m => m.Materia, Model.Materias, "Seleccione una materia", new { @class = "form-select", required = "required" })
                     </div>
                     <div class="col-md-6">
                         <label class="form-label fw-semibold">Docente</label>
                         @Html.TextBoxFor(m => m.Docente, new { @class = "form-control", required = "required", placeholder = "Nombre del docente" })
                     </div>
                     <div class="col-md-6">
+                        <label class="form-label fw-semibold">Edificio</label>
+                        <select id="IdEdificio" name="IdEdificio" class="form-select" required>
+                            <option value="">Seleccione un edificio</option>
+                            @foreach (var edificio in ViewBag.IdEdificio as List<SelectListItem>)
+                            {
+                                <option value="@edificio.Value">@edificio.Text</option>
+                            }
+                        </select>
+                    </div>
+                    <div class="col-md-6">
                         <label class="form-label fw-semibold">Aula</label>
-                        @Html.TextBoxFor(m => m.Aula, new { @class = "form-control", required = "required", placeholder = "Ej. 5-305" })
+                        <select id="IdAula" name="IdAula" class="form-select" required>
+                            <option value="">Seleccione un aula</option>
+                        </select>
                     </div>
                     <div class="col-md-6">
                         <label class="form-label fw-semibold">Monitor responsable</label>
                         @Html.DropDownListFor(m => m.Responsable, Model.Monitores, "Seleccione un monitor", new { @class = "form-select", required = "required" })
-                    </div>
-                    <div class="col-md-6">
-                        <label class="form-label fw-semibold">Hora Inicio</label>
-                        @Html.TextBoxFor(m => m.HoraInicio, "{0:hh\\:mm}", new { @class = "form-control", type = "time", required = "required" })
-                    </div>
-                    <div class="col-md-6">
-                        <label class="form-label fw-semibold">Hora Fin</label>
-                        @Html.TextBoxFor(m => m.HoraFin, "{0:hh\\:mm}", new { @class = "form-control", type = "time", required = "required" })
                     </div>
                     <div class="col-md-6">
                         <label class="form-label fw-semibold">Fecha</label>
@@ -49,12 +53,29 @@
                         @Html.ValidationMessageFor(m => m.Fecha, "", new { @class = "text-danger small" })
                     </div>
                     <div class="col-md-6">
+                        <label class="form-label fw-semibold">Hora Inicio</label>
+                        @Html.TextBoxFor(m => m.HoraInicio, "{0:hh\\:mm}", new { @class = "form-control", type = "time", required = "required" })
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label fw-semibold">Hora Fin</label>
+                        @Html.TextBoxFor(m => m.HoraFin, "{0:hh\\:mm}", new { @class = "form-control", type = "time", required = "required" })
+                    </div>
+                    <div class="col-md-6">
                         <label class="form-label fw-semibold">Recorrido</label>
-                        @Html.TextBoxFor(m => m.Recorrido, new { @class = "form-control", required = "required", placeholder = "Ej. Vespertino" })
+                        @Html.DropDownListFor(m => m.Ciclo, new SelectList(new[]
+                        {
+                            new { Value = "Matutino (primer recorrido)", Text = "Matutino (primer recorrido)" },
+                            new { Value = "Matutino (segundo recorrido)", Text = "Matutino (segundo recorrido)" },
+                            new { Value = "Vespertino", Text = "Vespertino" },
+                        }, "Value", "Text"), "Seleccione un recorrido", new { @class = "form-select", required = "required" })
                     </div>
                     <div class="col-md-6">
                         <label class="form-label fw-semibold">Jornada</label>
-                        @Html.TextBoxFor(m => m.Jornada, new { @class = "form-control", required = "required", placeholder = "Ej. Sábado PM" })
+                        @Html.DropDownListFor(m => m.Ciclo, new SelectList(new[]
+                        {
+                            new { Value = "Sábado ", Text = "Sábado " },
+                            new { Value = "Domingo", Text = "Domingo" },
+                        }, "Value", "Text"), "Seleccione una jornada", new { @class = "form-select", required = "required" })
                     </div>
                     <div class="col-md-6">
                         <label class="form-label fw-semibold">Ciclo</label>
@@ -99,7 +120,34 @@
                 }
             });
         });
+
+        $(document).ready(function () {
+            $('#IdEdificio').change(function () {
+                var idEdificio = $(this).val();
+
+                if (idEdificio) {
+                    $.ajax({
+                        url: '/Home/ObtenerAulasPorEdificio',
+                        type: 'GET',
+                        data: { idEdificio: idEdificio },
+                        success: function (data) {
+                            var $aulaDropdown = $('#IdAula');
+                            $aulaDropdown.empty();
+                            $aulaDropdown.append('<option value="">Seleccione un aula</option>');
+                            $.each(data, function (index, item) {
+                                $aulaDropdown.append($('<option>', {
+                                    value: item.Id,
+                                    text: item.Nombre
+                                }));
+                            });
+                        }
+                    });
+                }
+            });
+        });
+
     </script>
+
 }
 
 
