@@ -62,18 +62,18 @@
                     </div>
                     <div class="col-md-6">
                         <label class="form-label fw-semibold">Recorrido</label>
-                        @Html.DropDownListFor(m => m.Ciclo, new SelectList(new[]
+                        @Html.DropDownListFor(m => m.Recorrido, new SelectList(new[]
                         {
-                            new { Value = "Matutino (primer recorrido)", Text = "Matutino (primer recorrido)" },
-                            new { Value = "Matutino (segundo recorrido)", Text = "Matutino (segundo recorrido)" },
+                            new { Value = "Matutino (1er)", Text = "Matutino (primer recorrido)" },
+                            new { Value = "Matutino (2do)", Text = "Matutino (segundo recorrido)" },
                             new { Value = "Vespertino", Text = "Vespertino" },
                         }, "Value", "Text"), "Seleccione un recorrido", new { @class = "form-select", required = "required" })
                     </div>
                     <div class="col-md-6">
                         <label class="form-label fw-semibold">Jornada</label>
-                        @Html.DropDownListFor(m => m.Ciclo, new SelectList(new[]
+                        @Html.DropDownListFor(m => m.Jornada, new SelectList(new[]
                         {
-                            new { Value = "Sábado ", Text = "Sábado " },
+                            new { Value = "Sabado", Text = "Sábado" },
                             new { Value = "Domingo", Text = "Domingo" },
                         }, "Value", "Text"), "Seleccione una jornada", new { @class = "form-select", required = "required" })
                     </div>

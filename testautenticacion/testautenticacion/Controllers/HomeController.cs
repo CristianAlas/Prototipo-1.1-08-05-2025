@@ -23,9 +23,9 @@ namespace testautenticacion.Controllers
     [Authorize]
     public class HomeController : Controller
     {
-        
+
         private static readonly string connectionString = ConfigurationManager.ConnectionStrings["MiConexion"].ConnectionString;
-        
+
         public ActionResult Index()
         {
             int totalReportes = 0;
@@ -801,7 +801,7 @@ namespace testautenticacion.Controllers
                     return HttpNotFound("Registro no encontrado");
                 }
 
-                ViewBag.Estados = new List<string> { "Todo bien", "Nadie en el aula", "Cerrado"};
+                ViewBag.Estados = new List<string> { "Todo bien", "Nadie en el aula", "Cerrado" };
                 return PartialView("_FormularioMonitoreo", registro); // misma vista que para crear
             }
             catch (Exception ex)
@@ -827,7 +827,7 @@ namespace testautenticacion.Controllers
                     comando.Parameters.AddWithValue("@Id", registro.Id);
                     comando.Parameters.AddWithValue("@Estado", registro.Estado);
                     comando.Parameters.AddWithValue("@Comentarios", registro.Comentarios != null ? (object)registro.Comentarios : DBNull.Value);
-                    
+
 
 
                     conexion.Open();
@@ -874,7 +874,7 @@ namespace testautenticacion.Controllers
                 return new HttpStatusCodeResult(500, "Error al eliminar: " + ex.Message);
             }
         }
-        
+
 
         [HttpGet]
         public ActionResult CrearEmergencia()
@@ -1015,7 +1015,7 @@ namespace testautenticacion.Controllers
 
             return monitores;
         }
-        
+
 
         [PermisosRol(Rol.Administrador | Rol.Coordinador)]
         [HttpGet]
@@ -1137,39 +1137,52 @@ namespace testautenticacion.Controllers
         {
             if (ModelState.IsValid)
             {
+                string nombreAula = "";
+
                 using (SqlConnection conexion = new SqlConnection(connectionString))
                 {
-                    monitoreo.EstadoMonitoreo = monitoreo.Fecha.Date < DateTime.Today ? "Expirado" : "Pendiente";
-
-                    string query = @"INSERT INTO MonitoreosProgramados
-            (Materia, Docente, Responsable, Aula, HoraInicio, HoraFin, Fecha, Recorrido, Jornada, Ciclo, EstadoMonitoreo)
-            VALUES (@Materia, @Docente, @Responsable, @Aula, @HoraInicio, @HoraFin, @Fecha, @Recorrido, @Jornada, @Ciclo, @EstadoMonitoreo)";
-
-                    SqlCommand cmd = new SqlCommand(query, conexion);
-                    cmd.Parameters.AddWithValue("@Materia", monitoreo.Materia);
-                    cmd.Parameters.AddWithValue("@Docente", monitoreo.Docente);
-                    cmd.Parameters.AddWithValue("@Responsable", monitoreo.Responsable);
-                    cmd.Parameters.AddWithValue("@Aula", monitoreo.Aula);
-                    cmd.Parameters.AddWithValue("@HoraInicio", monitoreo.HoraInicio);
-                    cmd.Parameters.AddWithValue("@HoraFin", monitoreo.HoraFin);
-                    cmd.Parameters.AddWithValue("@Fecha", monitoreo.Fecha);
-                    cmd.Parameters.AddWithValue("@Recorrido", monitoreo.Recorrido);
-                    cmd.Parameters.AddWithValue("@Jornada", monitoreo.Jornada);
-                    cmd.Parameters.AddWithValue("@Ciclo", monitoreo.Ciclo);
-                    cmd.Parameters.AddWithValue("@EstadoMonitoreo", monitoreo.EstadoMonitoreo);
+                    // 1. Obtener el nombre del aula usando el IdAula seleccionado
+                    string obtenerAulaQuery = "SELECT Nombre FROM Aulas WHERE IdAula = @IdAula";
+                    SqlCommand cmdAula = new SqlCommand(obtenerAulaQuery, conexion);
+                    cmdAula.Parameters.AddWithValue("@IdAula", monitoreo.IdAula);
 
                     conexion.Open();
-                    cmd.ExecuteNonQuery();
+                    var resultado = cmdAula.ExecuteScalar();
+                    if (resultado != null)
+                    {
+                        nombreAula = resultado.ToString();
+                    }
+
+                    // 2. Insertar el monitoreo con el nombre del aula
+                    string query = @"INSERT INTO MonitoreosProgramados
+                (Materia, Docente, Responsable, Aula, HoraInicio, HoraFin, Fecha, Recorrido, Jornada, Ciclo, EstadoMonitoreo)
+                VALUES (@Materia, @Docente, @Responsable, @Aula, @HoraInicio, @HoraFin, @Fecha, @Recorrido, @Jornada, @Ciclo, @EstadoMonitoreo)";
+
+                    SqlCommand cmdInsert = new SqlCommand(query, conexion);
+                    cmdInsert.Parameters.AddWithValue("@Materia", monitoreo.Materia);
+                    cmdInsert.Parameters.AddWithValue("@Docente", monitoreo.Docente);
+                    cmdInsert.Parameters.AddWithValue("@Responsable", monitoreo.Responsable);
+                    cmdInsert.Parameters.AddWithValue("@Aula", nombreAula); // ahora sí guardas el nombre del aula
+                    cmdInsert.Parameters.AddWithValue("@HoraInicio", monitoreo.HoraInicio);
+                    cmdInsert.Parameters.AddWithValue("@HoraFin", monitoreo.HoraFin);
+                    cmdInsert.Parameters.AddWithValue("@Fecha", monitoreo.Fecha);
+                    cmdInsert.Parameters.AddWithValue("@Recorrido", monitoreo.Recorrido);
+                    cmdInsert.Parameters.AddWithValue("@Jornada", monitoreo.Jornada);
+                    cmdInsert.Parameters.AddWithValue("@Ciclo", monitoreo.Ciclo);
+                    cmdInsert.Parameters.AddWithValue("@EstadoMonitoreo", monitoreo.Fecha.Date < DateTime.Today ? "Expirado" : "Pendiente");
+
+                    cmdInsert.ExecuteNonQuery();
                 }
 
                 return RedirectToAction("Filtro");
             }
+
+            // repoblar dropdowns en caso de error
             ViewBag.IdEdificio = ObtenerEdificios();
-
-            monitoreo.Monitores = ObtenerMonitores(); // repoblar si error
+            monitoreo.Monitores = ObtenerMonitores();
             return View(monitoreo);
+
+
         }
-
-
     }
 }

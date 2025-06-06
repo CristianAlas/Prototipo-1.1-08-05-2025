@@ -27,6 +27,8 @@ namespace testautenticacion.Models
         //llenado de tabla para seleccionar responsable de monitoreo desde tabla usuarios
         public IEnumerable<SelectListItem> Monitores { get; set; }
         public int IdAula { get; set; }
+        public SelectList Aulas { get; set; }  // para mostrar en el formulario
+
 
 
     }
