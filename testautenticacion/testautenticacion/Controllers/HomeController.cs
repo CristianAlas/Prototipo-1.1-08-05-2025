@@ -1181,8 +1181,142 @@ namespace testautenticacion.Controllers
             ViewBag.IdEdificio = ObtenerEdificios();
             monitoreo.Monitores = ObtenerMonitores();
             return View(monitoreo);
-
-
         }
+        //Logica CURD para Usuarios-------------------------------------------------------------------------------------
+        //Listar usuarios
+        private List<Usuarios> ObtenerUsuariosDesdeBD()
+        {
+            var usuarios = new List<Usuarios>();
+
+            using (SqlConnection conexion = new SqlConnection(connectionString))
+            {
+                string query = "SELECT Nombres, Correo, Clave, IdRol FROM USUARIOS";
+
+                SqlCommand cmd = new SqlCommand(query, conexion);
+                conexion.Open();
+
+                SqlDataReader reader = cmd.ExecuteReader();
+                while (reader.Read())
+                {
+                    usuarios.Add(new Usuarios
+                    {
+                        Nombres = reader["Nombres"].ToString(),
+                        Correo = reader["Correo"].ToString(),
+                        Clave = reader["Clave"].ToString(),
+                        IdRol = (Rol)Convert.ToInt32(reader["IdRol"])
+                    });
+                }
+            }
+
+            return usuarios;
+        }
+        //Filtrar usuarios
+        public ActionResult Usuarios(string busqueda = "")
+        {
+            var usuarios = ObtenerUsuariosDesdeBD();
+
+            if (!string.IsNullOrEmpty(busqueda))
+            {
+                usuarios = usuarios
+                    .Where(u => u.Nombres.ToLower().Contains(busqueda.ToLower()) || u.Correo.ToLower().Contains(busqueda.ToLower()))
+                    .ToList();
+            }
+
+            return View(usuarios);
+        }
+        //Guardar usuarios nuevo y Editar usuarios nuevo
+        [HttpPost]
+        [PermisosRol(Rol.Administrador)]
+        [ValidateAntiForgeryToken]
+        public ActionResult Usuarios(FormCollection form)
+        {
+            string nombres = form["Nombres"];
+            string correo = form["Correo"];
+            string clave = form["Clave"];
+            string correoOriginal = form["CorreoOriginal"];
+            int idRol = int.Parse(form["IdRol"]);
+
+            try
+            {
+                using (SqlConnection conexion = new SqlConnection(connectionString))
+                {
+                    conexion.Open();
+
+                    if (!string.IsNullOrEmpty(correoOriginal))
+                    {
+                        // UPDATE
+                        string updateQuery = @"UPDATE USUARIOS 
+                                       SET Nombres = @Nombres, Correo = @Correo, Clave = @Clave, IdRol = @IdRol 
+                                       WHERE Correo = @CorreoOriginal";
+                        SqlCommand cmd = new SqlCommand(updateQuery, conexion);
+                        cmd.Parameters.AddWithValue("@Nombres", nombres);
+                        cmd.Parameters.AddWithValue("@Correo", correo);
+                        cmd.Parameters.AddWithValue("@Clave", clave);
+                        cmd.Parameters.AddWithValue("@IdRol", idRol);
+                        cmd.Parameters.AddWithValue("@CorreoOriginal", correoOriginal);
+
+                        cmd.ExecuteNonQuery();
+                        TempData["Success"] = "Usuario actualizado exitosamente.";
+                    }
+                    else
+                    {
+                        // INSERT
+                        string insertQuery = @"INSERT INTO USUARIOS (Nombres, Correo, Clave, IdRol) 
+                                       VALUES (@Nombres, @Correo, @Clave, @IdRol)";
+                        SqlCommand cmd = new SqlCommand(insertQuery, conexion);
+                        cmd.Parameters.AddWithValue("@Nombres", nombres);
+                        cmd.Parameters.AddWithValue("@Correo", correo);
+                        cmd.Parameters.AddWithValue("@Clave", clave);
+                        cmd.Parameters.AddWithValue("@IdRol", idRol);
+
+                        cmd.ExecuteNonQuery();
+                        TempData["Success"] = "Usuario creado exitosamente.";
+                    }
+                }
+
+                return RedirectToAction("Usuarios");
+            }
+            catch (Exception ex)
+            {
+                ViewBag.Error = "Ocurrió un error: " + ex.Message;
+                return View("Error");
+            }
+        }
+        //Eliminar usuario
+        [HttpGet]
+        [PermisosRol(Rol.Administrador)]
+        public ActionResult EliminarUsuario(string correo)
+        {
+            try
+            {
+                using (SqlConnection conexion = new SqlConnection(connectionString))
+                {
+                    conexion.Open();
+                    string query = "DELETE FROM USUARIOS WHERE Correo = @Correo";
+                    SqlCommand cmd = new SqlCommand(query, conexion);
+                    cmd.Parameters.AddWithValue("@Correo", correo);
+
+                    int filasAfectadas = cmd.ExecuteNonQuery();
+
+                    if (filasAfectadas > 0)
+                    {
+                        TempData["Success"] = "Usuario eliminado exitosamente.";
+                    }
+                    else
+                    {
+                        TempData["Error"] = "No se encontró el usuario.";
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                TempData["Error"] = "Error al eliminar usuario: " + ex.Message;
+            }
+
+            return RedirectToAction("Usuarios");
+        }
+
+
+
     }
 }

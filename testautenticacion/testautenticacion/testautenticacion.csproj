@@ -277,9 +277,11 @@
     <Content Include="Views\Home\_ReportePDF.cshtml" />
     <Content Include="Views\Home\Lineamientos.cshtml" />
     <Content Include="Views\Home\ProgramarMonitoreo.cshtml" />
+    <Content Include="Views\Home\Usuarios.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Views\Usuarios\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\bootstrap.rtl.min.css.map" />
