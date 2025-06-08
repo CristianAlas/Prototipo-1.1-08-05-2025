@@ -197,7 +197,7 @@
         </div>
 
 
-        <!-- Main Content -->
+        <!-- Incidentes criticos -->
         <div class="row g-4">
             <!-- Systems Table -->
             <div class="col-12 col-xl-12">
@@ -217,7 +217,7 @@
                                 <!--LLenado de tabla de reportes criticos-->
                                 @if (ViewBag.ListaEmergencias != null)
                                 {
-                                    foreach (var item in (List<testautenticacion.Models.Emergencia>)ViewBag.ListaEmergencias)
+                                    foreach (var item in ((List<testautenticacion.Models.Emergencia>)ViewBag.ListaEmergencias).OrderByDescending(e => e.FechaHora).Take(10))
                                     {
                                         <tr>
                                             <td>@item.NombreMonitor</td>
