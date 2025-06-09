@@ -262,7 +262,7 @@ namespace testautenticacion.Controllers
                     Fecha = DateTime.Now
                 };
 
-                ViewBag.Estados = new List<string> { "Todo bien", "Nadie en el aula", "Cerrado" };
+                ViewBag.Estados = new List<string> { "Todo bien", "Nadie en el aula","Desorden en aula","Docente ausente", "En laboratorio", "Cerrado", "En conferencia/evento" };
                 return PartialView("_FormularioMonitoreo", monitoreo);
             }
             catch (Exception ex)
@@ -990,7 +990,7 @@ namespace testautenticacion.Controllers
             return Json(new { totalCSV });
         }
 
-        //cambios 22/05/2023
+        //cambios 22/05/2023 Lista de usuarios desde la base de datos
         private IEnumerable<SelectListItem> ObtenerMonitores()
         {
             var monitores = new List<SelectListItem>();
