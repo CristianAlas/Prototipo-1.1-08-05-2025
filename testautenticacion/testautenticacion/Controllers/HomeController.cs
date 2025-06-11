@@ -373,7 +373,7 @@ namespace testautenticacion.Controllers
 
         [PermisosRol(Rol.Administrador | Rol.Coordinador | Rol.Monitor)]
         [HttpGet]
-        public ActionResult Reportes(string supervisor, string docente, string aula, DateTime? fecha)
+        public ActionResult Reportes(string supervisor, string docente, string aula, DateTime? fecha, int? page)
         {
             List<MonitoreosProgramados> monitoreos = new List<MonitoreosProgramados>();
 
@@ -410,13 +410,18 @@ namespace testautenticacion.Controllers
                     }
                 }
             }
+            //paginacion 
+            int pageSize = 10;
+            int pageNumber = page ?? 1;
+            var pagedMonitoreos = monitoreos.ToPagedList(pageNumber, pageSize);
 
             ViewBag.SupervisorSeleccionado = supervisor;
             ViewBag.DocenteSeleccionado = docente;
             ViewBag.AulaSeleccionada = aula;
             ViewBag.FechaSeleccionada = fecha?.ToString("yyyy-MM-dd") ?? DateTime.Today.ToString("yyyy-MM-dd");
 
-            return View(monitoreos);
+            //return View(monitoreos);
+            return View(pagedMonitoreos);
         }
 
         [HttpGet]

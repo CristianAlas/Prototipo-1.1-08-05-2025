@@ -233,6 +233,7 @@
     <Content Include="Content\StyleError.css" />
     <Content Include="Content\StyleFiltro.css" />
     <Content Include="Content\StyleIndex.css" />
+    <Content Include="Content\StyleReportes.css" />
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
