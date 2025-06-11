@@ -613,3 +613,7 @@ C:\Users\Alejandro\Documents\proyecto con fork\sistema_monitoreoclases\testauten
 C:\Users\Alejandro\Documents\proyecto con fork\sistema_monitoreoclases\testautenticacion\testautenticacion\obj\Debug\testaute.3EFB0371.Up2Date
 C:\Users\Alejandro\Documents\proyecto con fork\sistema_monitoreoclases\testautenticacion\testautenticacion\obj\Debug\testautenticacion.dll
 C:\Users\Alejandro\Documents\proyecto con fork\sistema_monitoreoclases\testautenticacion\testautenticacion\obj\Debug\testautenticacion.pdb
+C:\Users\Cristian\Desktop\C#\Prototipo-1.1-08-05-2025\testautenticacion\testautenticacion\bin\PagedList.dll
+C:\Users\Cristian\Desktop\C#\Prototipo-1.1-08-05-2025\testautenticacion\testautenticacion\bin\PagedList.Mvc.dll
+C:\Users\Cristian\Desktop\C#\Prototipo-1.1-08-05-2025\testautenticacion\testautenticacion\bin\PagedList.xml
+C:\Users\Cristian\Desktop\C#\Prototipo-1.1-08-05-2025\testautenticacion\testautenticacion\bin\PagedList.Mvc.xml

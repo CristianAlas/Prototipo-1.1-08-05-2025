@@ -4,7 +4,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Security;
-
+using PagedList;
 using testautenticacion.Permisos;
 using testautenticacion.Models;
 using System.Data.SqlClient;
@@ -138,7 +138,7 @@ namespace testautenticacion.Controllers
         }
 
         [HttpGet]
-        public ActionResult Filtro(DateTime? fecha, string recorrido, string docente, string aula, string estado)
+        public ActionResult Filtro(DateTime? fecha, string recorrido, string docente, string aula, string estado, int? page)
         {
             List<MonitoreosProgramados> monitoreos = new List<MonitoreosProgramados>();
 
@@ -207,8 +207,12 @@ namespace testautenticacion.Controllers
                 }
 
             }
+            // PAGINACIÓN
+            int pageSize = 5;
+            int pageNumber = page ?? 1;
+            var pagedMonitoreos = monitoreos.ToPagedList(pageNumber, pageSize);
 
-            ViewBag.Monitoreos = monitoreos;
+            //ViewBag.Monitoreos = monitoreos;
             ViewBag.FechaSeleccionada = fecha?.ToString("yyyy-MM-dd");
             ViewBag.RecorridoSeleccionado = recorrido;
             ViewBag.DocenteSeleccionado = docente;
@@ -217,7 +221,7 @@ namespace testautenticacion.Controllers
 
             ViewBag.Usuario = Session["Usuario"];
 
-            return View(monitoreos);
+            return View(pagedMonitoreos);
         }
 
         public ActionResult SinPermiso()
