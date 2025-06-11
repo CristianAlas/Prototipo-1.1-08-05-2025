@@ -1,0 +1,6 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<parameters>
+  <parameter name="MiConexion-Web.config Connection String" description="MiConexion Connection String used in web.config by the application to access the database." defaultValue="Server=tcp:utec-sistemamonitoreodocente.database.windows.net,1433;Initial Catalog=SistemaMonitoreoDocente;Persist Security Info=False;User ID=monitoreoadmin;Password=Sistemamonitoreodocente1;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;" tags="SqlConnectionString">
+    <parameterEntry kind="XmlFile" scope="C:\\Users\\Rolan\\Documents\\Proyectos\\rolandoandrad3\\Sistema-de-Monitoreo-de-Clases-\\testautenticacion\\testautenticacion\\obj\\Release\\Package\\PackageTmp\\Web\.config$" match="/configuration/connectionStrings/add[@name='MiConexion']/@connectionString" />
+  </parameter>
+</parameters>

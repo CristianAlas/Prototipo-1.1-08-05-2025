@@ -1,0 +1,124 @@
+﻿<!DOCTYPE html>
+    <html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>@ViewBag.Title - Sistema de Monitoreo de clases UTEC</title>
+        @Styles.Render("~/Content/css")
+        @Scripts.Render("~/bundles/modernizr")
+        <style>
+            .custom-navbar {
+                background-color: #451723 !important;
+            }
+        </style>
+    </head>
+
+    <body>
+        <nav class="navbar navbar-expand-sm navbar-dark custom-navbar">
+            <div class="container">
+                @Html.ActionLink("Sistema de Monitoreo Utec", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
+
+                <!-- Botón hamburguesa -->
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown"
+                        aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <!-- MENÚ COLAPSABLE -->
+                <div class="collapse navbar-collapse" id="navbarNavDropdown">
+                    <!-- MENÚ IZQUIERDO -->
+                    <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                        @if (Session["Usuario"] != null)
+                        {
+                            var usuario = (testautenticacion.Models.Usuarios)Session["Usuario"];
+
+                            <li class="nav-item d-block d-sm-none">
+                                <span class="nav-link fw-bold text-white">Bienvenido, @usuario.Nombres</span>
+                            </li>
+
+                            if (usuario.IdRol == testautenticacion.Models.Rol.Administrador)
+                            {
+                                <li class="nav-item">@Html.ActionLink("Inicio", "Index", "Home", null, new { @class = "nav-link" })</li>
+                                <li class="nav-item">@Html.ActionLink("Monitoreos", "Filtro", "Home", null, new { @class = "nav-link" })</li>
+                                <li class="nav-item">@Html.ActionLink("Reportes", "Reportes", "Home", null, new { @class = "nav-link" })</li>
+                                <li class="nav-item">@Html.ActionLink("Usuarios", "Usuarios", "Home", null, new { @class = "nav-link" })</li>
+                                <li class="nav-item">@Html.ActionLink("Lineamientos", "Lineamientos", "Home", null, new { @class = "nav-link" })</li>
+                                <li class="nav-item">@Html.ActionLink("Acerca de", "About", "Home", null, new { @class = "nav-link" })</li>
+                                <li class="nav-item">@Html.ActionLink("Soporte", "Contact", "Home", null, new { @class = "nav-link" })</li>
+                            }
+                            else if (usuario.IdRol == testautenticacion.Models.Rol.Monitor)
+                            {
+                                <li class="nav-item">@Html.ActionLink("Inicio", "Index", "Home", null, new { @class = "nav-link" })</li>
+                                <li class="nav-item">@Html.ActionLink("Monitoreos", "Filtro", "Home", null, new { @class = "nav-link" })</li>
+                                <li class="nav-item">@Html.ActionLink("Reportes", "Reportes", "Home", null, new { @class = "nav-link" })</li>
+                                <li class="nav-item">@Html.ActionLink("Lineamientos", "Lineamientos", "Home", null, new { @class = "nav-link" })</li>
+
+                            }
+                            else if (usuario.IdRol == testautenticacion.Models.Rol.Coordinador)
+                            {
+                                <li class="nav-item">@Html.ActionLink("Inicio", "Index", "Home", null, new { @class = "nav-link" })</li>
+                                <li class="nav-item">@Html.ActionLink("Monitoreo", "Filtro", "Home", null, new { @class = "nav-link" })</li>
+                                <li class="nav-item">@Html.ActionLink("Reportes", "Reportes", "Home", null, new { @class = "nav-link" })</li>
+                                <li class="nav-item">@Html.ActionLink("Lineamientos", "Lineamientos", "Home", null, new { @class = "nav-link" })</li>
+                                <li class="nav-item">@Html.ActionLink("Acerca de", "About", "Home", null, new { @class = "nav-link" })</li>
+                                <li class="nav-item">@Html.ActionLink("Contacto", "Contact", "Home", null, new { @class = "nav-link" })</li>
+                            }
+                        }
+                    </ul>
+
+                    <!-- MENÚ DERECHO -->
+                    <ul class="navbar-nav">
+                        @if (Session["Usuario"] != null)
+                        {
+                            var usuario = (testautenticacion.Models.Usuarios)Session["Usuario"];
+                            <li class="nav-item d-none d-sm-block">
+                                <span class="nav-link text-white">Bienvenido, @usuario.Nombres</span>
+                            </li>
+                            <li class="nav-item">
+                                @Html.ActionLink("Cerrar Sesión", "CerrarSesion", "Home", null, new { @class = "nav-link text-danger" })
+                            </li>
+                        }
+                    </ul>
+                </div>
+            </div>
+        </nav>
+
+        <div class="container body-content">
+            @RenderBody()
+            <hr />
+            <footer>
+                <p>&copy; @DateTime.Now.Year - Sistema de Monitoreo de Clases en el Area de Informatica y Ciencias Aplicadas</p>
+            </footer>
+        </div>
+        <!-- Script: Cierra el menú al hacer clic en un enlace o en el botón -->
+        <script>
+            document.addEventListener("DOMContentLoaded", function () {
+                const toggleButton = document.querySelector(".navbar-toggler");
+                const menu = document.querySelector("#navbarNavDropdown");
+
+                toggleButton.addEventListener("click", function () {
+                    const bsCollapse = bootstrap.Collapse.getOrCreateInstance(menu);
+                    if (menu.classList.contains("show")) {
+                        bsCollapse.hide();
+                    } else {
+                        bsCollapse.show();
+                    }
+                });
+
+                document.querySelectorAll('.navbar-collapse .nav-link').forEach(link => {
+                    link.addEventListener('click', () => {
+                        const bsCollapse = bootstrap.Collapse.getInstance(menu);
+                        if (bsCollapse) {
+                            bsCollapse.hide();
+                        }
+                    });
+                });
+            });
+        </script>
+
+        @Scripts.Render("~/bundles/jquery")
+        @Scripts.Render("~/bundles/bootstrap")
+        @RenderSection("scripts", required: false)
+    </body>
+    </html>

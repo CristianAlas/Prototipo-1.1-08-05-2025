@@ -1,0 +1,154 @@
+﻿@model testautenticacion.Models.MonitoreosProgramados
+@{
+    ViewBag.Title = "ProgramarMonitoreo";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container mt-5 mb-5">
+    <div class="card shadow-lg border-0">
+        <div class="card-header text-white" style="background-color: #5D0A28">
+            <h4 class="mb-0">Programar Monitoreo</h4>
+        </div>
+        <div class="card-body p-4">
+            @using (Html.BeginForm("ProgramarMonitoreo", "Home", FormMethod.Post))
+            {
+                <div class="row g-4">
+                    <div class="col-md-6">
+                        <label class="form-label fw-semibold">Materia</label>
+                        @Html.DropDownListFor(m => m.Materia, Model.Materias, "Seleccione una materia", new { @class = "form-select", required = "required" })
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label fw-semibold">Docente</label>
+                        @Html.TextBoxFor(m => m.Docente, new { @class = "form-control", required = "required", placeholder = "Nombre del docente" })
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label fw-semibold">Edificio</label>
+                        <select id="IdEdificio" name="IdEdificio" class="form-select" required>
+                            <option value="">Seleccione un edificio</option>
+                            @foreach (var edificio in ViewBag.IdEdificio as List<SelectListItem>)
+                            {
+                                <option value="@edificio.Value">@edificio.Text</option>
+                            }
+                        </select>
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label fw-semibold">Aula</label>
+                        <select id="IdAula" name="IdAula" class="form-select" required>
+                            <option value="">Seleccione un aula</option>
+                        </select>
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label fw-semibold">Monitor responsable</label>
+                        @Html.DropDownListFor(m => m.Responsable, Model.Monitores, "Seleccione un monitor", new { @class = "form-select", required = "required" })
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label fw-semibold">Fecha</label>
+                        @Html.TextBoxFor(m => m.Fecha, "{0:yyyy-MM-dd}", new
+                        {
+                            @class = "form-control",
+                            type = "date",
+                            required = "required",
+                            min = DateTime.Now.ToString("yyyy-MM-dd")
+                        })
+                        @Html.ValidationMessageFor(m => m.Fecha, "", new { @class = "text-danger small" })
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label fw-semibold">Hora Inicio</label>
+                        @Html.TextBoxFor(m => m.HoraInicio, "{0:hh\\:mm}", new { @class = "form-control", type = "time", required = "required" })
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label fw-semibold">Hora Fin</label>
+                        @Html.TextBoxFor(m => m.HoraFin, "{0:hh\\:mm}", new { @class = "form-control", type = "time", required = "required" })
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label fw-semibold">Recorrido</label>
+                        @Html.DropDownListFor(m => m.Recorrido, new SelectList(new[]
+                        {
+                            new { Value = "Matutino (1er)", Text = "Matutino (primer recorrido)" },
+                            new { Value = "Matutino (2do)", Text = "Matutino (segundo recorrido)" },
+                            new { Value = "Vespertino", Text = "Vespertino" },
+                        }, "Value", "Text"), "Seleccione un recorrido", new { @class = "form-select", required = "required" })
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label fw-semibold">Jornada</label>
+                        @Html.DropDownListFor(m => m.Jornada, new SelectList(new[]
+                        {
+                            new { Value = "Sabado", Text = "Sábado" },
+                            new { Value = "Domingo", Text = "Domingo" },
+                        }, "Value", "Text"), "Seleccione una jornada", new { @class = "form-select", required = "required" })
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label fw-semibold">Ciclo</label>
+                        @Html.DropDownListFor(m => m.Ciclo, new SelectList(new[]
+                        {
+                            new { Value = "Ciclo 01", Text = "Ciclo 01" },
+                            new { Value = "Ciclo 02", Text = "Ciclo 02" },
+                            new { Value = "Ciclo 03", Text = "Ciclo 03" }
+                        }, "Value", "Text"), "Seleccione un ciclo", new { @class = "form-select", required = "required" })
+                    </div>
+                </div>
+
+                <div class="mt-4 text-end">
+                    <a href="@Url.Action("Filtro", "Home")" class="btn btn-outline-secondary me-2">Cancelar</a>
+                    <button type="submit" class="btn btn-primary px-4">Guardar</button>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+
+
+@section Scripts {
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+        document.querySelector('form').addEventListener('submit', function (e) {
+            e.preventDefault();
+
+            Swal.fire({
+                title: '¿Programar monitoreo?',
+                text: 'Este monitoreo quedará registrado como pendiente.',
+                icon: 'question',
+                showCancelButton: true,
+                confirmButtonText: 'Sí, programar',
+                cancelButtonText: 'Cancelar',
+                confirmButtonColor: '#198754',
+                cancelButtonColor: '#6c757d'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    this.submit(); // envía el formulario normalmente
+                }
+            });
+        });
+
+        $(document).ready(function () {
+            $('#IdEdificio').change(function () {
+                var idEdificio = $(this).val();
+
+                if (idEdificio) {
+                    $.ajax({
+                        url: '/Home/ObtenerAulasPorEdificio',
+                        type: 'GET',
+                        data: { idEdificio: idEdificio },
+                        success: function (data) {
+                            var $aulaDropdown = $('#IdAula');
+                            $aulaDropdown.empty();
+                            $aulaDropdown.append('<option value="">Seleccione un aula</option>');
+                            $.each(data, function (index, item) {
+                                $aulaDropdown.append($('<option>', {
+                                    value: item.Id,
+                                    text: item.Nombre
+                                }));
+                            });
+                        }
+                    });
+                }
+            });
+        });
+
+    </script>
+
+}
+
+
+

@@ -1,0 +1,76 @@
+﻿:root {
+    --ochre: #7B0000;
+    --ochre-light: #7B0000;
+    --ochre-dark: #7B0000;
+}
+
+body {
+    
+    background-color: #850836;
+    min-height: 100vh;
+    align-items: center;
+}
+
+.login-container {
+    background: white;
+    border-radius: 15px;
+    box-shadow: 0 4px 20px rgba(204, 119, 34, 0.15);
+    padding: 2rem;
+    margin-top: 2rem;
+    margin-bottom: 2rem;
+}
+
+.form-control:focus {
+    border-color: var(--ochre);
+    box-shadow: 0 0 0 0.25rem rgba(204, 119, 34, 0.25);
+}
+
+.form-group {
+    margin-bottom: 1.5rem;
+}
+
+.form-label {
+    color: var(--ochre-dark);
+    font-weight: 500;
+    margin-bottom: 0.5rem;
+}
+
+.btn-ochre {
+    background-color: var(--ochre);
+    border-color: var(--ochre);
+    color: white;
+    padding: 0.5rem 2rem;
+    transition: all 0.3s ease;
+}
+
+    .btn-ochre:hover {
+        background-color: var(--ochre-dark);
+        border-color: var(--ochre-dark);
+        transform: translateY(-2px);
+    }
+
+.login-header {
+    text-align: center;
+    color: var(--ochre);
+    margin-bottom: 2rem;
+}
+
+    .login-header h2 {
+        font-size: 2rem;
+        margin-bottom: 0.5rem;
+    }
+
+    .login-header p {
+        color: #666;
+    }
+
+.logo-container {
+    text-align: center;
+    margin-bottom: 1.5rem;
+}
+
+    .logo-container img {
+        max-width: 100px;
+        height: auto;
+    }
+

@@ -1,0 +1,322 @@
+﻿@model List<testautenticacion.Models.MonitoreosProgramados>
+
+@{
+    ViewBag.Title = "Reportes";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<!-- Estilos personalizados -->
+<style>
+    body {
+        background-color: #fff;
+    }
+
+    .header-container {
+        background-color: #7b002c;
+        padding: 1.5rem;
+        border-radius: 12px;
+        margin: 1.5rem auto;
+        text-align: center;
+        color: #fff;
+    }
+
+    .content-container {
+        padding: 2rem;
+        border-radius: 12px;
+        box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+    }
+
+    .btn-primary,
+    .btn-info,
+    .btn-danger {
+        background-color: #7b0000 !important;
+        border-color: #7b0000 !important;
+        color: #ffffff !important;
+    }
+
+        .btn-primary:hover,
+        .btn-info:hover,
+        .btn-danger:hover {
+            background-color: #5c0000 !important;
+            border-color: #5c0000 !important;
+        }
+
+    label {
+        color: #000;
+    }
+</style>
+
+
+<div class="header-container">
+    <h2 class="mb-1">Supervisión 02-2025</h2>
+    <h4 class="text-light mb-0">Informes de actividad académica</h4>
+</div>
+
+<div class="content-container">
+    <form id="filtroform" method="get" action="@Url.Action("Reportes")">
+        <div class="row gy-3">
+            <!-- Primera fila -->
+            <div class="col-12 col-md-4">
+                <label for="supervisor" class="form-label">Supervisor:</label>
+                <input type="text" id="supervisor" name="supervisor" class="form-control" placeholder="Supervisor" value="@ViewBag.SupervisorSeleccionado">
+            </div>
+            <div class="col-12 col-md-4">
+                <label for="docente" class="form-label">Docente:</label>
+                <input type="text" id="docente" name="docente" class="form-control" placeholder="Docente" value="@ViewBag.DocenteSeleccionado">
+            </div>
+            <div class="col-12 col-md-4">
+                <label for="aula" class="form-label">Aula:</label>
+                <input type="text" id="aula" name="aula" class="form-control" placeholder="Aula" value="@ViewBag.AulaSeleccionada">
+            </div>
+
+            <!-- Segunda fila -->
+            <div class="col-12 col-md-4">
+                <label for="fecha" class="form-label">Fecha:</label>
+                <input type="date" id="fecha" name="fecha" class="form-control" value="@ViewBag.FechaSeleccionada">
+            </div>
+            <div class="col-12 col-md-8 align-items-end justify-content-end gap-2">
+                <a href="@Url.Action("Reportes")" class="btn btn-secondary">
+                    <i class="fas fa-undo me-1"></i>Limpiar
+                </a>
+                <button type="submit" class="btn btn-primary">
+                    <i class="fas fa-search me-1"></i>Buscar
+                </button>
+            </div>
+        </div>
+    </form>
+</div>
+
+<hr class="my-4">
+
+<div class="row">
+    <!-- Tabla de monitoreos que ahora ocupa todo el ancho -->
+    <div class="col-12">
+        <div class="table-responsive">
+            <table class="table table-bordered table-striped">
+                <thead class="text-light" style="background-color: #7B002C" >
+                    <tr>
+                        <th>ID</th>
+                        <th>Materia</th>
+                        <th>Docente</th>
+                        <th>Aula</th>
+                        <th>Fecha</th>
+                        <th>Estado</th>
+                        <th>Acción</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var monitoreo in Model)
+                    {
+                        <tr>
+                            <td>@monitoreo.Id</td>
+                            <td>@monitoreo.Materia</td>
+                            <td>@monitoreo.Docente</td>
+                            <td>@monitoreo.Aula</td>
+                            <td>@monitoreo.Fecha.ToString("yyyy-MM-dd")</td>
+                            <td>@(monitoreo.TieneMonitoreo ? "Monitoreado" : "Pendiente")</td>
+                            <td>
+                                <button class="btn btn-sm btn-info"
+                                        data-bs-toggle="tooltip"
+                                        title="Ver detalles"
+                                        data-monitoreo-id="@monitoreo.Id"
+                                        onclick="openVisualizarModal(this)">
+                                    <i class="fas fa-eye"></i> Ver
+                                </button>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+        <div class="d-flex justify-content-center gap-3 mt-3">
+            <a href="@Url.Action("GenerarPDF", "Home", new {
+                        supervisor = ViewBag.SupervisorSeleccionado,
+                        docente = ViewBag.DocenteSeleccionado,
+                        aula = ViewBag.AulaSeleccionada,
+                        fecha = ViewBag.FechaSeleccionada
+                        })"
+                id="btnGenerarPDF"
+               class="btn btn-danger">
+                Generar Reporte en PDF
+            </a>
+
+            <a href="@Url.Action("GenerarCSV", "Home", new {
+                        supervisor = ViewBag.SupervisorSeleccionado,
+                        docente = ViewBag.DocenteSeleccionado,
+                        aula = ViewBag.AulaSeleccionada,
+                        fecha = ViewBag.FechaSeleccionada
+                    })"
+               id="btnGenerarCSV"
+               class="btn btn-success">
+                Generar Reporte en CSV
+            </a>
+        </div>
+
+    </div>
+
+    <!-- MODAL PARA VISUALIZAR DETALLES -->
+    <div class="modal fade" id="monitoreoModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <!-- Aquí se cargará la vista parcial -->
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- SCRIPTS NECESARIOS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+@section scripts {
+    <script>
+        function openVisualizarModal(button) {
+            const monitoreoId = button.getAttribute('data-monitoreo-id');
+            const modal = new bootstrap.Modal(document.getElementById('monitoreoModal'));
+
+            fetch(`/Home/VerMonitoreo/${monitoreoId}`)
+                .then(response => {
+                    if (!response.ok) throw new Error("No se pudo cargar el detalle.");
+                    return response.text();
+                })
+                .then(html => {
+                    document.querySelector('#monitoreoModal .modal-content').innerHTML = html;
+                    modal.show();
+                })
+                .catch(error => {
+                    console.error(error);
+                    alert('Ocurrió un error al cargar los detalles del monitoreo.');
+                });
+        }
+
+        // Confirmaciones para exportar PDF y CSV
+        document.addEventListener('DOMContentLoaded', function () {
+            const pdfBtn = document.getElementById('btnGenerarPDF');
+            const csvBtn = document.getElementById('btnGenerarCSV');
+
+            if (pdfBtn) {
+                const pdfUrl = pdfBtn.getAttribute('href');
+                pdfBtn.removeAttribute('href');
+                pdfBtn.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    Swal.fire({
+                        title: '¿Deseas generar el reporte en PDF?',
+                        text: 'Se descargará un archivo PDF con los resultados actuales.',
+                        icon: 'info',
+                        showCancelButton: true,
+                        confirmButtonText: 'Sí, generar',
+                        cancelButtonText: 'Cancelar',
+                        confirmButtonColor: '#dc3545',
+                        cancelButtonColor: '#6c757d'
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            window.location.href = pdfUrl;
+                        }
+                    });
+                });
+            }
+
+            if (csvBtn) {
+                const csvUrl = csvBtn.getAttribute('href');
+                csvBtn.removeAttribute('href');
+                csvBtn.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    Swal.fire({
+                        title: '¿Deseas generar el reporte en CSV?',
+                        text: 'Se descargará un archivo CSV con los resultados actuales.',
+                        icon: 'info',
+                        showCancelButton: true,
+                        confirmButtonText: 'Sí, generar',
+                        cancelButtonText: 'Cancelar',
+                        confirmButtonColor: '#198754',
+                        cancelButtonColor: '#6c757d'
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            window.location.href = csvUrl;
+                        }
+                    });
+                });
+            }
+        });
+    </script>
+}
+
+
+
+@*@section scripts {
+        <script>
+            function openVisualizarModal(button) {
+                const monitoreoId = button.getAttribute('data-monitoreo-id');
+                const modal = new bootstrap.Modal(document.getElementById('monitoreoModal'));
+
+                fetch(`/Home/VerMonitoreo/${monitoreoId}`)
+                    .then(response => {
+                        if (!response.ok) throw new Error("No se pudo cargar el detalle.");
+                        return response.text();
+                    })
+                    .then(html => {
+                        document.querySelector('#monitoreoModal .modal-content').innerHTML = html;
+                        modal.show();
+                    })
+                    .catch(error => {
+                        console.error(error);
+                        alert('Ocurrió un error al cargar los detalles del monitoreo.');
+                    });
+            }
+            // Actualizador de contador de reportes en PDF
+            document.querySelector(".btn-danger").addEventListener("click", function (e) {
+                e.preventDefault();
+                const url = this.href;
+                fetch("/Home/IncrementarContadorPDF", {
+                    method: "POST"
+                })
+                    .then(res => res.json())
+                    .then(data => {
+                        const pdfContador = document.getElementById("contadorPDF");
+                        if (pdfContador) {
+                            pdfContador.textContent = data.totalPDF;
+                        }
+                        window.location.href = url; // Luego de contar, redirige
+                    })
+                    .catch(error => {
+                        console.error("Error al actualizar contador PDF:", error);
+                        window.location.href = url;
+                    });
+            });
+
+            // Actualizador de contador de reportes en CSV
+            document.querySelector(".btn-success").addEventListener("click", function (e) {
+                e.preventDefault();
+                const url = this.href;
+                fetch("/Home/IncrementarContadorCSV", {
+                    method: "POST"
+                })
+                    .then(res => res.json())
+                    .then(data => {
+                        const csvContador = document.getElementById("contadorCSV");
+                        if (csvContador) {
+                            csvContador.textContent = data.totalCSV;
+                        }
+                        window.location.href = url;
+                    })
+                    .catch(error => {
+                        console.error("Error al actualizar contador CSV:", error);
+                        window.location.href = url;
+                    });
+            });
+
+            // cargar automaticamente los reportes del dia seleccionado
+            document.addEventListener("DOMContentLoaded", function () {
+                const params = new URLSearchParams(window.location.search);
+
+                // Solo enviar el formulario automáticamente si no hay filtros activos
+                const supervisor = params.get("supervisor");
+                const docente = params.get("docente");
+                const aula = params.get("aula");
+                const fecha = params.get("fecha");
+
+                if (!supervisor && !docente && !aula && !fecha) {
+                    document.getElementById("filtroform").submit();
+                }
+            });
+        </script>
+    }*@

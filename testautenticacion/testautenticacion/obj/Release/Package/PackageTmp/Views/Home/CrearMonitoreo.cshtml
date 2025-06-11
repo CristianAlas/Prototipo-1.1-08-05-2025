@@ -1,0 +1,39 @@
+﻿@model testautenticacion.Models.RegistrosMonitoreo
+@{
+    ViewBag.Title = "CrearMonitoreo";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>CrearMonitoreo</h2>
+
+<div class="modal-content">
+    <div class="modal-header">
+        <h5 class="modal-title">Registrar Monitoreo</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+    </div>
+    <form id="monitoreoForm" data-monitoreo-id="@Model.MonitoreoProgramadoId">
+        <div class="modal-body">
+            <div class="mb-3">
+                <label class="form-label">Estado</label>
+                <select name="Estado" class="form-select" required>
+                    @foreach (var estado in ViewBag.Estados)
+                    {
+                        <option value="@estado">@estado</option>
+                    }
+                </select>
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Comentarios</label>
+                <textarea name="Comentarios" class="form-control" rows="3"></textarea>
+            </div>
+            <!--<div class="mb-3">
+                <label class="form-label">Feedback</label>
+                <textarea name="Feedback" class="form-control" rows="3"></textarea>
+            </div>-->
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+            <button type="submit" class="btn btn-primary">Guardar</button>
+        </div>
+    </form>
+</div>
