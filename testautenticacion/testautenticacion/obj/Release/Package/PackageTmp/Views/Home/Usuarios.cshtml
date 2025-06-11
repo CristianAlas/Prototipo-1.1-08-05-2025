@@ -1,0 +1,141 @@
+﻿@model List<testautenticacion.Models.Usuarios>
+
+@{
+    ViewBag.Title = "Gestion de Usuarios";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h3>Gestión de Usuarios</h3>
+@if (TempData["Success"] != null)
+{
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+        @TempData["Success"]
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+}
+@if (TempData["Error"] != null)
+{
+    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+        @TempData["Error"]
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+}
+
+<!-- Buscador -->
+<form method="get" asp-controller="Home" asp-action="Usuarios" class="mb-3">
+    <input type="text" name="busqueda" value="@Request.QueryString["busqueda"]" placeholder="Buscar por nombre o correo" class="form-control" />
+</form>
+
+<!-- FORMULARIO DE CREACIÓN/EDICIÓN -->
+<div class="card mb-lg-5">
+    <div class="card-header text-white" style="background-color:#7B002C">
+        Crear o actualizar usuario
+    </div>
+    <div class="card-body">
+        @using (Html.BeginForm("Usuarios", "Home", FormMethod.Post, new { id = "formUsuario" }))
+        {
+            @Html.AntiForgeryToken()
+            <input type="hidden" name="CorreoOriginal" id="CorreoOriginal" />
+
+            <div class="row gy-3">
+                <div class="col-12 col-md-6">
+                    <label class="form-label">Nombres</label>
+                    <input type="text" name="Nombres" class="form-control" required />
+                </div>
+                <div class="col-12 col-md-6">
+                    <label class="form-label">Correo</label>
+                    <input type="email" name="Correo" class="form-control" required />
+                </div>
+                <div class="col-12 col-md-6">
+                    <label class="form-label">Clave</label>
+                    <input type="password" name="Clave" class="form-control" required />
+                </div>
+                <div class="col-12 col-md-6">
+                    <label class="form-label">Rol</label>
+                    <select name="IdRol" class="form-control" required>
+                        <option value="">Seleccione...</option>
+                        <option value="1">Administrador</option>
+                        <option value="4">Coordinador</option>
+                        <option value="2">Monitor</option>
+                    </select>
+                </div>
+                <div class="col-12 text-end">
+                    <button type="submit" id="btnGuardar" class="btn btn-success mt-3 me-2">Crear usuario</button>
+                    <button type="button" class="btn btn-secondary mt-3" onclick="limpiarFormulario()">Cancelar</button>
+                </div>
+            </div>
+        }
+    </div>
+</div>
+
+
+<hr />
+
+<!-- Tabla de usuarios (responsive mejorada) -->
+<div class="table-responsive">
+    <table class="table table-bordered align-middle text-nowrap">
+        <thead class="text-light" style="background-color:#7B002C">
+            <tr>
+                <th>Nombres</th>
+                <th>Correo</th>
+                <th>Rol</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            @if (Model != null && Model.Any())
+            {
+                foreach (var u in Model)
+                {
+                    <tr>
+                        <td>@u.Nombres</td>
+                        <td>@u.Correo</td>
+                        <td>@u.IdRol</td>
+                        <td>
+                            <div class="d-flex flex-wrap gap-2">
+                                <button class="btn btn-sm btn-primary"
+                                        onclick="editarUsuario('@u.Nombres', '@u.Correo', '@u.Clave', '@((int)u.IdRol)')">
+                                    Editar
+                                </button>
+                                <a href="@Url.Action("EliminarUsuario", "Home", new { correo = u.Correo })"
+                                   class="btn btn-sm btn-danger"
+                                   onclick="return confirm('¿Eliminar este usuario?')">
+                                    Eliminar
+                                </a>
+                            </div>
+                        </td>
+                    </tr>
+                }
+            }
+            else
+            {
+                <tr><td colspan="4">No hay usuarios disponibles.</td></tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+@section Scripts {
+    <script>
+        function editarUsuario(nombres, correo, clave, idRol) {
+            document.getElementsByName("Nombres")[0].value = nombres;
+            document.getElementsByName("Correo")[0].value = correo;
+            document.getElementsByName("Clave")[0].value = clave;
+            document.getElementsByName("IdRol")[0].value = idRol;
+            document.getElementById("CorreoOriginal").value = correo;
+
+            // Cambia el texto del botón
+            document.getElementById("btnGuardar").innerText = "Actualizar usuario";
+        }
+
+        function limpiarFormulario() {
+            document.getElementById('formUsuario').reset();
+            document.getElementById('CorreoOriginal').value = "";
+            document.getElementById("btnGuardar").innerText = "Crear usuario";
+        }
+    </script>
+}
+<div class="modal-footer">
+</div>
+
+

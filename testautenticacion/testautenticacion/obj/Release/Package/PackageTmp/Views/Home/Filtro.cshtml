@@ -1,0 +1,457 @@
+﻿    @{
+        ViewBag.Title = "Filtro";
+        Layout = "~/Views/Shared/_Layout.cshtml";
+    }
+
+    <!DOCTYPE html>
+    <html lang="es">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/css/bootstrap.min.css" rel="stylesheet">
+        <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" rel="stylesheet">
+        
+    </head>
+    <body>
+        <div class="container mt-4">
+            <!-- Panel de Filtros -->
+            <div class="card shadow mb-4 ">
+                <div class="card-header text-white " style="background-color: #850836">
+                    @*bg-primary bg-gradient *@
+                    <h4 class="mb-0">Sistema de Monitoreo</h4>
+                </div>
+                <div class="card-body">
+                    @using (Html.BeginForm("Filtro", "Home", FormMethod.Get, new { @class = "row g-3" }))
+                    {
+                        <div class="row g-3">
+
+                            <!-- Filtro por Fecha -->
+                            <div class="col-md-3">
+                                <label class="form-label">
+                                    <i class="fas fa-calendar me-2"></i>Fecha
+                                </label>
+                                <input type="date" name="fecha" class="form-control" value="@(ViewBag.FechaSeleccionada ?? DateTime.Now.ToString("yyyy-MM-dd"))">
+
+                            </div>
+
+                            <!-- Filtro por Recorrido -->
+                            <div class="col-md-3">
+                                <label class="form-label">
+                                    <i class="fas fa-clock me-2"></i>Recorrido
+                                </label>
+                                <select name="recorrido" class="form-select">
+                                    <option value="">Seleccionar Recorrido</option>
+                                    <option value="Primer Recorrido" @(ViewBag.RecorridoSeleccionado == "Primer Recorrido" ? "selected" : "")>Primer Recorrido (07:00 - 10:00)</option>
+                                    <option value="Segundo Recorrido" @(ViewBag.RecorridoSeleccionado == "Segundo Recorrido" ? "selected" : "")>Segundo Recorrido (10:00 - 13:00)</option>
+                                </select>
+                            </div>
+
+                            <!-- Filtro por Docente -->
+                            <div class="col-md-3">
+                                <label class="form-label">
+                                    <i class="fas fa-chalkboard-teacher me-2"></i>Docente
+                                </label>
+                                <input type="text" name="docente" class="form-control" value="@ViewBag.DocenteSeleccionado" placeholder="Nombre del docente">
+                            </div>
+
+                            <!-- Filtro por Aula -->
+                            <div class="col-md-3">
+                                <label class="form-label">
+                                    <i class="fas fa-door-open me-2"></i>Aula
+                                </label>
+                                <input type="text" name="aula" class="form-control" value="@ViewBag.AulaSeleccionada" placeholder="Número de Aula">
+                            </div>
+
+                            <!-- Filtro por Estado -->
+                            <div class="col-md-3">
+                                <label class="form-label">
+                                    <i class="fas fa-flag me-2"></i>Estado
+                                </label>
+                                <select name="estado" class="form-select">
+                                    <option value="">Todos</option>
+                                    <option value="Pendiente" @(ViewBag.EstadoSeleccionado == "Pendiente" ? "selected" : "")>Pendiente</option>
+                                    <option value="Completado" @(ViewBag.EstadoSeleccionado == "Completado" ? "selected" : "")>Completado</option>
+                                    <option value="Expirado" @(ViewBag.EstadoSeleccionado == "Expirado" ? "selected" : "")>Expirado</option>
+                                </select>
+                            </div>
+
+                            <!-- Botones de acción -->
+                            <div class="col-12 text-end">
+                                <a href="@Url.Action("Filtro")" class="btn btn-secondary me-2">
+                                    <i class="fas fa-undo me-2"></i>Limpiar Filtros
+                                </a>
+                                <button type="submit" class="btn btn-primary">
+                                    <i class="fas fa-search me-2"></i>Buscar
+                                </button>
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+            @section Scripts {
+                <script>
+                    window.onload = function () {
+                        if (!window.location.search) {
+                            document.querySelector('form').submit();
+                        }
+                    }
+                </script>
+            }
+
+            <!-- Tabla de Resultados -->
+            <div class="card shadow">
+                <div class="card-header bg-white d-flex justify-content-between align-items-center">
+                    <div>
+                        <h5 class="mb-0">MONITOREOS PROGRAMADOS</h5>
+                        <small class="text-muted">
+                            @{
+                                var totalRegistros = ViewBag.Monitoreos != null ?
+                                    ((List<testautenticacion.Models.MonitoreosProgramados>)ViewBag.Monitoreos).Count : 0;
+                                @($"{totalRegistros} {(totalRegistros == 1 ? "registro encontrado" : "registros encontrados")}")
+                            }
+                        </small>
+                    </div>
+                    @if (ViewBag.Usuario != null &&
+                    (ViewBag.Usuario.IdRol == testautenticacion.Models.Rol.Administrador ||
+                    ViewBag.Usuario.IdRol == testautenticacion.Models.Rol.Coordinador))
+                    {
+                        <a href="@Url.Action("ProgramarMonitoreo", "Home")" class="btn btn-success">
+                            <i class="fas fa-plus"></i> Programar Monitoreo
+                        </a>
+                    }
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-hover">
+                            <thead class="table-light">
+                                <tr>
+                                    <th>Materia</th>
+                                    <th>Docente</th>
+                                    <th>Hora</th>
+                                    <th>Aula</th>
+                                    <th>Recorrido</th>
+                                    <th>Jornada</th>
+                                    <th>Ciclo</th>
+                                    <th>Estado</th>
+                                    <th>Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var monitoreo in ViewBag.Monitoreos as List<testautenticacion.Models.MonitoreosProgramados>)
+                                {
+                                    <tr data-monitoreo-id="@monitoreo.Id">
+                                        <!-- Añadido el atributo data -->
+                                        <td>@monitoreo.Materia</td>
+                                        <td>@monitoreo.Docente</td>
+                                        <td>@monitoreo.HoraInicio.ToString(@"hh\:mm") - @monitoreo.HoraFin.ToString(@"hh\:mm")</td>
+                                        <td>@monitoreo.Aula</td>
+                                        <td>@monitoreo.Recorrido</td>
+                                        <td>@monitoreo.Jornada</td>
+                                        <td>@monitoreo.Ciclo</td>
+                                        <td>
+                                            @switch (monitoreo.EstadoMonitoreo)
+                                            {
+                                                case "Completado":
+                                                    <i class="fas fa-check-circle text-success" title="Completado"></i>
+                                                    break;
+                                                case "Expirado":
+                                                    <i class="fas fa-times-circle text-danger" title="Expirado"></i>
+                                                    break;
+                                                case "Pendiente":
+                                                default:
+                                                    <i class="fas fa-hourglass-half text-muted" title="Pendiente"></i>
+                                                    break;
+                                            }
+                                        </td>
+                                        <td>
+                                            <div class="btn-group">
+                                                @if (monitoreo.EstadoMonitoreo != "Expirado")
+                                                {
+                                                    <a class="btn btn-sm btn-dark"
+                                                       data-bs-toggle="tooltip"
+                                                       title="Editar reporte"
+                                                       data-monitoreo-id="@monitoreo.Id"
+                                                       onclick="openEditarModal(this)">
+                                                        <i class="fas fa-file-alt"></i>Editar
+                                                    </a>
+
+                                                    if (monitoreo.TieneMonitoreo)
+                                                    {
+                                                        <button class="btn btn-sm btn-info ms-1"
+                                                                data-bs-toggle="tooltip"
+                                                                title="Ver detalles del monitoreo"
+                                                                data-monitoreo-id="@monitoreo.Id"
+                                                                onclick="openVisualizarModal(this)">
+                                                            <i class="fas fa-eye"></i>Ver
+                                                        </button>
+                                                    }
+                                                    else
+                                                    {
+                                                        <button class="btn btn-sm btn-info ms-1"
+                                                                data-bs-toggle="tooltip"
+                                                                title="Crear monitoreo"
+                                                                data-monitoreo-id="@monitoreo.Id"
+                                                                onclick="openMonitoreoModal(this)">
+                                                            <i class="fas fa-edit"></i>Monitoreo
+                                                        </button>
+                                                    }
+                                                    if (ViewBag.Usuario != null && ViewBag.Usuario.IdRol != testautenticacion.Models.Rol.Monitor)
+                                                    {
+                                                        <button class="btn btn-sm btn-danger ms-1"
+                                                                onclick="eliminarMonitoreo(@monitoreo.Id)">
+                                                            <i class="fas fa-trash-alt"></i> Eliminar
+                                                        </button>
+                                                    }
+                                                }
+                                                else
+                                                {
+                                                    <!-- 🔒 Aquí aparece el ícono cuando el monitoreo está expirado -->
+                                                    <span class="text-muted" data-bs-toggle="tooltip" title="Acciones deshabilitadas: monitoreo expirado">
+                                                        <i class="fas fa-lock"></i>
+                                                    </span>
+                                                }
+                                            </div>
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Modal para el formulario de monitoreo -->
+        <div class="modal fade" id="monitoreoModal" tabindex="-1">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <!-- Modal content will be loaded here -->
+                </div>
+            </div>
+        </div>
+
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/js/bootstrap.bundle.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+        <script>
+            // Inicializar tooltips
+            var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
+            var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+                return new bootstrap.Tooltip(tooltipTriggerEl)
+            })
+
+            function openMonitoreoModal(button) {
+                try {
+                    const monitoreoId = button.getAttribute('data-monitoreo-id');
+                    console.log("ID del monitoreo:", monitoreoId);
+
+                    if (!monitoreoId) {
+                        Swal.fire('Error', 'No se pudo obtener el ID del monitoreo.', 'error');
+                        return;
+                    }
+
+                    const modal = new bootstrap.Modal(document.getElementById('monitoreoModal'));
+
+                    fetch(`/Home/CrearMonitoreo/${monitoreoId}`)
+                        .then(response => {
+                            if (!response.ok) {
+                                return response.text().then(text => {
+                                    throw new Error(`Error ${response.status}: ${text}`);
+                                });
+                            }
+                            return response.text();
+                        })
+                        .then(html => {
+                            if (!html || html.trim() === "") {
+                                throw new Error("La respuesta está vacía");
+                            }
+
+                            document.querySelector('#monitoreoModal .modal-content').innerHTML = html;
+                            modal.show();
+
+                            const form = document.getElementById('monitoreoForm');
+                            if (form) {
+                                form.addEventListener('submit', function (e) {
+                                    e.preventDefault();
+
+                                    Swal.fire({
+                                        title: '¿Registrar monitoreo?',
+                                        text: 'Este monitoreo se guardará como completado.',
+                                        icon: 'question',
+                                        showCancelButton: true,
+                                        confirmButtonText: 'Sí, guardar',
+                                        cancelButtonText: 'Cancelar',
+                                        confirmButtonColor: '#198754',
+                                        cancelButtonColor: '#6c757d'
+                                    }).then((result) => {
+                                        if (result.isConfirmed) {
+                                            const formData = new FormData(form);
+                                            formData.append('MonitoreoProgramadoId', monitoreoId);
+                                            formData.append('Fecha', new Date().toISOString());
+
+                                            fetch('/Home/GuardarMonitoreo', {
+                                                method: 'POST',
+                                                body: formData
+                                            })
+                                                .then(response => response.json())
+                                                .then(data => {
+                                                    if (data.success) {
+                                                        modal.hide();
+                                                        Swal.fire('Éxito', 'Monitoreo registrado correctamente.', 'success')
+                                                            .then(() => window.location.reload());
+                                                    } else {
+                                                        Swal.fire('Error', 'Error al guardar: ' + (data.errors ? JSON.stringify(data.errors) : 'Verifica los datos'), 'error');
+                                                    }
+                                                })
+                                                .catch(error => {
+                                                    Swal.fire('Error', 'Error al guardar el monitoreo: ' + error.message, 'error');
+                                                });
+                                        }
+                                    });
+                                });
+                            } else {
+                                console.error("No se encontró el formulario en el HTML cargado");
+                            }
+                        })
+                        .catch(error => {
+                            Swal.fire('Error', 'Error al cargar el formulario: ' + error.message, 'error');
+                        });
+                } catch (error) {
+                    Swal.fire('Error', 'Error general: ' + error.message, 'error');
+                }
+            }
+
+            // Nueva función para visualizar monitoreos ya registrados
+            function openVisualizarModal(button) {
+                try {
+                    const monitoreoId = button.getAttribute('data-monitoreo-id');
+                    console.log("ID del monitoreo a visualizar:", monitoreoId);
+
+                    if (!monitoreoId) {
+                        alert("Error: No se pudo obtener el ID del monitoreo");
+                        return;
+                    }
+
+                    const modal = new bootstrap.Modal(document.getElementById('monitoreoModal'));
+
+                    fetch(`/Home/VerMonitoreo/${monitoreoId}`)
+                        .then(response => {
+                            console.log("Status code:", response.status);
+                            if (!response.ok) {
+                                return response.text().then(text => {
+                                    throw new Error(`Error ${response.status}: ${text}`);
+                                });
+                            }
+                            return response.text();
+                        })
+                        .then(html => {
+                            if (!html || html.trim() === "") {
+                                throw new Error("La respuesta está vacía");
+                            }
+                            document.querySelector('#monitoreoModal .modal-content').innerHTML = html;
+                            modal.show();
+                        })
+                        .catch(error => {
+                            console.error('Error completo:', error);
+                            alert('Error al cargar los detalles del monitoreo: ' + error.message);
+                        });
+                } catch (error) {
+                    console.error('Error general:', error);
+                    alert('Error general: ' + error.message);
+                }
+            }
+
+            function openEditarModal(button) {
+                const monitoreoId = button.getAttribute('data-monitoreo-id');
+                const modal = new bootstrap.Modal(document.getElementById('monitoreoModal'));
+
+                fetch(`/Home/EditarMonitoreo/${monitoreoId}`)
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error("No se pudo cargar el formulario de edición.");
+                        }
+                        return response.text();
+                    })
+                    .then(html => {
+                        document.querySelector('#monitoreoModal .modal-content').innerHTML = html;
+                        modal.show();
+
+                        const form = document.getElementById('monitoreoForm');
+                        if (form) {
+                            form.addEventListener('submit', function (e) {
+                                e.preventDefault();
+
+                                Swal.fire({
+                                    title: '¿Actualizar monitoreo?',
+                                    text: 'Se guardarán los cambios realizados.',
+                                    icon: 'warning',
+                                    showCancelButton: true,
+                                    confirmButtonText: 'Sí, actualizar',
+                                    cancelButtonText: 'Cancelar',
+                                    confirmButtonColor: '#0d6efd',
+                                    cancelButtonColor: '#6c757d'
+                                }).then((result) => {
+                                    if (result.isConfirmed) {
+                                        const formData = new FormData(form);
+                                        formData.append('Id', monitoreoId);
+
+                                        fetch('/Home/GuardarEdicionMonitoreo', {
+                                            method: 'POST',
+                                            body: formData
+                                        })
+                                            .then(resp => resp.json())
+                                            .then(data => {
+                                                if (data.success) {
+                                                    modal.hide();
+                                                    Swal.fire('Actualizado', 'Monitoreo actualizado correctamente.', 'success')
+                                                        .then(() => window.location.reload());
+                                                } else {
+                                                    Swal.fire('Error', 'Error al actualizar: ' + JSON.stringify(data.errors), 'error');
+                                                }
+                                            });
+                                    }
+                                });
+                            });
+                        }
+                    })
+                    .catch(err => {
+                        Swal.fire('Error', err.message, 'error');
+                    });
+            }
+
+            function eliminarMonitoreo(id) {
+                Swal.fire({
+                    title: '¿Eliminar monitoreo?',
+                    text: 'Esta acción no se puede deshacer.',
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonText: 'Sí, eliminar',
+                    cancelButtonText: 'Cancelar',
+                    confirmButtonColor: '#dc3545',
+                    cancelButtonColor: '#6c757d'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        fetch(`/Home/EliminarMonitoreo/${id}`, {
+                            method: 'POST'
+                        })
+                            .then(response => {
+                                if (response.ok) {
+                                    Swal.fire('Eliminado', 'El monitoreo fue eliminado correctamente.', 'success')
+                                        .then(() => window.location.reload());
+                                } else {
+                                    return response.text().then(text => {
+                                        throw new Error(text);
+                                    });
+                                }
+                            })
+                            .catch(error => {
+                                Swal.fire('Error', 'Error al eliminar: ' + error.message, 'error');
+                            });
+                    }
+                });
+            }
+
+        </script>
+
+    </body>
+</html>
+

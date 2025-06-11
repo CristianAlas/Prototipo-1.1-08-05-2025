@@ -191,6 +191,7 @@
     </Compile>
     <Compile Include="logica\COD_Emergencia.cs" />
     <Compile Include="logica\LO_Usuario.cs" />
+    <Compile Include="Models\Aula.cs" />
     <Compile Include="Models\Emergencia.cs" />
     <Compile Include="Models\MonitoreosProgramados.cs" />
     <Compile Include="Models\Registros.cs" />
@@ -239,6 +240,7 @@
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="App_Browsers\qt.browser" />
+    <None Include="Properties\PublishProfiles\utec-sistemamonitoreodocente - Web Deploy.pubxml" />
     <None Include="Scripts\jquery-3.7.0.intellisense.js" />
     <Content Include="Scripts\IndexScript.js" />
     <Content Include="Scripts\jquery-3.7.0.js" />
@@ -276,9 +278,11 @@
     <Content Include="Views\Home\_ReportePDF.cshtml" />
     <Content Include="Views\Home\Lineamientos.cshtml" />
     <Content Include="Views\Home\ProgramarMonitoreo.cshtml" />
+    <Content Include="Views\Home\Usuarios.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Views\Usuarios\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\bootstrap.rtl.min.css.map" />
