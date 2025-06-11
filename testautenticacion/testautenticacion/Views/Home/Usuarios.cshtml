@@ -1,9 +1,14 @@
-﻿@model List<testautenticacion.Models.Usuarios>
+﻿@*@model List<testautenticacion.Models.Usuarios>*@
+@model PagedList.IPagedList<testautenticacion.Models.Usuarios>
+@using PagedList.Mvc
 
 @{
     ViewBag.Title = "Gestion de Usuarios";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
+
+
+<link href="~/Content/StylePaginator.css" rel="stylesheet" />
 
 <h3>Gestión de Usuarios</h3>
 @if (TempData["Success"] != null)
@@ -113,6 +118,35 @@
             }
         </tbody>
     </table>
+    <div class="pagination-wrapper mt-4">
+        <div class="d-flex justify-content-center">
+            @Html.PagedListPager(Model, page => Url.Action("Usuarios", new { page, busqueda = Request.QueryString["busqueda"] }),
+            new PagedListRenderOptions
+            {
+                UlElementClasses = new[] { "pagination" },
+                LiElementClasses = new[] { "page-item" },
+                DisplayLinkToFirstPage = PagedListDisplayMode.Always,
+                DisplayLinkToLastPage = PagedListDisplayMode.Always,
+                DisplayLinkToPreviousPage = PagedListDisplayMode.Always,
+                DisplayLinkToNextPage = PagedListDisplayMode.Always,
+                Display = PagedListDisplayMode.IfNeeded,
+                MaximumPageNumbersToDisplay = 5,
+                LinkToFirstPageFormat = "«",
+                LinkToPreviousPageFormat = "‹",
+                LinkToNextPageFormat = "›",
+                LinkToLastPageFormat = "»"
+            })
+        </div>
+        
+        @if (Model != null && Model.PageCount > 1)
+        {
+            <div class="pagination-info">
+                Página @(Model.PageNumber) de @(Model.PageCount)
+            </div>
+        }
+
+    </div>
+
 </div>
 
 @section Scripts {

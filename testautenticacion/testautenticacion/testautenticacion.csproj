@@ -235,6 +235,7 @@
     <Content Include="Content\StyleIndex.css" />
     <Content Include="Content\StylePaginator.css" />
     <Content Include="Content\StyleReportes.css" />
+    <Content Include="Content\StyleUsuarios.css" />
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />

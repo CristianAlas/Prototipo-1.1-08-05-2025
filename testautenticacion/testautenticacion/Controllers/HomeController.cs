@@ -1228,7 +1228,7 @@ namespace testautenticacion.Controllers
             return usuarios;
         }
         //Filtrar usuarios
-        public ActionResult Usuarios(string busqueda = "")
+        public ActionResult Usuarios(string busqueda = "", int? page = 1)
         {
             var usuarios = ObtenerUsuariosDesdeBD();
 
@@ -1239,8 +1239,14 @@ namespace testautenticacion.Controllers
                     .ToList();
             }
 
-            return View(usuarios);
+            //return View(usuarios);
+            int pageSize = 5;
+            int pageNumber = page ?? 1;
+
+            var pagedUsuarios = usuarios.ToPagedList(pageNumber, pageSize);
+            return View(pagedUsuarios);
         }
+
         //Guardar usuarios nuevo y Editar usuarios nuevo
         [HttpPost]
         [PermisosRol(Rol.Administrador)]
