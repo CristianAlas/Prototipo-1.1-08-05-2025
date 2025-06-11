@@ -26,7 +26,7 @@ namespace testautenticacion.Controllers
 
         private static readonly string connectionString = ConfigurationManager.ConnectionStrings["MiConexion"].ConnectionString;
 
-        public ActionResult Index()
+        public ActionResult Index(int? page)
         {
             int totalReportes = 0;
             int monitoreosCompletados = 0;
@@ -91,12 +91,20 @@ namespace testautenticacion.Controllers
                 }
             }
 
+            // Paginación de emergencias
+            int pageSize = 5;
+            int pageNumber = page ?? 1;
+            var pagedEmergencias = listaEmergencias
+                .OrderByDescending(e => e.FechaHora)
+                .ToPagedList(pageNumber, pageSize);
+
             // ViewBags
             ViewBag.TotalReportesGenerados = totalReportes;
             ViewBag.MonitoreosCompletados = monitoreosCompletados;
             ViewBag.MonitoreosPendientes = monitoreosPendientes;
             ViewBag.IncidentesCriticos = incidentesCriticos;
-            ViewBag.ListaEmergencias = listaEmergencias;
+            ViewBag.ListaEmergencias = pagedEmergencias;
+            //ViewBag.ListaEmergencias = listaEmergencias;
 
             // Usuario
             var usuario = Session["Usuario"] as Usuarios;
