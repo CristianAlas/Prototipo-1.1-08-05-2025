@@ -7,11 +7,11 @@
       "RelativeMoniker": "D:0:0:{E2FC27FE-40B3-4B41-B812-45167FD99EFF}|testautenticacion\\testautenticacion.csproj|solutionrelative:testautenticacion\\views\\acceso\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{E2FC27FE-40B3-4B41-B812-45167FD99EFF}|testautenticacion\\testautenticacion.csproj|c:\\users\\alejandro\\documents\\sistema_monitoreoclases\\testautenticacion\\testautenticacion\\controllers\\accesocontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "AbsoluteMoniker": "D:0:0:{E2FC27FE-40B3-4B41-B812-45167FD99EFF}|testautenticacion\\testautenticacion.csproj|C:\\Users\\Alejandro\\Documents\\sistema_monitoreoclases\\testautenticacion\\testautenticacion\\controllers\\accesocontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{E2FC27FE-40B3-4B41-B812-45167FD99EFF}|testautenticacion\\testautenticacion.csproj|solutionrelative:testautenticacion\\controllers\\accesocontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{E2FC27FE-40B3-4B41-B812-45167FD99EFF}|testautenticacion\\testautenticacion.csproj|c:\\users\\alejandro\\documents\\sistema_monitoreoclases\\testautenticacion\\testautenticacion\\web.config||{FA3CD31E-987B-443A-9B81-186104E8DAC1}",
+      "AbsoluteMoniker": "D:0:0:{E2FC27FE-40B3-4B41-B812-45167FD99EFF}|testautenticacion\\testautenticacion.csproj|C:\\Users\\Alejandro\\Documents\\sistema_monitoreoclases\\testautenticacion\\testautenticacion\\web.config||{FA3CD31E-987B-443A-9B81-186104E8DAC1}",
       "RelativeMoniker": "D:0:0:{E2FC27FE-40B3-4B41-B812-45167FD99EFF}|testautenticacion\\testautenticacion.csproj|solutionrelative:testautenticacion\\web.config||{FA3CD31E-987B-443A-9B81-186104E8DAC1}"
     },
     {
@@ -81,8 +81,7 @@
               "RelativeToolTip": "testautenticacion\\Controllers\\AccesoController.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAACEAAAANAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-06-13T22:17:29.601Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-06-13T22:17:29.601Z"
             },
             {
               "$type": "Document",
