@@ -1051,6 +1051,7 @@ namespace testautenticacion.Controllers
             ViewBag.IdEdificio = monitoreo.Edificio;
             return View(monitoreo);
         }
+
         //Logica para obtener la lista de materias
         private List<SelectListItem> ObtenerMaterias()
         {
@@ -1148,7 +1149,7 @@ namespace testautenticacion.Controllers
 
 
         ////////////////////////////////////////// Post Programar Monitoreo //////////////////////////////////////////
-        [HttpPost]
+        /*[HttpPost]
         [PermisosRol(Rol.Administrador | Rol.Coordinador)]
         public ActionResult ProgramarMonitoreo(MonitoreosProgramados monitoreo)
         {
@@ -1199,6 +1200,65 @@ namespace testautenticacion.Controllers
             monitoreo.Monitores = ObtenerMonitores();
             return View(monitoreo);
         }
+        */
+        [HttpPost]
+        [PermisosRol(Rol.Administrador | Rol.Coordinador)]
+        public ActionResult ProgramarMonitoreo(MonitoreosProgramados monitoreo)
+        {
+            // Validación para que solo permita sábados o domingos
+            if (monitoreo.Fecha.DayOfWeek != DayOfWeek.Saturday && monitoreo.Fecha.DayOfWeek != DayOfWeek.Sunday)
+            {
+                ModelState.AddModelError("Fecha", "Solo se pueden programar monitoreos en sábado o domingo.");
+            }
+
+            if (ModelState.IsValid)
+            {
+                string nombreAula = "";
+
+                using (SqlConnection conexion = new SqlConnection(connectionString))
+                {
+                    // 1. Obtener el nombre del aula usando el IdAula seleccionado
+                    string obtenerAulaQuery = "SELECT Nombre FROM Aulas WHERE IdAula = @IdAula";
+                    SqlCommand cmdAula = new SqlCommand(obtenerAulaQuery, conexion);
+                    cmdAula.Parameters.AddWithValue("@IdAula", monitoreo.IdAula);
+
+                    conexion.Open();
+                    var resultado = cmdAula.ExecuteScalar();
+                    if (resultado != null)
+                    {
+                        nombreAula = resultado.ToString();
+                    }
+
+                    // 2. Insertar el monitoreo con el nombre del aula
+                    string query = @"INSERT INTO MonitoreosProgramados
+                (Materia, Docente, Responsable, Aula, HoraInicio, HoraFin, Fecha, Recorrido, Jornada, Ciclo, EstadoMonitoreo)
+                VALUES (@Materia, @Docente, @Responsable, @Aula, @HoraInicio, @HoraFin, @Fecha, @Recorrido, @Jornada, @Ciclo, @EstadoMonitoreo)";
+
+                    SqlCommand cmdInsert = new SqlCommand(query, conexion);
+                    cmdInsert.Parameters.AddWithValue("@Materia", monitoreo.Materia);
+                    cmdInsert.Parameters.AddWithValue("@Docente", monitoreo.Docente);
+                    cmdInsert.Parameters.AddWithValue("@Responsable", monitoreo.Responsable);
+                    cmdInsert.Parameters.AddWithValue("@Aula", nombreAula);
+                    cmdInsert.Parameters.AddWithValue("@HoraInicio", monitoreo.HoraInicio);
+                    cmdInsert.Parameters.AddWithValue("@HoraFin", monitoreo.HoraFin);
+                    cmdInsert.Parameters.AddWithValue("@Fecha", monitoreo.Fecha);
+                    cmdInsert.Parameters.AddWithValue("@Recorrido", monitoreo.Recorrido);
+                    cmdInsert.Parameters.AddWithValue("@Jornada", monitoreo.Jornada);
+                    cmdInsert.Parameters.AddWithValue("@Ciclo", monitoreo.Ciclo);
+                    cmdInsert.Parameters.AddWithValue("@EstadoMonitoreo", monitoreo.Fecha.Date < DateTime.Today ? "Expirado" : "Pendiente");
+
+                    cmdInsert.ExecuteNonQuery();
+                }
+
+                return RedirectToAction("Filtro");
+            }
+
+            // repoblar dropdowns en caso de error
+            ViewBag.IdEdificio = ObtenerEdificios();
+            monitoreo.Monitores = ObtenerMonitores();
+            return View(monitoreo);
+        }
+
         //Logica CURD para Usuarios-------------------------------------------------------------------------------------
         //Listar usuarios
         private List<Usuarios> ObtenerUsuariosDesdeBD()
