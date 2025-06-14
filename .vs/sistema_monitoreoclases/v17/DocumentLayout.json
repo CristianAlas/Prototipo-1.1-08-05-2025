@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "WorkspaceRootPath": "C:\\Users\\Alejandro\\Documents\\proyecto con fork\\sistema_monitoreoclases\\",
+  "WorkspaceRootPath": "C:\\Users\\Alejandro\\Documents\\sistema_monitoreoclases\\",
   "Documents": [],
   "DocumentGroupContainers": [
     {
@@ -26,6 +26,16 @@
             {
               "$type": "Bookmark",
               "Name": "ST:128:0:{1fc202d4-d401-403c-9834-5b218574bb67}"
+            }
+          ]
+        },
+        {
+          "DockedWidth": 223,
+          "SelectedChildIndex": -1,
+          "Children": [
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{d78612c7-9962-4b83-95d9-268046dad23a}"
             }
           ]
         }

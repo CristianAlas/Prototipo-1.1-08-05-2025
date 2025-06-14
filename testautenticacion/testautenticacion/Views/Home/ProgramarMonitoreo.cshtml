@@ -43,14 +43,13 @@
                     </div>
                     <div class="col-md-6">
                         <label class="form-label fw-semibold">Fecha</label>
-                        @Html.TextBoxFor(m => m.Fecha, "{0:yyyy-MM-dd}", new
+                        @Html.TextBoxFor(m => m.Fecha, new
                         {
                             @class = "form-control",
-                            type = "date",
-                            required = "required",
-                            min = DateTime.Now.ToString("yyyy-MM-dd")
+                            @id = "datepicker",
+                            autocomplete = "off",
+                            required = "required"
                         })
-                        @Html.ValidationMessageFor(m => m.Fecha, "", new { @class = "text-danger small" })
                     </div>
                     <div class="col-md-6">
                         <label class="form-label fw-semibold">Hora Inicio</label>
@@ -100,7 +99,24 @@
 
 
 @section Scripts {
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css" />
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <!--script para validar que los dias selecionados nada mas sean sabados y domingos-->
+    <script>
+        $(function () {
+            $("#datepicker").datepicker({
+                dateFormat: "yy-mm-dd",
+                minDate: 0, // No se puede seleccionar fechas pasadas
+                beforeShowDay: function (date) {
+                    var day = date.getDay();
+                    return [(day === 0 || day === 6), '']; // 0: domingo, 6: sábado
+                }
+            });
+        });
+    </script>
+
     <script>
         document.querySelector('form').addEventListener('submit', function (e) {
             e.preventDefault();

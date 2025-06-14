@@ -29,11 +29,10 @@ namespace testautenticacion.Controllers
             if (objeto.Nombres != null)
             {
                 FormsAuthentication.SetAuthCookie(objeto.Correo, false);
-
                 Session["Usuario"] = objeto;
-
                 return RedirectToAction("Index", "Home");
             }
+            ViewBag.Error = "Correo o contraseña incorrectos";
             return View();
         }
     }

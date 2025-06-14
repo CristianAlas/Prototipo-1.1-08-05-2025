@@ -23,6 +23,13 @@
                         <p>Ingresa a tu cuenta</p>
                     </div>
                     <form action="@Url.Action("Index","Acceso")" method="post">
+                        @if (ViewBag.Error != null)
+                        {
+                            <div class="alert alert-danger text-center" role="alert">
+                                @ViewBag.Error
+                            </div>
+                        }
+
                         <div class="form-group">
                             <label class="form-label">Correo:</label>
                             <input class="form-control" type="email" name="correo" placeholder="ejemplo@mail.utec.edu.sv" required />
