@@ -34,6 +34,7 @@
                             </label>
                             <input type="date" name="fecha" class="form-control" value="@(ViewBag.FechaSeleccionada ?? DateTime.Now.ToString("yyyy-MM-dd"))">
 
+
                         </div>
 
                         <!-- Filtro por Recorrido -->
@@ -43,8 +44,9 @@
                             </label>
                             <select name="recorrido" class="form-select">
                                 <option value="">Seleccionar Recorrido</option>
-                                <option value="Primer Recorrido" @(ViewBag.RecorridoSeleccionado == "Primer Recorrido" ? "selected" : "")>Primer Recorrido (07:00 - 10:00)</option>
+                                <option value="Primer Recorrido" @(ViewBag.RecorridoSeleccionado == "Primer Recorrido" ? "selected" : "")>Primer Recorrido (08:00 - 10:00)</option>
                                 <option value="Segundo Recorrido" @(ViewBag.RecorridoSeleccionado == "Segundo Recorrido" ? "selected" : "")>Segundo Recorrido (10:00 - 13:00)</option>
+                                <option value="Tercer Recorrido" @(ViewBag.RecorridoSeleccionado == "Segundo Recorrido" ? "selected" : "")>Tercer Recorrido (13:00 - 17:00)</option>
                             </select>
                         </div>
 
@@ -90,15 +92,6 @@
                 }
             </div>
         </div>
-        @section Scripts {
-            <script>
-                window.onload = function () {
-                    if (!window.location.search) {
-                        document.querySelector('form').submit();
-                    }
-                }
-            </script>
-        }
 
         <!-- Tabla de Resultados -->
         <div class="card shadow">
@@ -413,7 +406,7 @@
             fetch(`/Home/EditarMonitoreo/${monitoreoId}`)
                 .then(response => {
                     if (!response.ok) {
-                        throw new Error("No se pudo cargar el formulario de edición.");
+                        throw new Error("No se pudo cargar el formulario de edición. Debes registrar el monitoreo antes de editarlo");
                     }
                     return response.text();
                 })

@@ -1,12 +1,7 @@
 {
   "Version": 1,
   "WorkspaceRootPath": "C:\\Users\\Rolan\\Documents\\Proyectos\\rolandoandrad3\\Sistema-de-Monitoreo-de-Clases-\\testautenticacion\\",
-  "Documents": [
-    {
-      "AbsoluteMoniker": "D:0:0:{E2FC27FE-40B3-4B41-B812-45167FD99EFF}|testautenticacion\\testautenticacion.csproj|c:\\users\\rolan\\documents\\proyectos\\rolandoandrad3\\sistema-de-monitoreo-de-clases-\\testautenticacion\\testautenticacion\\controllers\\homecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{E2FC27FE-40B3-4B41-B812-45167FD99EFF}|testautenticacion\\testautenticacion.csproj|solutionrelative:testautenticacion\\controllers\\homecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    }
-  ],
+  "Documents": [],
   "DocumentGroupContainers": [
     {
       "Orientation": 0,
@@ -14,7 +9,7 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 4,
+          "SelectedChildIndex": -1,
           "Children": [
             {
               "$type": "Bookmark",
@@ -31,19 +26,6 @@
             {
               "$type": "Bookmark",
               "Name": "ST:128:0:{116d2292-e37d-41cd-a077-ebacac4c8cc4}"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 0,
-              "Title": "HomeController.cs",
-              "DocumentMoniker": "C:\\Users\\Rolan\\Documents\\Proyectos\\rolandoandrad3\\Sistema-de-Monitoreo-de-Clases-\\testautenticacion\\testautenticacion\\Controllers\\HomeController.cs",
-              "RelativeDocumentMoniker": "testautenticacion\\Controllers\\HomeController.cs",
-              "ToolTip": "C:\\Users\\Rolan\\Documents\\Proyectos\\rolandoandrad3\\Sistema-de-Monitoreo-de-Clases-\\testautenticacion\\testautenticacion\\Controllers\\HomeController.cs",
-              "RelativeToolTip": "testautenticacion\\Controllers\\HomeController.cs",
-              "ViewState": "AgIAAO8EAAAAAAAAAIA6wAMFAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-06-11T05:11:11.083Z",
-              "EditorCaption": ""
             }
           ]
         },
