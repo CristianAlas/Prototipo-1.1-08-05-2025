@@ -1,64 +1,102 @@
-﻿
-@{
-    ViewBag.Title = "Lineamientos";
+﻿@{
+    ViewBag.Title = "Lineamientos y Entrenamiento";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
+
 <div class="container mt-5 mb-5">
-    <link href="~/Content/bootstrap.min.css" rel="stylesheet" />
-    <div class="card shadow">
-        <div class="card-header text-white" style="background-color: #850836">
-            <h4 class="mb-0"><i class="fas fa-clipboard-list me-2"></i>Lineamientos del Sistema de Monitoreo</h4>
+    <div class="card shadow-lg border-0">
+        <div class="card-header bg-dark text-white">
+            <h4 class="mb-0"><i class="fas fa-chalkboard-teacher me-2"></i> Lineamientos y Entrenamiento del Sistema</h4>
         </div>
         <div class="card-body">
-            <p class="text-muted">A continuación, se detallan las normas y buenas prácticas para el uso adecuado del sistema de monitoreo de clases.</p>
+
+            <p class="text-muted">A continuación, encontrarás las normas generales de uso del sistema, así como materiales de entrenamiento para los monitores.</p>
 
             <hr />
 
-            <h5 class="text-primary"><i class="fas fa-check-circle me-2"></i>Acceso al Sistema</h5>
-            <ul>
-                <li>El sistema está habilitado únicamente para usuarios autorizados con credenciales institucionales.</li>
-                <li>Debe utilizarse desde un navegador actualizado para garantizar su correcto funcionamiento.</li>
+            <!-- SECCIÓN DE LINEAMIENTOS -->
+            <h5 class="text-primary"><i class="fas fa-check-circle me-2"></i> Normas Generales</h5>
+            <ul class="mb-4">
+                <li>El acceso está restringido a usuarios autorizados con credenciales institucionales.</li>
+                <li>Utilice un navegador actualizado para garantizar compatibilidad y seguridad.</li>
             </ul>
 
-            <h5 class="text-primary mt-4"><i class="fas fa-eye me-2"></i>Monitoreo de Clases</h5>
-            <ul>
-                <li>Los monitores deben registrar la asistencia y condiciones del aula en los horarios asignados.</li>
-                <li>Es obligatorio incluir comentarios cuando se detecten irregularidades o incidentes relevantes.</li>
-                <li>Una vez enviado un monitoreo, no podrá ser editado. Verifique cuidadosamente los datos antes de guardar.</li>
+            <h5 class="text-primary"><i class="fas fa-eye me-2"></i> Registro de Monitoreos</h5>
+            <ul class="mb-4">
+                <li>Los monitores deben registrar la información en el horario asignado.</li>
+                <li>Use los comentarios solo para observaciones relevantes o emergencias.</li>
+                <li>Una vez enviado un registro, no podrá editarse.</li>
             </ul>
 
-            <h5 class="text-primary mt-4"><i class="fas fa-clock me-2"></i>Horarios de Registro</h5>
-            <ul>
-                <li>Los registros deben realizarse dentro del horario del recorrido asignado:</li>
-                <ul>
-                    <li>Primer recorrido: 07:00 - 10:00</li>
-                    <li>Segundo recorrido: 10:00 - 13:00</li>
-                    <li>Jornada Vespertina: 13:00 - 19:00</li>
-                </ul>
+            <h5 class="text-primary"><i class="fas fa-clock me-2"></i> Horarios Permitidos</h5>
+            <ul class="mb-4">
+                <li>Primer recorrido: <strong>07:00 - 10:00</strong></li>
+                <li>Segundo recorrido: <strong>10:00 - 13:00</strong></li>
+                <li>Jornada Vespertina: <strong>13:00 - 19:00</strong></li>
             </ul>
 
-            <h5 class="text-primary mt-4"><i class="fas fa-exclamation-triangle me-2"></i>Responsabilidades</h5>
-            <ul>
-                <li>Es responsabilidad del monitor reportar cualquier ausencia injustificada de docentes.</li>
-                <li>Los datos deben ser ingresados con precisión. Cualquier falsificación será sancionada.</li>
+            <h5 class="text-primary"><i class="fas fa-exclamation-triangle me-2"></i> Reportes de Emergencia</h5>
+            <ul class="mb-4">
+                <li>Use el botón de <strong>“Incidente Crítico”</strong> solo en situaciones graves o emergencias.</li>
+                <li>Describa con claridad lo sucedido y registre solo después de haber atendido el incidente.</li>
             </ul>
 
-            <h5 class="text-primary mt-4"><i class="fas fa-lock me-2"></i>Seguridad y Confidencialidad</h5>
-            <ul>
-                <li>No comparta su usuario ni contraseña con terceros.</li>
-                <li>Todos los registros quedan almacenados y auditados por el sistema para garantizar la transparencia.</li>
+            <h5 class="text-primary"><i class="fas fa-user-shield me-2"></i> Seguridad del Usuario</h5>
+            <ul class="mb-4">
+                <li>No comparta sus credenciales con nadie.</li>
+                <li>El sistema audita todos los registros enviados.</li>
             </ul>
 
-            <h5 class="text-primary mt-4"><i class="fas fa-lock me-2"></i>Incidentes Criticos</h5>
-            <ul>
-                <li>En caso de presentarse una emergencia o algun incidente que requiera atencion durante su monitoreo, asegúrese de completar el formulario disponible en el botón flotante de <strong>"Incidentes Criticos"</strong>.</li>
-                <li>Todos los registros se almacenan automáticamente; describa la situación de forma clara y precisa.</li>
-                <li>Una vez enviado el reporte de emergencia, no podrá ser editado. Verifique cuidadosamente la información antes de enviarlo.</li>
-                <li>El registro debe realizarse únicamente después de haber solventado la emergencia y contactado al personal correspondiente para su resolución.</li>
-            </ul>
+            <div class="alert alert-info mt-4">
+                <strong>¿Necesitas ayuda?</strong> Contacta al equipo técnico: <a href="mailto:soporte@utec.edu.sv">soporte@utec.edu.sv</a>
+            </div>
 
-            <div class="alert alert-info mt-5">
-                <strong>Nota:</strong> Para asistencia técnica o dudas sobre el uso del sistema, contactar al administrador institucional a través del correo: <a href="mailto:soporte@utec.edu.sv">soporte@utec.edu.sv</a>
+            <hr class="mt-5 mb-4" />
+
+            <!-- SECCIÓN DE ENTRENAMIENTO -->
+            <h4 class="text-dark"><i class="fas fa-play-circle me-2"></i> Entrenamiento para Monitores</h4>
+            <p class="text-muted">Estos videos te enseñarán a utilizar correctamente el sistema de monitoreo.</p>
+
+            <div class="row g-4 mt-3">
+                <div class="col-md-4">
+                    <div class="card border-0 shadow-sm h-100">
+                        <div class="ratio ratio-16x9">
+                            <iframe src="https://www.youtube.com/embed/VIDEO_ID_1" title="Cómo registrar un monitoreo" allowfullscreen></iframe>
+                        </div>
+                        <div class="card-body">
+                            <h6 class="card-title mb-1">Registrar un Monitoreo</h6>
+                            <small class="text-muted">Paso a paso para completar correctamente el formulario de monitoreo.</small>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="card border-0 shadow-sm h-100">
+                        <div class="ratio ratio-16x9">
+                            <iframe src="https://www.youtube.com/embed/VIDEO_ID_2" title="Descargar reportes de monitoreo" allowfullscreen></iframe>
+                        </div>
+                        <div class="card-body">
+                            <h6 class="card-title mb-1">Descargar Reportes</h6>
+                            <small class="text-muted">Cómo generar informes PDF o CSV de los monitoreos realizados.</small>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="card border-0 shadow-sm h-100">
+                        <div class="ratio ratio-16x9">
+                            <iframe src="https://www.youtube.com/embed/VIDEO_ID_3" title="Crear incidente crítico" allowfullscreen></iframe>
+                        </div>
+                        <div class="card-body">
+                            <h6 class="card-title mb-1">Reportar Incidente Crítico</h6>
+                            <small class="text-muted">Guía para registrar emergencias y situaciones relevantes.</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="alert alert-secondary mt-4">
+                <i class="fas fa-lightbulb me-2"></i> Estos recursos están diseñados exclusivamente para los monitores. Si tienes preguntas adicionales, consulta con tu coordinador.
             </div>
         </div>
     </div>
