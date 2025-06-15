@@ -744,3 +744,7 @@ C:\Users\Alejandro\Documents\sistema_monitoreoclases\testautenticacion\testauten
 C:\Users\Alejandro\Documents\sistema_monitoreoclases\testautenticacion\testautenticacion\obj\Debug\testaute.3EFB0371.Up2Date
 C:\Users\Alejandro\Documents\sistema_monitoreoclases\testautenticacion\testautenticacion\obj\Debug\testautenticacion.dll
 C:\Users\Alejandro\Documents\sistema_monitoreoclases\testautenticacion\testautenticacion\obj\Debug\testautenticacion.pdb
+C:\Users\Rolan\Documents\Proyectos\rolandoandrad3\Sistema-de-Monitoreo-de-Clases-\testautenticacion\testautenticacion\bin\PagedList.dll
+C:\Users\Rolan\Documents\Proyectos\rolandoandrad3\Sistema-de-Monitoreo-de-Clases-\testautenticacion\testautenticacion\bin\PagedList.Mvc.dll
+C:\Users\Rolan\Documents\Proyectos\rolandoandrad3\Sistema-de-Monitoreo-de-Clases-\testautenticacion\testautenticacion\bin\PagedList.xml
+C:\Users\Rolan\Documents\Proyectos\rolandoandrad3\Sistema-de-Monitoreo-de-Clases-\testautenticacion\testautenticacion\bin\PagedList.Mvc.xml

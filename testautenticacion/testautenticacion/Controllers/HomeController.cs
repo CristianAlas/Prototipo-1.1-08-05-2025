@@ -1267,7 +1267,7 @@ namespace testautenticacion.Controllers
 
             using (SqlConnection conexion = new SqlConnection(connectionString))
             {
-                string query = "SELECT Nombres, Correo, Clave, IdRol FROM USUARIOS";
+                string query = "SELECT Nombres, Correo, Clave, IdRol, Estado FROM USUARIOS";
 
                 SqlCommand cmd = new SqlCommand(query, conexion);
                 conexion.Open();
@@ -1280,7 +1280,8 @@ namespace testautenticacion.Controllers
                         Nombres = reader["Nombres"].ToString(),
                         Correo = reader["Correo"].ToString(),
                         Clave = reader["Clave"].ToString(),
-                        IdRol = (Rol)Convert.ToInt32(reader["IdRol"])
+                        IdRol = (Rol)Convert.ToInt32(reader["IdRol"]),
+                        Estado = Convert.ToBoolean(reader["Estado"]),
                     });
                 }
             }
@@ -1368,14 +1369,14 @@ namespace testautenticacion.Controllers
         //Eliminar usuario
         [HttpGet]
         [PermisosRol(Rol.Administrador)]
-        public ActionResult EliminarUsuario(string correo)
+        public ActionResult DeshabilitarUsuario(string correo)
         {
             try
             {
                 using (SqlConnection conexion = new SqlConnection(connectionString))
                 {
                     conexion.Open();
-                    string query = "DELETE FROM USUARIOS WHERE Correo = @Correo";
+                    string query = "UPDATE USUARIOS SET Estado = 0 WHERE Correo = @Correo";
                     SqlCommand cmd = new SqlCommand(query, conexion);
                     cmd.Parameters.AddWithValue("@Correo", correo);
 
@@ -1383,7 +1384,7 @@ namespace testautenticacion.Controllers
 
                     if (filasAfectadas > 0)
                     {
-                        TempData["Success"] = "Usuario eliminado exitosamente.";
+                        TempData["Success"] = "Usuario deshabilitado exitosamente.";
                     }
                     else
                     {
@@ -1393,12 +1394,11 @@ namespace testautenticacion.Controllers
             }
             catch (Exception ex)
             {
-                TempData["Error"] = "Error al eliminar usuario: " + ex.Message;
+                TempData["Error"] = "Error al deshabilitar usuario: " + ex.Message;
             }
 
             return RedirectToAction("Usuarios");
         }
-
 
 
     }

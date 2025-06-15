@@ -9,7 +9,7 @@
 
 
 <link href="~/Content/StylePaginator.css" rel="stylesheet" />
-
+<link href="~/Content/bootstrap.min.css" rel="stylesheet" />
 <h3>Gestión de Usuarios</h3>
 @if (TempData["Success"] != null)
 {
@@ -27,8 +27,17 @@
 }
 
 <!-- Buscador -->
-<form method="get" asp-controller="Home" asp-action="Usuarios" class="mb-3">
-    <input type="text" name="busqueda" value="@Request.QueryString["busqueda"]" placeholder="Buscar por nombre o correo" class="form-control" />
+<form method="get" asp-controller="Home" asp-action="Usuarios" class="mb-4">
+    <div class="input-group">
+        
+        <input type="text" name="busqueda"
+               value="@Request.QueryString["busqueda"]"
+               class="form-control"
+               placeholder="Buscar por nombre o correo electrónico" />
+        <button type="submit" class="btn btn-outline-primary">
+            Buscar
+        </button>
+    </div>
 </form>
 
 <!-- FORMULARIO DE CREACIÓN/EDICIÓN -->
@@ -84,7 +93,9 @@
                 <th>Nombres</th>
                 <th>Correo</th>
                 <th>Rol</th>
+                <th>Estado Activo</th>
                 <th>Acciones</th>
+
             </tr>
         </thead>
         <tbody>
@@ -96,16 +107,17 @@
                         <td>@u.Nombres</td>
                         <td>@u.Correo</td>
                         <td>@u.IdRol</td>
+                        <td>@u.Estado</td>
                         <td>
                             <div class="d-flex flex-wrap gap-2">
                                 <button class="btn btn-sm btn-primary"
                                         onclick="editarUsuario('@u.Nombres', '@u.Correo', '@u.Clave', '@((int)u.IdRol)')">
                                     Editar
                                 </button>
-                                <a href="@Url.Action("EliminarUsuario", "Home", new { correo = u.Correo })"
+                                <a href="@Url.Action("DeshabilitarUsuario", "Home", new { correo = u.Correo })"
                                    class="btn btn-sm btn-danger"
-                                   onclick="return confirm('¿Eliminar este usuario?')">
-                                    Eliminar
+                                   onclick="return confirm('¿Deshabilitar este usuario?')">
+                                    Desabilitar
                                 </a>
                             </div>
                         </td>
@@ -151,12 +163,13 @@
 
 @section Scripts {
     <script>
-        function editarUsuario(nombres, correo, clave, idRol) {
+        function editarUsuario(nombres, correo, clave, idRol, Estado) {
             document.getElementsByName("Nombres")[0].value = nombres;
             document.getElementsByName("Correo")[0].value = correo;
             document.getElementsByName("Clave")[0].value = clave;
             document.getElementsByName("IdRol")[0].value = idRol;
             document.getElementById("CorreoOriginal").value = correo;
+            document.getElementByName("Estado").value = Estado;
 
             // Cambia el texto del botón
             document.getElementById("btnGuardar").innerText = "Actualizar usuario";
