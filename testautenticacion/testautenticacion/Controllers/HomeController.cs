@@ -148,89 +148,96 @@ namespace testautenticacion.Controllers
         [HttpGet]
         public ActionResult Filtro(DateTime? fecha, string recorrido, string docente, string aula, string estado, int? page)
         {
-            List<MonitoreosProgramados> monitoreos = new List<MonitoreosProgramados>();
+            var monitoreos = new List<MonitoreosProgramados>();
 
-            using (SqlConnection conexion = new SqlConnection(connectionString))
+            // ✅ 1. Evitar cargar si no se ha aplicado ningún filtro
+            bool hayFiltros = fecha.HasValue ||
+                              !string.IsNullOrWhiteSpace(recorrido) ||
+                              !string.IsNullOrWhiteSpace(docente) ||
+                              !string.IsNullOrWhiteSpace(aula) ||
+                              !string.IsNullOrWhiteSpace(estado);
+
+            if (hayFiltros)
             {
-                SqlCommand comando = new SqlCommand("sp_ObtenerMonitoreosProgramadosConFiltros", conexion);
-                comando.CommandType = CommandType.StoredProcedure;
-
-                comando.Parameters.AddWithValue("@Fecha", fecha ?? (object)DBNull.Value);
-                comando.Parameters.AddWithValue("@Recorrido", string.IsNullOrWhiteSpace(recorrido) ? (object)DBNull.Value : recorrido.Trim().ToLower());
-                comando.Parameters.AddWithValue("@Docente", string.IsNullOrWhiteSpace(docente) ? (object)DBNull.Value : docente);
-                comando.Parameters.AddWithValue("@Aula", string.IsNullOrWhiteSpace(aula) ? (object)DBNull.Value : aula);
-
-                conexion.Open();
-                using (SqlDataReader reader = comando.ExecuteReader())
+                using (SqlConnection conexion = new SqlConnection(connectionString))
                 {
-                    while (reader.Read())
+                    SqlCommand comando = new SqlCommand("sp_ObtenerMonitoreosProgramadosConFiltros", conexion);
+                    comando.CommandType = CommandType.StoredProcedure;
+
+                    comando.Parameters.AddWithValue("@Fecha", fecha ?? (object)DBNull.Value);
+                    comando.Parameters.AddWithValue("@Recorrido", string.IsNullOrWhiteSpace(recorrido) ? (object)DBNull.Value : recorrido.Trim());
+                    comando.Parameters.AddWithValue("@Docente", string.IsNullOrWhiteSpace(docente) ? (object)DBNull.Value : docente);
+                    comando.Parameters.AddWithValue("@Aula", string.IsNullOrWhiteSpace(aula) ? (object)DBNull.Value : aula);
+
+                    conexion.Open();
+
+                    using (SqlDataReader reader = comando.ExecuteReader())
                     {
-                        monitoreos.Add(new MonitoreosProgramados
+                        while (reader.Read())
                         {
-                            Id = Convert.ToInt32(reader["Id"]),
-                            Materia = reader["Materia"].ToString(),
-                            Docente = reader["Docente"].ToString(),
-                            Responsable = reader["Responsable"].ToString(),
-                            Aula = reader["Aula"].ToString(),
-                            HoraInicio = (TimeSpan)reader["HoraInicio"],
-                            HoraFin = (TimeSpan)reader["HoraFin"],
-                            Fecha = Convert.ToDateTime(reader["Fecha"]),
-                            Recorrido = reader["Recorrido"].ToString(),
-                            Jornada = reader["Jornada"].ToString(),
-                            Ciclo = reader["Ciclo"].ToString()
-                        });
+                            monitoreos.Add(new MonitoreosProgramados
+                            {
+                                Id = Convert.ToInt32(reader["Id"]),
+                                Materia = reader["Materia"].ToString(),
+                                Docente = reader["Docente"].ToString(),
+                                Responsable = reader["Responsable"].ToString(),
+                                Aula = reader["Aula"].ToString(),
+                                HoraInicio = (TimeSpan)reader["HoraInicio"],
+                                HoraFin = (TimeSpan)reader["HoraFin"],
+                                Fecha = Convert.ToDateTime(reader["Fecha"]),
+                                Recorrido = reader["Recorrido"].ToString(),
+                                Jornada = reader["Jornada"].ToString(),
+                                Ciclo = reader["Ciclo"].ToString()
+                            });
+                        }
                     }
-                }
 
-                // Segunda parte: verificar si tiene monitoreo en la tabla RegistrosMonitoreo
-                foreach (var monitoreo in monitoreos)
-                {
-                    SqlCommand checkCmd = new SqlCommand("SELECT TOP 1 1 FROM RegistrosMonitoreo WHERE MonitoreoProgramadoId = @Id", conexion);
-                    checkCmd.Parameters.AddWithValue("@Id", monitoreo.Id);
-                    object result = checkCmd.ExecuteScalar();
-                    monitoreo.TieneMonitoreo = result != null;
-
-                    string estadoActual = "Pendiente";
-
-                    if (monitoreo.TieneMonitoreo)
+                    // ✅ 2. Asignar estado de monitoreo por cada registro
+                    foreach (var monitoreo in monitoreos)
                     {
-                        estadoActual = "Completado";
+                        SqlCommand checkCmd = new SqlCommand("SELECT TOP 1 1 FROM RegistrosMonitoreo WHERE MonitoreoProgramadoId = @Id", conexion);
+                        checkCmd.Parameters.AddWithValue("@Id", monitoreo.Id);
+                        object result = checkCmd.ExecuteScalar();
+                        monitoreo.TieneMonitoreo = result != null;
+
+                        string estadoActual = "Pendiente";
+
+                        if (monitoreo.TieneMonitoreo)
+                            estadoActual = "Completado";
+                        else if (monitoreo.Fecha.Date < DateTime.Today)
+                            estadoActual = "Expirado";
+
+                        monitoreo.EstadoMonitoreo = estadoActual;
+
+                        SqlCommand updateCmd = new SqlCommand("UPDATE MonitoreosProgramados SET EstadoMonitoreo = @Estado WHERE Id = @Id", conexion);
+                        updateCmd.Parameters.AddWithValue("@Estado", estadoActual);
+                        updateCmd.Parameters.AddWithValue("@Id", monitoreo.Id);
+                        updateCmd.ExecuteNonQuery();
                     }
-                    else if (monitoreo.Fecha.Date < DateTime.Today)
+
+                    // ✅ 3. Filtro por estado si aplica
+                    if (!string.IsNullOrWhiteSpace(estado))
                     {
-                        estadoActual = "Expirado";
+                        monitoreos = monitoreos.Where(m => m.EstadoMonitoreo == estado).ToList();
                     }
-
-                    monitoreo.EstadoMonitoreo = estadoActual;
-
-                    // Guardar el estado actualizado en la base de datos
-                    SqlCommand updateCmd = new SqlCommand("UPDATE MonitoreosProgramados SET EstadoMonitoreo = @Estado WHERE Id = @Id", conexion);
-                    updateCmd.Parameters.AddWithValue("@Estado", estadoActual);
-                    updateCmd.Parameters.AddWithValue("@Id", monitoreo.Id);
-                    updateCmd.ExecuteNonQuery();
                 }
-                if (!string.IsNullOrWhiteSpace(estado))
-                {
-                    monitoreos = monitoreos.Where(m => m.EstadoMonitoreo == estado).ToList();
-                }
-
             }
-            // PAGINACIÓN
-            int pageSize = 5;
+
+            // ✅ 4. Preparar paginación y valores para la vista
+            int pageSize = 10;
             int pageNumber = page ?? 1;
             var pagedMonitoreos = monitoreos.ToPagedList(pageNumber, pageSize);
 
-            //ViewBag.Monitoreos = monitoreos;
-            ViewBag.FechaSeleccionada = fecha?.ToString("yyyy-MM-dd");
+            ViewBag.FechaSeleccionada = fecha?.ToString("yyyy-MM-dd") ?? DateTime.Now.ToString("yyyy-MM-dd");
             ViewBag.RecorridoSeleccionado = recorrido;
             ViewBag.DocenteSeleccionado = docente;
             ViewBag.AulaSeleccionada = aula;
             ViewBag.EstadoSeleccionado = estado;
-
             ViewBag.Usuario = Session["Usuario"];
 
             return View(pagedMonitoreos);
         }
+
 
         public ActionResult SinPermiso()
         {
@@ -383,6 +390,8 @@ namespace testautenticacion.Controllers
         [HttpGet]
         public ActionResult Reportes(string supervisor, string docente, string aula, DateTime? fecha, int? page)
         {
+
+            bool filtrosValidos = fecha.HasValue;
             List<MonitoreosProgramados> monitoreos = new List<MonitoreosProgramados>();
 
             using (SqlConnection conexion = new SqlConnection(connectionString))
@@ -426,7 +435,7 @@ namespace testautenticacion.Controllers
             ViewBag.SupervisorSeleccionado = supervisor;
             ViewBag.DocenteSeleccionado = docente;
             ViewBag.AulaSeleccionada = aula;
-            ViewBag.FechaSeleccionada = fecha?.ToString("yyyy-MM-dd") ?? DateTime.Today.ToString("yyyy-MM-dd");
+            ViewBag.FechaSeleccionada = fecha?.ToString("yyyy-MM-dd");
 
             //return View(monitoreos);
             return View(pagedMonitoreos);
@@ -1267,7 +1276,7 @@ namespace testautenticacion.Controllers
 
             using (SqlConnection conexion = new SqlConnection(connectionString))
             {
-                string query = "SELECT Nombres, Correo, Clave, IdRol FROM USUARIOS";
+                string query = "SELECT Nombres, Correo, Clave, IdRol, Estado FROM USUARIOS";
 
                 SqlCommand cmd = new SqlCommand(query, conexion);
                 conexion.Open();
@@ -1280,7 +1289,8 @@ namespace testautenticacion.Controllers
                         Nombres = reader["Nombres"].ToString(),
                         Correo = reader["Correo"].ToString(),
                         Clave = reader["Clave"].ToString(),
-                        IdRol = (Rol)Convert.ToInt32(reader["IdRol"])
+                        IdRol = (Rol)Convert.ToInt32(reader["IdRol"]),
+                        Estado = Convert.ToBoolean(reader["Estado"]),
                     });
                 }
             }
@@ -1368,14 +1378,14 @@ namespace testautenticacion.Controllers
         //Eliminar usuario
         [HttpGet]
         [PermisosRol(Rol.Administrador)]
-        public ActionResult EliminarUsuario(string correo)
+        public ActionResult DeshabilitarUsuario(string correo)
         {
             try
             {
                 using (SqlConnection conexion = new SqlConnection(connectionString))
                 {
                     conexion.Open();
-                    string query = "DELETE FROM USUARIOS WHERE Correo = @Correo";
+                    string query = "UPDATE USUARIOS SET Estado = 0 WHERE Correo = @Correo";
                     SqlCommand cmd = new SqlCommand(query, conexion);
                     cmd.Parameters.AddWithValue("@Correo", correo);
 
@@ -1383,7 +1393,7 @@ namespace testautenticacion.Controllers
 
                     if (filasAfectadas > 0)
                     {
-                        TempData["Success"] = "Usuario eliminado exitosamente.";
+                        TempData["Success"] = "Usuario deshabilitado exitosamente.";
                     }
                     else
                     {
@@ -1393,12 +1403,11 @@ namespace testautenticacion.Controllers
             }
             catch (Exception ex)
             {
-                TempData["Error"] = "Error al eliminar usuario: " + ex.Message;
+                TempData["Error"] = "Error al deshabilitar usuario: " + ex.Message;
             }
 
             return RedirectToAction("Usuarios");
         }
-
 
 
     }

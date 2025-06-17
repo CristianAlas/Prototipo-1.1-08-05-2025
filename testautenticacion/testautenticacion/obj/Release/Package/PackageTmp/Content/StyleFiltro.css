@@ -1,0 +1,90 @@
+﻿/*------------------------------------*/
+/* Paginación minimalista con color #7B0000 */
+.pagination-wrapper {
+    padding: 20px 0;
+}
+
+.pagination {
+    --bs-pagination-padding-x: 0.75rem;
+    --bs-pagination-padding-y: 0.5rem;
+    --bs-pagination-font-size: 1rem;
+    --bs-pagination-color: #7B0000;
+    --bs-pagination-bg: #fff;
+    --bs-pagination-border-width: 1px;
+    --bs-pagination-border-color: #dee2e6;
+    --bs-pagination-border-radius: 6px;
+    --bs-pagination-hover-color: #7B0000;
+    --bs-pagination-hover-bg: #f8f9fa;
+    --bs-pagination-hover-border-color: #7B0000;
+    --bs-pagination-focus-color: #7B0000;
+    --bs-pagination-focus-bg: #f8f9fa;
+    --bs-pagination-focus-box-shadow: 0 0 0 0.25rem rgba(123, 0, 0, 0.25);
+    --bs-pagination-active-color: #fff;
+    --bs-pagination-active-bg: #7B0000;
+    --bs-pagination-active-border-color: #7B0000;
+    --bs-pagination-disabled-color: #6c757d;
+    --bs-pagination-disabled-bg: #fff;
+    --bs-pagination-disabled-border-color: #dee2e6;
+}
+
+    /* Estilos específicos para versiones anteriores de PagedList */
+    .pagination .page-item > a,
+    .pagination .page-item > span {
+        color: #7B0000;
+        border-color: #dee2e6;
+        transition: all 0.2s ease-in-out;
+        padding: 0.5rem 0.75rem;
+        text-decoration: none;
+        display: block;
+        border: 1px solid #dee2e6;
+        border-radius: 0.375rem;
+        margin: 0 2px;
+    }
+
+        .pagination .page-item > a:hover {
+            color: #7B0000;
+            background-color: #f8f9fa;
+            border-color: #7B0000;
+        }
+
+        .pagination .page-item > a:focus {
+            color: #7B0000;
+            background-color: #f8f9fa;
+            border-color: #7B0000;
+            box-shadow: 0 0 0 0.25rem rgba(123, 0, 0, 0.25);
+            outline: 0;
+        }
+
+    .pagination .page-item.active > span {
+        color: #fff;
+        background-color: #7B0000;
+        border-color: #7B0000;
+    }
+
+    .pagination .page-item.disabled > span,
+    .pagination .page-item.disabled > a {
+        color: #6c757d;
+        background-color: #fff;
+        border-color: #dee2e6;
+        cursor: not-allowed;
+        pointer-events: none;
+    }
+
+/* Información de paginación minimalista */
+.pagination-info {
+    text-align: center;
+    color: #6c757d;
+    font-size: 0.875rem;
+    margin-top: 15px;
+}
+
+/* Responsive */
+@media (max-width: 576px) {
+    .pagination {
+        --bs-pagination-padding-x: 0.5rem;
+        --bs-pagination-padding-y: 0.375rem;
+        --bs-pagination-font-size: 0.875rem;
+    }
+}
+
+/*------------------------------------*/

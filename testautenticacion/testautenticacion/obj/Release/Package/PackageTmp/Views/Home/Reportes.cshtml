@@ -1,50 +1,55 @@
-﻿@model List<testautenticacion.Models.MonitoreosProgramados>
+﻿@*@model List<testautenticacion.Models.MonitoreosProgramados>
 
-@{
-    ViewBag.Title = "Reportes";
-    Layout = "~/Views/Shared/_Layout.cshtml";
-}
+    @{
+        ViewBag.Title = "Reportes";
+        Layout = "~/Views/Shared/_Layout.cshtml";
+    }*@
+
+@model PagedList.IPagedList<testautenticacion.Models.MonitoreosProgramados>
+@using PagedList.Mvc
+
 <!-- Estilos personalizados -->
-<style>
-    body {
-        background-color: #fff;
-    }
-
-    .header-container {
-        background-color: #7b002c;
-        padding: 1.5rem;
-        border-radius: 12px;
-        margin: 1.5rem auto;
-        text-align: center;
-        color: #fff;
-    }
-
-    .content-container {
-        padding: 2rem;
-        border-radius: 12px;
-        box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
-    }
-
-    .btn-primary,
-    .btn-info,
-    .btn-danger {
-        background-color: #7b0000 !important;
-        border-color: #7b0000 !important;
-        color: #ffffff !important;
-    }
-
-        .btn-primary:hover,
-        .btn-info:hover,
-        .btn-danger:hover {
-            background-color: #5c0000 !important;
-            border-color: #5c0000 !important;
+@*<style>
+        body {
+            background-color: #fff;
         }
 
-    label {
-        color: #000;
-    }
-</style>
+        .header-container {
+            background-color: #7b002c;
+            padding: 1.5rem;
+            border-radius: 12px;
+            margin: 1.5rem auto;
+            text-align: center;
+            color: #fff;
+        }
 
+        .content-container {
+            padding: 2rem;
+            border-radius: 12px;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .btn-primary,
+        .btn-info,
+        .btn-danger {
+            background-color: #7b0000 !important;
+            border-color: #7b0000 !important;
+            color: #ffffff !important;
+        }
+
+            .btn-primary:hover,
+            .btn-info:hover,
+            .btn-danger:hover {
+                background-color: #5c0000 !important;
+                border-color: #5c0000 !important;
+            }
+
+        label {
+            color: #000;
+        }
+    </style>*@
+
+<link href="~/Content/StyleReportes.css" rel="stylesheet" />
 
 <div class="header-container">
     <h2 class="mb-1">Supervisión 02-2025</h2>
@@ -56,16 +61,16 @@
         <div class="row gy-3">
             <!-- Primera fila -->
             <div class="col-12 col-md-4">
-                <label for="supervisor" class="form-label">Supervisor:</label>
-                <input type="text" id="supervisor" name="supervisor" class="form-control" placeholder="Supervisor" value="@ViewBag.SupervisorSeleccionado">
+                <label for="supervisor" class="form-label">Monitor:</label>
+                <input type="text" id="supervisor" name="supervisor" class="form-control" placeholder="Monitor responsable" value="@ViewBag.SupervisorSeleccionado">
             </div>
             <div class="col-12 col-md-4">
                 <label for="docente" class="form-label">Docente:</label>
-                <input type="text" id="docente" name="docente" class="form-control" placeholder="Docente" value="@ViewBag.DocenteSeleccionado">
+                <input type="text" id="docente" name="docente" class="form-control" placeholder="Nombre del Docente" value="@ViewBag.DocenteSeleccionado">
             </div>
             <div class="col-12 col-md-4">
                 <label for="aula" class="form-label">Aula:</label>
-                <input type="text" id="aula" name="aula" class="form-control" placeholder="Aula" value="@ViewBag.AulaSeleccionada">
+                <input type="text" id="aula" name="aula" class="form-control" placeholder="Codigo del Aula" value="@ViewBag.AulaSeleccionada">
             </div>
 
             <!-- Segunda fila -->
@@ -92,7 +97,7 @@
     <div class="col-12">
         <div class="table-responsive">
             <table class="table table-bordered table-striped">
-                <thead class="text-light" style="background-color: #7B002C" >
+                <thead class="text-light" style="background-color: #7B002C">
                     <tr>
                         <th>ID</th>
                         <th>Materia</th>
@@ -103,8 +108,25 @@
                         <th>Acción</th>
                     </tr>
                 </thead>
-                <tbody>
-                    @foreach (var monitoreo in Model)
+                @if (!Model.Any())
+                {
+                    <tr>
+                        <td colspan="10" class="text-center text-muted">
+                            @if (ViewBag.FechaSeleccionada == null)
+                            {
+                                <span>Seleccione una fecha para iniciar la búsqueda.</span>
+                            }
+                            else
+                            {
+                                <span>No se encontraron monitoreos para los filtros seleccionados.</span>
+                            }
+                        </td>
+                    </tr>
+                }
+            <tbody>
+                @if (Model != null && Model.Any())
+                {
+                    foreach (var monitoreo in Model)
                     {
                         <tr>
                             <td>@monitoreo.Id</td>
@@ -112,7 +134,7 @@
                             <td>@monitoreo.Docente</td>
                             <td>@monitoreo.Aula</td>
                             <td>@monitoreo.Fecha.ToString("yyyy-MM-dd")</td>
-                            <td>@(monitoreo.TieneMonitoreo ? "Monitoreado" : "Pendiente")</td>
+                            <td>@(monitoreo.TieneMonitoreo ? "Completado" : "Pendiente")</td>
                             <td>
                                 <button class="btn btn-sm btn-info"
                                         data-bs-toggle="tooltip"
@@ -124,8 +146,59 @@
                             </td>
                         </tr>
                     }
-                </tbody>
+                }
+                else
+                {
+                    <tr>
+                        <td colspan="10" class="text-center text-muted">
+                            @if (ViewBag.FechaSeleccionada == null)
+                            {
+                                <span><i class="fas fa-calendar-day"></i> Seleccione una fecha para comenzar la búsqueda.</span>
+                            }
+                            else
+                            {
+                                <span>No se encontraron monitoreos para los filtros aplicados.</span>
+                            }
+                        </td>
+                    </tr>
+                }
+            </tbody>
             </table>
+            <!-- PAGINACIÓN PARA REPORTES -->
+            <div class="pagination-wrapper mt-4">
+                <div class="d-flex justify-content-center">
+                    @Html.PagedListPager(Model, page => Url.Action("Reportes", new
+                    {
+                        page,
+                        supervisor = Request["supervisor"],
+                        docente = Request["docente"],
+                        aula = Request["aula"],
+                        fecha = Request["fecha"]
+                    }),
+                    new PagedListRenderOptions
+                    {
+                        UlElementClasses = new[] { "pagination", "mb-0" },
+                        LiElementClasses = new[] { "page-item" },
+                        DisplayLinkToFirstPage = PagedListDisplayMode.Always,
+                        DisplayLinkToLastPage = PagedListDisplayMode.Always,
+                        DisplayLinkToPreviousPage = PagedListDisplayMode.Always,
+                        DisplayLinkToNextPage = PagedListDisplayMode.Always,
+                        MaximumPageNumbersToDisplay = 10,
+                        LinkToFirstPageFormat = "«",
+                        LinkToPreviousPageFormat = "‹",
+                        LinkToNextPageFormat = "›",
+                        LinkToLastPageFormat = "»"
+                    })
+                </div>
+
+                <!-- Información de página para Reportes (opcional) -->
+                @if (Model != null && Model.PageCount > 1)
+                {
+                    <div class="pagination-info">
+                        Página @(Model.PageNumber) de @(Model.PageCount)
+                    </div>
+                }
+            </div>
         </div>
         <div class="d-flex justify-content-center gap-3 mt-3">
             <a href="@Url.Action("GenerarPDF", "Home", new {
@@ -134,7 +207,7 @@
                         aula = ViewBag.AulaSeleccionada,
                         fecha = ViewBag.FechaSeleccionada
                         })"
-                id="btnGenerarPDF"
+               id="btnGenerarPDF"
                class="btn btn-danger">
                 Generar Reporte en PDF
             </a>
@@ -184,7 +257,13 @@
                 })
                 .catch(error => {
                     console.error(error);
-                    alert('Ocurrió un error al cargar los detalles del monitoreo.');
+
+                    Swal.fire({
+                        icon: 'info',
+                        title: 'Monitoreo pendiente',
+                        text: 'Este monitoreo aún está pendiente y no contiene información para mostrar. Por favor, espere a que sea completado por el monitor encargado.',
+                        confirmButtonColor: '#7B002C'
+                    });
                 });
         }
 
@@ -237,6 +316,23 @@
                 });
             }
         });
+
+        document.addEventListener('DOMContentLoaded', function () {
+            const fechaInput = document.querySelector('input[name="fecha"]');
+            const btnBuscar = document.querySelector('button[type="submit"]');
+
+            if (fechaInput && btnBuscar) {
+                fechaInput.addEventListener('input', function () {
+                    btnBuscar.disabled = !this.value;
+                });
+
+                // Deshabilita por defecto si está vacío
+                if (!fechaInput.value) {
+                    btnBuscar.disabled = true;
+                }
+            }
+        });
+
     </script>
 }
 

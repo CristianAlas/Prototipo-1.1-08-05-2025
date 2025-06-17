@@ -61,16 +61,16 @@
         <div class="row gy-3">
             <!-- Primera fila -->
             <div class="col-12 col-md-4">
-                <label for="supervisor" class="form-label">Supervisor:</label>
-                <input type="text" id="supervisor" name="supervisor" class="form-control" placeholder="Supervisor" value="@ViewBag.SupervisorSeleccionado">
+                <label for="supervisor" class="form-label">Monitor:</label>
+                <input type="text" id="supervisor" name="supervisor" class="form-control" placeholder="Monitor responsable" value="@ViewBag.SupervisorSeleccionado">
             </div>
             <div class="col-12 col-md-4">
                 <label for="docente" class="form-label">Docente:</label>
-                <input type="text" id="docente" name="docente" class="form-control" placeholder="Docente" value="@ViewBag.DocenteSeleccionado">
+                <input type="text" id="docente" name="docente" class="form-control" placeholder="Nombre del Docente" value="@ViewBag.DocenteSeleccionado">
             </div>
             <div class="col-12 col-md-4">
                 <label for="aula" class="form-label">Aula:</label>
-                <input type="text" id="aula" name="aula" class="form-control" placeholder="Aula" value="@ViewBag.AulaSeleccionada">
+                <input type="text" id="aula" name="aula" class="form-control" placeholder="Codigo del Aula" value="@ViewBag.AulaSeleccionada">
             </div>
 
             <!-- Segunda fila -->
@@ -108,8 +108,25 @@
                         <th>Acción</th>
                     </tr>
                 </thead>
-                <tbody>
-                    @foreach (var monitoreo in Model)
+                @if (!Model.Any())
+                {
+                    <tr>
+                        <td colspan="10" class="text-center text-muted">
+                            @if (ViewBag.FechaSeleccionada == null)
+                            {
+                                <span>Seleccione una fecha para iniciar la búsqueda.</span>
+                            }
+                            else
+                            {
+                                <span>No se encontraron monitoreos para los filtros seleccionados.</span>
+                            }
+                        </td>
+                    </tr>
+                }
+            <tbody>
+                @if (Model != null && Model.Any())
+                {
+                    foreach (var monitoreo in Model)
                     {
                         <tr>
                             <td>@monitoreo.Id</td>
@@ -117,7 +134,7 @@
                             <td>@monitoreo.Docente</td>
                             <td>@monitoreo.Aula</td>
                             <td>@monitoreo.Fecha.ToString("yyyy-MM-dd")</td>
-                            <td>@(monitoreo.TieneMonitoreo ? "Monitoreado" : "Pendiente")</td>
+                            <td>@(monitoreo.TieneMonitoreo ? "Completado" : "Pendiente")</td>
                             <td>
                                 <button class="btn btn-sm btn-info"
                                         data-bs-toggle="tooltip"
@@ -129,7 +146,23 @@
                             </td>
                         </tr>
                     }
-                </tbody>
+                }
+                else
+                {
+                    <tr>
+                        <td colspan="10" class="text-center text-muted">
+                            @if (ViewBag.FechaSeleccionada == null)
+                            {
+                                <span><i class="fas fa-calendar-day"></i> Seleccione una fecha para comenzar la búsqueda.</span>
+                            }
+                            else
+                            {
+                                <span>No se encontraron monitoreos para los filtros aplicados.</span>
+                            }
+                        </td>
+                    </tr>
+                }
+            </tbody>
             </table>
             <!-- PAGINACIÓN PARA REPORTES -->
             <div class="pagination-wrapper mt-4">
@@ -150,7 +183,7 @@
                         DisplayLinkToLastPage = PagedListDisplayMode.Always,
                         DisplayLinkToPreviousPage = PagedListDisplayMode.Always,
                         DisplayLinkToNextPage = PagedListDisplayMode.Always,
-                        MaximumPageNumbersToDisplay = 5,
+                        MaximumPageNumbersToDisplay = 10,
                         LinkToFirstPageFormat = "«",
                         LinkToPreviousPageFormat = "‹",
                         LinkToNextPageFormat = "›",
@@ -224,7 +257,13 @@
                 })
                 .catch(error => {
                     console.error(error);
-                    alert('Ocurrió un error al cargar los detalles del monitoreo.');
+
+                    Swal.fire({
+                        icon: 'info',
+                        title: 'Monitoreo pendiente',
+                        text: 'Este monitoreo aún está pendiente y no contiene información para mostrar. Por favor, espere a que sea completado por el monitor encargado.',
+                        confirmButtonColor: '#7B002C'
+                    });
                 });
         }
 
@@ -277,6 +316,23 @@
                 });
             }
         });
+
+        document.addEventListener('DOMContentLoaded', function () {
+            const fechaInput = document.querySelector('input[name="fecha"]');
+            const btnBuscar = document.querySelector('button[type="submit"]');
+
+            if (fechaInput && btnBuscar) {
+                fechaInput.addEventListener('input', function () {
+                    btnBuscar.disabled = !this.value;
+                });
+
+                // Deshabilita por defecto si está vacío
+                if (!fechaInput.value) {
+                    btnBuscar.disabled = true;
+                }
+            }
+        });
+
     </script>
 }
 

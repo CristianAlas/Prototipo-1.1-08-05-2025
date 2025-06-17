@@ -11,5 +11,6 @@ namespace testautenticacion.Models
         public string Correo { get; set; }
         public string Clave { get; set; }
         public Rol IdRol { get; set; }
+        public bool Estado { get; set; }
     }
 }
