@@ -1,7 +1,12 @@
 {
   "Version": 1,
   "WorkspaceRootPath": "C:\\Users\\Rolan\\Documents\\Proyectos\\rolandoandrad3\\Sistema-de-Monitoreo-de-Clases-\\testautenticacion\\",
-  "Documents": [],
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{E2FC27FE-40B3-4B41-B812-45167FD99EFF}|testautenticacion\\testautenticacion.csproj|c:\\users\\rolan\\documents\\proyectos\\rolandoandrad3\\sistema-de-monitoreo-de-clases-\\testautenticacion\\testautenticacion\\views\\home\\lineamientos.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{E2FC27FE-40B3-4B41-B812-45167FD99EFF}|testautenticacion\\testautenticacion.csproj|solutionrelative:testautenticacion\\views\\home\\lineamientos.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    }
+  ],
   "DocumentGroupContainers": [
     {
       "Orientation": 0,
@@ -9,7 +14,7 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": -1,
+          "SelectedChildIndex": 4,
           "Children": [
             {
               "$type": "Bookmark",
@@ -26,6 +31,19 @@
             {
               "$type": "Bookmark",
               "Name": "ST:128:0:{116d2292-e37d-41cd-a077-ebacac4c8cc4}"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "Lineamientos.cshtml",
+              "DocumentMoniker": "C:\\Users\\Rolan\\Documents\\Proyectos\\rolandoandrad3\\Sistema-de-Monitoreo-de-Clases-\\testautenticacion\\testautenticacion\\Views\\Home\\Lineamientos.cshtml",
+              "RelativeDocumentMoniker": "testautenticacion\\Views\\Home\\Lineamientos.cshtml",
+              "ToolTip": "C:\\Users\\Rolan\\Documents\\Proyectos\\rolandoandrad3\\Sistema-de-Monitoreo-de-Clases-\\testautenticacion\\testautenticacion\\Views\\Home\\Lineamientos.cshtml",
+              "RelativeToolTip": "testautenticacion\\Views\\Home\\Lineamientos.cshtml",
+              "ViewState": "AgIAADkAAAAAAAAAAAAAAFcAAABmAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-06-15T18:46:39.07Z",
+              "EditorCaption": ""
             }
           ]
         },

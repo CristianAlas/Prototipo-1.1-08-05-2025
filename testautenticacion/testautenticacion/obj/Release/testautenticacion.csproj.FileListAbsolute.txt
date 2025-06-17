@@ -121,3 +121,7 @@ C:\Users\Rolan\Documents\Proyectos\rolandoandrad3\Sistema-de-Monitoreo-de-Clases
 C:\Users\Rolan\Documents\Proyectos\rolandoandrad3\Sistema-de-Monitoreo-de-Clases-\testautenticacion\testautenticacion\obj\Release\testaute.3EFB0371.Up2Date
 C:\Users\Rolan\Documents\Proyectos\rolandoandrad3\Sistema-de-Monitoreo-de-Clases-\testautenticacion\testautenticacion\obj\Release\testautenticacion.dll
 C:\Users\Rolan\Documents\Proyectos\rolandoandrad3\Sistema-de-Monitoreo-de-Clases-\testautenticacion\testautenticacion\obj\Release\testautenticacion.pdb
+C:\Users\Rolan\Documents\Proyectos\rolandoandrad3\Sistema-de-Monitoreo-de-Clases-\testautenticacion\testautenticacion\bin\PagedList.dll
+C:\Users\Rolan\Documents\Proyectos\rolandoandrad3\Sistema-de-Monitoreo-de-Clases-\testautenticacion\testautenticacion\bin\PagedList.Mvc.dll
+C:\Users\Rolan\Documents\Proyectos\rolandoandrad3\Sistema-de-Monitoreo-de-Clases-\testautenticacion\testautenticacion\bin\PagedList.xml
+C:\Users\Rolan\Documents\Proyectos\rolandoandrad3\Sistema-de-Monitoreo-de-Clases-\testautenticacion\testautenticacion\bin\PagedList.Mvc.xml

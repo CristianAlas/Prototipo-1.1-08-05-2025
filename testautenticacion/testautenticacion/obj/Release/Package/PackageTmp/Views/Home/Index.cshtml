@@ -1,4 +1,6 @@
 ﻿@model testautenticacion.Models.Emergencia
+@using PagedList
+@using PagedList.Mvc
 
 @{
     ViewBag.Title = "Home Page";
@@ -25,6 +27,7 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     <link href="~/Content/StyleIndex.css" rel="stylesheet" />
+    <link href="~/Content/StylePaginator.css" rel="stylesheet" />
     <script src="~/Scripts/IndexScript.js"></script>
 </head>
 <body>
@@ -215,9 +218,23 @@
                             </thead>
                             <tbody>
                                 <!--LLenado de tabla de reportes criticos-->
+                                @*@if (ViewBag.ListaEmergencias != null)
+                {
+                    foreach (var item in ((List<testautenticacion.Models.Emergencia>)ViewBag.ListaEmergencias).OrderByDescending(e => e.FechaHora).Take(10))
+                    {
+                        <tr>
+                            <td>@item.NombreMonitor</td>
+                            <td>@item.Edificio</td>
+                            <td>@item.FechaHora.ToString("dd/MM/yyyy HH:mm")</td>
+                            <td>@item.Comentarios</td>
+                        </tr>
+                    }
+                }*@
                                 @if (ViewBag.ListaEmergencias != null)
                                 {
-                                    foreach (var item in ((List<testautenticacion.Models.Emergencia>)ViewBag.ListaEmergencias).OrderByDescending(e => e.FechaHora).Take(10))
+                                    var emergenciasPaginadas = (IPagedList<testautenticacion.Models.Emergencia>)ViewBag.ListaEmergencias;
+
+                                    foreach (var item in emergenciasPaginadas)
                                     {
                                         <tr>
                                             <td>@item.NombreMonitor</td>
@@ -233,6 +250,35 @@
                                 }
                             </tbody>
                         </table>
+                        <!-- Contenedor de paginación minimalista -->
+                        <div class="pagination-wrapper">
+                            <div class="d-flex justify-content-center">
+                                @Html.PagedListPager(
+                                    (IPagedList)ViewBag.ListaEmergencias,
+                                    page => Url.Action("Index", new { page }),
+                                    new PagedListRenderOptions
+                                    {
+                                        UlElementClasses = new[] { "pagination", "mb-0" },
+                                        LiElementClasses = new[] { "page-item" },
+                                        DisplayLinkToFirstPage = PagedListDisplayMode.Always,
+                                        DisplayLinkToLastPage = PagedListDisplayMode.Always,
+                                        DisplayLinkToPreviousPage = PagedListDisplayMode.Always,
+                                        DisplayLinkToNextPage = PagedListDisplayMode.Always,
+                                        MaximumPageNumbersToDisplay = 5,
+                                        LinkToFirstPageFormat = "«",
+                                        LinkToPreviousPageFormat = "‹",
+                                        LinkToNextPageFormat = "›",
+                                        LinkToLastPageFormat = "»"
+                                    })
+                            </div>
+
+                            @{
+                                var pagedList = (IPagedList)ViewBag.ListaEmergencias;
+                            }
+                            <div class="pagination-info">
+                                Página @pagedList.PageNumber de @pagedList.PageCount
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
