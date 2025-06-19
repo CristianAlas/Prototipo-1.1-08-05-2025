@@ -827,7 +827,7 @@ namespace testautenticacion.Controllers
                     return HttpNotFound("Registro no encontrado");
                 }
 
-                ViewBag.Estados = new List<string> { "Todo bien", "Nadie en el aula", "Cerrado" };
+                ViewBag.Estados = new List<string> { "Todo bien", "Nadie en el aula", "Desorden en aula", "Docente ausente", "En laboratorio", "Cerrado", "En conferencia/evento" };
                 return PartialView("_FormularioMonitoreo", registro); // misma vista que para crear
             }
             catch (Exception ex)
