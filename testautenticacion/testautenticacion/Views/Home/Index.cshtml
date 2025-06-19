@@ -4,6 +4,7 @@
 
 @{
     ViewBag.Title = "Home Page";
+    Layout = "~/Views/Shared/_Layout.cshtml";
 }
 @if (TempData["Exito"] != null)
 {
@@ -18,278 +19,258 @@
         @TempData["Error"]
     </div>
 }
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Panel de Monitoreo</title>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/css/bootstrap.min.css" rel="stylesheet">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+
+@section Styles {
     <link href="~/Content/StyleIndex.css" rel="stylesheet" />
     <link href="~/Content/StylePaginator.css" rel="stylesheet" />
-    <script src="~/Scripts/IndexScript.js"></script>
-</head>
-<body>
-    <!-- boton de emergencia con icono  -->
-    <button type="button" class="btn btn-danger rounded-circle position-fixed" style="bottom: 20px; right: 20px; z-index: 1050; width: 60px; height: 60px;" data-bs-toggle="modal" data-bs-target="#Emergencia">
-        <i class="fas fa-exclamation-triangle fa-lg"></i>
-    </button>
-    <!-- Modal frm de emergencia -->
-    <div class="modal fade" id="Emergencia" tabindex="-1" aria-labelledby="EmergenciaLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <form id="emergenciaFrm" method="post" action="@Url.Action("GuardarEmergencia", "Home")">
-                    <div class="modal-header bg-danger text-white">
-                        <h5 class="modal-title" id="formEmergenciaLabel">
-                            <i class="fas fa-exclamation-triangle me-2"></i>Formulario de Emergencia
-                        </h5>
-                        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+}
+
+<!-- boton de emergencia con icono  -->
+<button type="button" class="btn btn-danger rounded-circle position-fixed" style="bottom: 20px; right: 20px; z-index: 1050; width: 60px; height: 60px;" data-bs-toggle="modal" data-bs-target="#Emergencia">
+    <i class="fas fa-exclamation-triangle fa-lg"></i>
+</button>
+<!-- Modal frm de emergencia -->
+<div class="modal fade" id="Emergencia" tabindex="-1" aria-labelledby="EmergenciaLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form id="emergenciaFrm" method="post" action="@Url.Action("GuardarEmergencia", "Home")">
+                <div class="modal-header bg-danger text-white">
+                    <h5 class="modal-title" id="formEmergenciaLabel">
+                        <i class="fas fa-exclamation-triangle me-2"></i>Formulario de Emergencia
+                    </h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label for="NombreMonitor" class="form-label">Nombre</label>
+                        <input type="text" id="NombreMonitor" name="NombreMonitor" class="form-control"
+                               value="@Model.NombreMonitor" readonly />
                     </div>
-                    <div class="modal-body">
-                        <div class="mb-3">
-                            <label for="NombreMonitor" class="form-label">Nombre</label>
-                            <input type="text" id="NombreMonitor" name="NombreMonitor" class="form-control"
-                                   value="@Model.NombreMonitor" readonly />
-                        </div>
-                        <div class="mb-3">
-                            <label for="Edificio" class="form-label">Edificio</label>
-                            <select id="Edificio" name="Edificio" class="form-select" required>
-                                <option value="">Seleccione un edificio</option>
-                                <option value="Anastasio Aquino">Anastasio Aquino</option>
-                                <option value="Benito Juárez">Benito Juárez</option>
-                                <option value="Casa del Estudiante (G'Nius)">Casa del Estudiante (G'Nius)</option>
-                                <option value="Casa del Estudiante Oriente">Casa del Estudiante Oriente</option>
-                                <option value="Claudia Lars">Claudia Lars</option>
-                                <option value="Dr. José Adolfo Araujo Romagoza">Dr. José Adolfo Araujo Romagoza</option>
-                                <option value="Federico García Lorca">Federico García Lorca</option>
-                                <option value="Francisco Morazan">Francisco Morazán</option>
-                                <option value="Gabriela Mistral">Gabriela Mistral</option>
-                                <option value="Giuseppe Garibaldi">Giuseppe Garibaldi</option>
-                                <option value="Jorge Luis Borges">Jorge Luis Borges</option>
-                                <option value="José Martí">José Martí</option>
-                                <option value="Simon Bolivar">Simón Bolívar</option>
-                                <option value="Los Fundadores">Los Fundadores</option>
-                                <option value="Polideportivo">Polideportivo</option>
-                                <option value="Casa 116">Casa 116</option>
-                                <option value="Casa 118">Casa 118</option>
-                                <option value="Casa 125">Casa 125</option>
-                                <option value="Casa 130">Casa 130</option>
-                                <option value="Casa 131">Casa 131</option>
-                                <option value="Casa 135">Casa 135</option>
-                                <option value="Casa 135 (2)">Casa 135 (2)</option>
-                            </select>
-                        </div>
-                        <div class="mb-3">
-                            <label for="FechaHora" class="form-label">Fecha de Registro</label>
-                            <input type="datetime-local" id="FechaHora" name="FechaHora" class="form-control"
-                                   value="@Model.FechaHora.ToString("yyyy-MM-ddTHH:mm")" readonly required />
-                        </div>
-                        <div class="mb-3">
-                            <label for="Comentarios" class="form-label">Comentarios</label>
-                            <textarea id="Comentarios" name="Comentarios" class="form-control" rows="3" maxlength="500"
-                                      placeholder="Escriba cuál es la emergencia..."></textarea>
-                            <small id="comentariosHelp" class="form-text text-muted">Procure ser breve y claro.</small>
-                        </div>
+                    <div class="mb-3">
+                        <label for="Edificio" class="form-label">Edificio</label>
+                        <select id="Edificio" name="Edificio" class="form-select" required>
+                            <option value="">Seleccione un edificio</option>
+                            <option value="Anastasio Aquino">Anastasio Aquino</option>
+                            <option value="Benito Juárez">Benito Juárez</option>
+                            <option value="Casa del Estudiante (G'Nius)">Casa del Estudiante (G'Nius)</option>
+                            <option value="Casa del Estudiante Oriente">Casa del Estudiante Oriente</option>
+                            <option value="Claudia Lars">Claudia Lars</option>
+                            <option value="Dr. José Adolfo Araujo Romagoza">Dr. José Adolfo Araujo Romagoza</option>
+                            <option value="Federico García Lorca">Federico García Lorca</option>
+                            <option value="Francisco Morazan">Francisco Morazán</option>
+                            <option value="Gabriela Mistral">Gabriela Mistral</option>
+                            <option value="Giuseppe Garibaldi">Giuseppe Garibaldi</option>
+                            <option value="Jorge Luis Borges">Jorge Luis Borges</option>
+                            <option value="José Martí">José Martí</option>
+                            <option value="Simon Bolivar">Simón Bolívar</option>
+                            <option value="Los Fundadores">Los Fundadores</option>
+                            <option value="Polideportivo">Polideportivo</option>
+                            <option value="Casa 116">Casa 116</option>
+                            <option value="Casa 118">Casa 118</option>
+                            <option value="Casa 125">Casa 125</option>
+                            <option value="Casa 130">Casa 130</option>
+                            <option value="Casa 131">Casa 131</option>
+                            <option value="Casa 135">Casa 135</option>
+                            <option value="Casa 135 (2)">Casa 135 (2)</option>
+                        </select>
                     </div>
-                    <div class="modal-footer">
-                        <button type="submit" class="btn btn-primary">Enviar Emergencia</button>
+                    <div class="mb-3">
+                        <label for="FechaHora" class="form-label">Fecha de Registro</label>
+                        <input type="datetime-local" id="FechaHora" name="FechaHora" class="form-control"
+                               value="@Model.FechaHora.ToString("yyyy-MM-ddTHH:mm")" readonly required />
                     </div>
-                </form>
+                    <div class="mb-3">
+                        <label for="Comentarios" class="form-label">Comentarios</label>
+                        <textarea id="Comentarios" name="Comentarios" class="form-control" rows="3" maxlength="500"
+                                  placeholder="Escriba cuál es la emergencia..."></textarea>
+                        <small id="comentariosHelp" class="form-text text-muted">Procure ser breve y claro.</small>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-primary">Enviar Emergencia</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<div class="container py-4">
+    <!-- Header -->
+    <div class="row align-items-center mb-4">
+        <div class="col-12 col-md-6 mb-3 mb-md-0">
+            <h1 class="mb-0">Panel de Monitoreo</h1>
+        </div>
+        <div class="col-12 col-md-6">
+            <div class="d-flex flex-column flex-md-row justify-content-md-end gap-2">
+                <a href="/Home/Reportes" class="btn btn-outline-primary w-100 w-md-auto mb-2 mb-md-0">
+                    <i class="fas fa-file-export me-2"></i>Exportar Reporte
+                </a>
+                <a href="/Home/Filtro" class="btn btn-primary w-100 w-md-auto">
+                    <i class="fas fa-plus me-2"></i>Nuevo Monitoreo
+                </a>
             </div>
         </div>
     </div>
-    <div class="container py-4">
-        <!-- Header -->
-        <div class="row align-items-center mb-4">
-            <div class="col-12 col-md-6 mb-3 mb-md-0">
-                <h1 class="mb-0">Panel de Monitoreo</h1>
-            </div>
-            <div class="col-12 col-md-6">
-                <div class="d-flex flex-column flex-md-row justify-content-md-end gap-2">
-                    <a href="/Home/Reportes" class="btn btn-outline-primary w-100 w-md-auto mb-2 mb-md-0">
-                        <i class="fas fa-file-export me-2"></i>Exportar Reporte
-                    </a>
-                    <a href="/Home/Filtro" class="btn btn-primary w-100 w-md-auto">
-                        <i class="fas fa-plus me-2"></i>Nuevo Monitoreo
-                    </a>
+
+    <!-- Metric Cards -->
+    <div class="row g-4 mb-4">
+        <!-- Monitoreos Completados -->
+        <div class="col-12 col-sm-6 col-md-3">
+            <div class="status-card p-4">
+                <div class="d-flex align-items-center mb-3">
+                    <span class="status-indicator status-active me-2"></span>
+                    <span class="metric-label">Monitoreos Completados</span>
+                </div>
+                <h2 class="mb-0 fw-bold text-black">
+                    @ViewBag.MonitoreosCompletados
+                </h2>
+                <div class="text-success small mt-2">
+                    <i class="fa-solid fa-chalkboard-user me-1"></i> Este ciclo
                 </div>
             </div>
         </div>
 
-        <!-- Metric Cards -->
-        <div class="row g-4 mb-4">
-            <!-- Monitoreos Completados -->
-            <div class="col-12 col-sm-6 col-md-3">
-                <div class="status-card p-4">
-                    <div class="d-flex align-items-center mb-3">
-                        <span class="status-indicator status-active me-2"></span>
-                        <span class="metric-label">Monitoreos Completados</span>
-                    </div>
-                    <h2 class="mb-0 fw-bold text-black">
-                        @ViewBag.MonitoreosCompletados
-                    </h2>
-                    <div class="text-success small mt-2">
-                        <i class="fa-solid fa-chalkboard-user me-1"></i> Este ciclo
-                    </div>
+        <!-- Monitoreos Pendientes -->
+        <div class="col-12 col-sm-6 col-md-3">
+            <div class="status-card p-4">
+                <div class="d-flex align-items-center mb-3">
+                    <span class="status-indicator status-warning me-2"></span>
+                    <span class="metric-label">Monitoreos Pendientes</span>
+                </div>
+                <h2 class="mb-0 fw-bold text-black">
+                    @ViewBag.MonitoreosPendientes
+                </h2>
+                <div class="text-warning small mt-2">
+                    <i class="fa-solid fa-hourglass-half me-1"></i> Este año
                 </div>
             </div>
+        </div>
 
-            <!-- Monitoreos Pendientes -->
-            <div class="col-12 col-sm-6 col-md-3">
-                <div class="status-card p-4">
-                    <div class="d-flex align-items-center mb-3">
-                        <span class="status-indicator status-warning me-2"></span>
-                        <span class="metric-label">Monitoreos Pendientes</span>
-                    </div>
-                    <h2 class="mb-0 fw-bold text-black">
-                        @ViewBag.MonitoreosPendientes
-                    </h2>
-                    <div class="text-warning small mt-2">
-                        <i class="fa-solid fa-hourglass-half me-1"></i> Este año
-                    </div>
+        <!-- Incidentes Críticos -->
+        <div class="col-12 col-sm-6 col-md-3">
+            <div class="status-card p-4">
+                <div class="d-flex align-items-center mb-3">
+                    <span class="status-indicator status-error me-2"></span>
+                    <span class="metric-label">Incidentes Críticos</span>
+                </div>
+                <h2 class="mb-0 fw-bold text-black">
+                    @ViewBag.IncidentesCriticos
+                </h2>
+                <div class="text-danger small mt-2">
+                    <i class="fas fa-exclamation-triangle me-1"></i> Requiere atención
                 </div>
             </div>
+        </div>
 
-            <!-- Incidentes Críticos -->
-            <div class="col-12 col-sm-6 col-md-3">
-                <div class="status-card p-4">
-                    <div class="d-flex align-items-center mb-3">
-                        <span class="status-indicator status-error me-2"></span>
-                        <span class="metric-label">Incidentes Críticos</span>
-                    </div>
-                    <h2 class="mb-0 fw-bold text-black">
-                        @ViewBag.IncidentesCriticos
-                    </h2>
-                    <div class="text-danger small mt-2">
-                        <i class="fas fa-exclamation-triangle me-1"></i> Requiere atención
-                    </div>
+        <!-- Reportes Generados -->
+        <div class="col-12 col-sm-6 col-md-3">
+            <div class="status-card p-4">
+                <div class="d-flex align-items-center mb-3">
+                    <i class="fas fa-chart-line text-primary me-2"></i>
+                    <span class="metric-label">Reportes Generados</span>
                 </div>
-            </div>
 
-            <!-- Reportes Generados -->
-            <div class="col-12 col-sm-6 col-md-3">
-                <div class="status-card p-4">
-                    <div class="d-flex align-items-center mb-3">
-                        <i class="fas fa-chart-line text-primary me-2"></i>
-                        <span class="metric-label">Reportes Generados</span>
-                    </div>
-
-                    <!-- Contadores en línea -->
-                    <div class="d-flex justify-content-evenly">
-                        <!-- PDF -->
-                        <div class="me-3 text-center">
-                            <h2 class="mb-0 fw-bold text-black" id="contadorPDF">@ViewBag.TotalPDF</h2>
-                            <div class="text-muted small mt-2">
-                                <i class="fas fa-file-pdf me-1"></i> PDF
-                            </div>
+                <!-- Contadores en línea -->
+                <div class="d-flex justify-content-evenly">
+                    <!-- PDF -->
+                    <div class="me-3 text-center">
+                        <h2 class="mb-0 fw-bold text-black" id="contadorPDF">@ViewBag.TotalPDF</h2>
+                        <div class="text-muted small mt-2">
+                            <i class="fas fa-file-pdf me-1"></i> PDF
                         </div>
+                    </div>
 
-                        <!-- CSV -->
-                        <div class="text-center">
-                            <h2 class="mb-0 fw-bold text-black" id="contadorCSV">@ViewBag.TotalCSV</h2>
-                            <div class="text-muted small mt-2">
-                                <i class="fas fa-file-csv me-1"></i> CSV
-                            </div>
+                    <!-- CSV -->
+                    <div class="text-center">
+                        <h2 class="mb-0 fw-bold text-black" id="contadorCSV">@ViewBag.TotalCSV</h2>
+                        <div class="text-muted small mt-2">
+                            <i class="fas fa-file-csv me-1"></i> CSV
                         </div>
                     </div>
                 </div>
             </div>
-
-
         </div>
 
 
-        <!-- Incidentes criticos -->
-        <div class="row g-4">
-            <!-- Systems Table -->
-            <div class="col-12 col-xl-12">
-                <div class="status-card p-4">
-                    <h2 class="h5 mb-4">Incidentes Críticos</h2>
-                    <div class="table-responsive">
-                        <table class="table table-hover">
-                            <thead>
-                                <tr>
-                                    <th>Monitor</th>
-                                    <th>Edificio</th>
-                                    <th>Fecha</th>
-                                    <th>Comentarios</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <!--LLenado de tabla de reportes criticos-->
-                                @*@if (ViewBag.ListaEmergencias != null)
-                {
-                    foreach (var item in ((List<testautenticacion.Models.Emergencia>)ViewBag.ListaEmergencias).OrderByDescending(e => e.FechaHora).Take(10))
-                    {
-                        <tr>
-                            <td>@item.NombreMonitor</td>
-                            <td>@item.Edificio</td>
-                            <td>@item.FechaHora.ToString("dd/MM/yyyy HH:mm")</td>
-                            <td>@item.Comentarios</td>
-                        </tr>
-                    }
-                }*@
-                                @if (ViewBag.ListaEmergencias != null)
-                                {
-                                    var emergenciasPaginadas = (IPagedList<testautenticacion.Models.Emergencia>)ViewBag.ListaEmergencias;
+    </div>
 
-                                    foreach (var item in emergenciasPaginadas)
-                                    {
-                                        <tr>
-                                            <td>@item.NombreMonitor</td>
-                                            <td>@item.Edificio</td>
-                                            <td>@item.FechaHora.ToString("dd/MM/yyyy HH:mm")</td>
-                                            <td>@item.Comentarios</td>
-                                        </tr>
-                                    }
-                                }
-                                else
-                                {
-                                    <tr><td colspan="4">No hay incidentes criticos.</td></tr>
-                                }
-                            </tbody>
-                        </table>
-                        <!-- Contenedor de paginación minimalista -->
-                        <div class="pagination-wrapper">
-                            <div class="d-flex justify-content-center">
-                                @Html.PagedListPager(
-                                    (IPagedList)ViewBag.ListaEmergencias,
-                                    page => Url.Action("Index", new { page }),
-                                    new PagedListRenderOptions
-                                    {
-                                        UlElementClasses = new[] { "pagination", "mb-0" },
-                                        LiElementClasses = new[] { "page-item" },
-                                        DisplayLinkToFirstPage = PagedListDisplayMode.Always,
-                                        DisplayLinkToLastPage = PagedListDisplayMode.Always,
-                                        DisplayLinkToPreviousPage = PagedListDisplayMode.Always,
-                                        DisplayLinkToNextPage = PagedListDisplayMode.Always,
-                                        MaximumPageNumbersToDisplay = 5,
-                                        LinkToFirstPageFormat = "«",
-                                        LinkToPreviousPageFormat = "‹",
-                                        LinkToNextPageFormat = "›",
-                                        LinkToLastPageFormat = "»"
-                                    })
-                            </div>
 
-                            @{
-                                var pagedList = (IPagedList)ViewBag.ListaEmergencias;
+    <!-- Incidentes criticos -->
+    <div class="row g-4">
+        <!-- Systems Table -->
+        <div class="col-12 col-xl-12">
+            <div class="status-card p-4">
+                <h2 class="h5 mb-4">Incidentes Críticos</h2>
+                <div class="table-responsive">
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th>Monitor</th>
+                                <th>Edificio</th>
+                                <th>Fecha</th>
+                                <th>Comentarios</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+
+                            @if (ViewBag.ListaEmergencias != null)
+                            {
+                                var emergenciasPaginadas = (IPagedList<testautenticacion.Models.Emergencia>)ViewBag.ListaEmergencias;
+
+                                foreach (var item in emergenciasPaginadas)
+                                {
+                                    <tr>
+                                        <td>@item.NombreMonitor</td>
+                                        <td>@item.Edificio</td>
+                                        <td>@item.FechaHora.ToString("dd/MM/yyyy HH:mm")</td>
+                                        <td>@item.Comentarios</td>
+                                    </tr>
+                                }
                             }
-                            <div class="pagination-info">
-                                Página @pagedList.PageNumber de @pagedList.PageCount
-                            </div>
+                            else
+                            {
+                                <tr><td colspan="4">No hay incidentes criticos.</td></tr>
+                            }
+                        </tbody>
+                    </table>
+                    <!-- Contenedor de paginación minimalista -->
+                    <div class="pagination-wrapper">
+                        <div class="d-flex justify-content-center">
+                            @Html.PagedListPager(
+                                (IPagedList)ViewBag.ListaEmergencias,
+                                page => Url.Action("Index", new { page }),
+                                new PagedListRenderOptions
+                                {
+                                    UlElementClasses = new[] { "pagination", "mb-0" },
+                                    LiElementClasses = new[] { "page-item" },
+                                    DisplayLinkToFirstPage = PagedListDisplayMode.Always,
+                                    DisplayLinkToLastPage = PagedListDisplayMode.Always,
+                                    DisplayLinkToPreviousPage = PagedListDisplayMode.Always,
+                                    DisplayLinkToNextPage = PagedListDisplayMode.Always,
+                                    MaximumPageNumbersToDisplay = 5,
+                                    LinkToFirstPageFormat = "«",
+                                    LinkToPreviousPageFormat = "‹",
+                                    LinkToNextPageFormat = "›",
+                                    LinkToLastPageFormat = "»"
+                                })
+                        </div>
+
+                        @{
+                            var pagedList = (IPagedList)ViewBag.ListaEmergencias;
+                        }
+                        <div class="pagination-info">
+                            Página @pagedList.PageNumber de @pagedList.PageCount
                         </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+</div>
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/js/bootstrap.bundle.min.js"></script>
-    <script>
+@section Scripts {
 
-        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script>
+    <script src="~/Scripts/IndexScript.js"></script>
+<script>
         $(document).ready(function () {
             $('#Edificio').on('change', function () {
                 var edificioSeleccionado = $(this).val();
@@ -330,6 +311,5 @@
         $('#Emergencia').on('shown.bs.modal', function () {
             fechaInput.value = new Date().toISOString().slice(0, 16); // Establecer la fecha y hora actual
         });
-    </script>
-</body>
-</html>
+</script>
+}

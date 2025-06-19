@@ -210,6 +210,9 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="api\images.png" />
+    <Content Include="Content\About.css" />
+    <Content Include="Content\Contact.css" />
+    <Content Include="Content\layout.css" />
     <Content Include="Content\PagedList.css" />
     <Content Include="Content\StyleAbout.css" />
     <Content Include="Content\bootstrap-grid.css" />

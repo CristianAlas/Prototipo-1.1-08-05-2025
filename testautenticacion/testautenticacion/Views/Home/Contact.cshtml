@@ -2,117 +2,63 @@
     ViewBag.Title = "Contact";
 }
 
-<!DOCTYPE html>
-<html>
-<head>
-    <meta charset="utf-8" />
-    <title>@ViewBag.Title - Sistema de Monitoreo</title>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/css/bootstrap.min.css" rel="stylesheet">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+@section Styles {
+    <link href="~/Content/Contact.css" rel="stylesheet" />
+}
+<main>
+    <section class="contact-header mb-4">
+        <div class="container">
+            <h2 class="display-5 mb-0 text-center">Soporte</h2>
+        </div>
+    </section>
 
-    <style>
-        .contact-header {
-            background-color: #7b0000;
-            padding: 1rem 0;
-            color: white;
-            position: relative;
-        }
-
-        .contact-card {
-            background: white;
-            border-radius: 16px;
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
-            transition: all 0.3s ease;
-        }
-
-            .contact-card:hover {
-                transform: translateY(-5px);
-                box-shadow: 0 12px 40px rgba(0, 0, 0, 0.15);
-            }
-
-        .contact-icon {
-            width: 50px;
-            height: 50px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border-radius: 12px;
-            background-color: #7b0000;
-            color: white;
-            font-size: 1.25rem;
-            margin-right: 1rem;
-        }
-
-        .contact-link {
-            color: #7b0000;
-            text-decoration: none;
-            transition: color 0.3s ease;
-            word-break: break-word;
-        }
-
-            .contact-link:hover {
-                color: #600000;
-            }
-    </style>
-    </head>
-<body>
-    <main>
-        <section class="contact-header mb-4">
-            <div class="container">
-                <h2 class="display-5 mb-0 text-center">Soporte</h2>
-            </div>
-        </section>
-
-        <section class="container pb-5">
-            <div class="row justify-content-center">
-                <div class="col-md-6 col-lg-4 mb-4">
-                    <div class="contact-card p-4 h-100">
-                        <div class="d-flex align-items-start">
-                            <div class="contact-icon bg-danger">
-                                <i class="fas fa-laptop-code"></i>
-                            </div>
-                            <div>
-                                <h3 class="h5 mb-2">Cristian Alas</h3>
-                                <p class="mb-1 text-muted">Full-Stack Developer</p>
-                                <a href="mailto:alfredoalas092@gmail.com" class="contact-link">Email</a>
-                            </div>
+    <section class="container pb-5">
+        <div class="row justify-content-center">
+            <div class="col-md-6 col-lg-4 mb-4">
+                <div class="contact-card p-4 h-100">
+                    <div class="d-flex align-items-start">
+                        <div class="contact-icon bg-danger">
+                            <i class="fas fa-laptop-code"></i>
                         </div>
-                    </div>
-                </div>
-
-                <div class="col-md-6 col-lg-4 mb-4">
-                    <div class="contact-card p-4 h-100">
-                        <div class="d-flex align-items-start">
-                            <div class="contact-icon bg-warning">
-                                <i class="fas fa-database"></i>
-                            </div>
-                            <div>
-                                <h3 class="h5 mb-2">Rolando Andrade</h3>
-                                <p class="mb-1 text-muted">Full-Stack Developer</p>
-                                <a href="mailto:rolandro.andrade2026@gmail.com" class="contact-link">Email</a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="col-md-6 col-lg-4 mb-4">
-                    <div class="contact-card p-4 h-100">
-                        <div class="d-flex align-items-start">
-                            <div class="contact-icon bg-info">
-                                <i class="fas fa-code"></i>
-                            </div>
-                            <div>
-                                <h3 class="h5 mb-2">Alejandro Estrada</h3>
-                                <p class="mb-1 text-muted">Full-Stack Developer</p>
-                                <a href="mailto:alejandroestrada7274@gmail.com" class="contact-link">Email</a>
-                            </div>
+                        <div>
+                            <h3 class="h5 mb-2">Cristian Alas</h3>
+                            <p class="mb-1 text-muted">Full-Stack Developer</p>
+                            <a href="mailto:alfredoalas092@gmail.com" class="contact-link">Email</a>
                         </div>
                     </div>
                 </div>
             </div>
-        </section>
 
-    </main>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/js/bootstrap.bundle.min.js"></script>
-    </body>
-</html>
+            <div class="col-md-6 col-lg-4 mb-4">
+                <div class="contact-card p-4 h-100">
+                    <div class="d-flex align-items-start">
+                        <div class="contact-icon bg-warning">
+                            <i class="fas fa-database"></i>
+                        </div>
+                        <div>
+                            <h3 class="h5 mb-2">Rolando Andrade</h3>
+                            <p class="mb-1 text-muted">Full-Stack Developer</p>
+                            <a href="mailto:rolandro.andrade2026@gmail.com" class="contact-link">Email</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6 col-lg-4 mb-4">
+                <div class="contact-card p-4 h-100">
+                    <div class="d-flex align-items-start">
+                        <div class="contact-icon bg-info">
+                            <i class="fas fa-code"></i>
+                        </div>
+                        <div>
+                            <h3 class="h5 mb-2">Alejandro Estrada</h3>
+                            <p class="mb-1 text-muted">Full-Stack Developer</p>
+                            <a href="mailto:alejandroestrada7274@gmail.com" class="contact-link">Email</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+</main>

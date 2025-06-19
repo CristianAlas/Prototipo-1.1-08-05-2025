@@ -2,195 +2,75 @@
     ViewBag.Title = "About";
 }
 
-<!DOCTYPE html>
-<html>
-<head>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/css/bootstrap.min.css" rel="stylesheet">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
-    <style>
-        .about-header {
-            background: linear-gradient(130deg, #451723 0%, #890940 100%);
-            color: white;
-            padding: 2rem 0;
-            margin-bottom: 3rem;
-            text-align: center;
-        }
+@section Styles {
+    <link href="~/Content/About.css" rel="stylesheet" />
+}
 
-        .feature-card {
-            background-color: #f8f9fa;
-            border-radius: 1rem;
-            padding: 2rem;
-            margin-bottom: 2rem;
-            text-align: center;
-            transition: transform 0.2s ease;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-        }
+<main>
 
-            .feature-card:hover {
-                transform: translateY(-5px);
-            }
-            .feature-card h3 {
-                color: #451723;
-                font-weight: bold;
-            }
-            .feature-card p {
-                font-size: 1rem;
-                line-height: 1.5;
-            }
-
-        .icon-wrapper {
-            background-color: #451723;
-            color: white;
-            width: 60px;
-            height: 60px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border-radius: 50%;
-            margin: 0 auto 1rem auto;
-        }
-
-        .team-section {
-            background-color: #f8f9fa;
-            padding: 3rem 0;
-            margin-top: 3rem;
-            border-radius: 1rem;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.2);
-            line-height:1.6
-            
-        }
-    </style>
-</head>
-<body>
-    <main>
-
-        <section class="about-header">
-            <div class="container">
-                <div class="row justify-content-center text-center">
-                    <div class="col-lg-8">
-                        <h1 class="display-4 mb-3">Sistema de Monitoreo de Clases</h1>
-                        <p class="lead mb-2">Una herramienta eficiente para el seguimiento y registro del desarrollo de clases en la facultad de Informatica y Ciencias Aplicadas</p>
-                    </div>
+    <section class="about-header">
+        <div class="container">
+            <div class="row justify-content-center text-center">
+                <div class="col-lg-8">
+                    <h1 class="display-4 mb-3">Sistema de Monitoreo de Clases</h1>
+                    <p class="lead mb-2">Una herramienta eficiente para el seguimiento y registro del desarrollo de clases en la facultad de Informatica y Ciencias Aplicadas</p>
                 </div>
             </div>
-        </section>
+        </div>
+    </section>
 
-        <section class="team-section mb-3">
-            <div class="container">
-                <div class="row justify-content-center mb-1">
-                    <div class="col-lg-12 text-center">
-                        <h2 class="mb-2">Nuestra Misión</h2>
-                        <p class="lead text-muted">Transformar el proceso de monitoreo académico en la facultad de Informática y Ciencias Aplicadas mediante una solución digital ágil, precisa y accesible, que facilite el seguimiento en tiempo real, fortalezca la toma de decisiones y garantice una experiencia educativa más transparente y eficiente para todos los involucrados.</p>
-                    </div>
+    <section class="team-section mb-3">
+        <div class="container">
+            <div class="row justify-content-center mb-1">
+                <div class="col-lg-12 text-center">
+                    <h2 class="mb-2">Nuestra Misión</h2>
+                    <p class="lead text-muted">Transformar el proceso de monitoreo académico en la facultad de Informática y Ciencias Aplicadas mediante una solución digital ágil, precisa y accesible, que facilite el seguimiento en tiempo real, fortalezca la toma de decisiones y garantice una experiencia educativa más transparente y eficiente para todos los involucrados.</p>
                 </div>
             </div>
-        </section>
+        </div>
+    </section>
 
-        <section class="container mb-5">
-            <div class="row g-4">
-                <div class="col-md-6 col-lg-3">
-                    <div class="feature-card">
-                        <div class="icon-wrapper">
-                            <i class="fas fa-user fa-lg"></i>
-                        </div>
-                        <h3 class="h5 mb-3">Interfaz Amigable</h3>
-                        <p class="text-muted">Diseñada para facilitar la navegación y el uso por parte de administradores, supervisores y personal académico.</p>
+    <section class="container mb-5">
+        <div class="row g-4">
+            <div class="col-md-6 col-lg-3">
+                <div class="feature-card">
+                    <div class="icon-wrapper">
+                        <i class="fas fa-user fa-lg"></i>
                     </div>
-                </div>
-                <div class="col-md-6 col-lg-3">
-                    <div class="feature-card">
-                        <div class="icon-wrapper">
-                            <i class="fas fa-clock fa-lg"></i>
-                        </div>
-                        <h3 class="h5 mb-3">Gestión Centralizada</h3>
-                        <p class="text-muted">Permite agendar, visualizar y administrar las sesiones programadas para docentes subcontratados.</p>
-                    </div>
-                </div>
-                <div class="col-md-6 col-lg-3">
-                    <div class="feature-card">
-                        <div class="icon-wrapper">
-                            <i class="fas fa-file-alt fa-lg"></i>
-                        </div>
-                        <h3 class="h5 mb-3">Reportes Detallados</h3>
-                        <p class="text-muted">Generación de informes descargables que incluyen datos clave como docente, materia, aula y observaciones.</p>
-                    </div>
-                </div>
-                <div class="col-md-6 col-lg-3">
-                    <div class="feature-card">
-                        <div class="icon-wrapper">
-                            <i class="fas fa-bell fa-lg"></i>
-                        </div>
-                        <h3 class="h5 mb-3">Sistema de Alertas</h3>
-                        <p class="text-muted">Notificaciones automáticas ante incidentes críticos o eventos relevantes durante los monitoreos.</p>
-                    </div>
+                    <h3 class="h5 mb-3">Interfaz Amigable</h3>
+                    <p class="text-muted">Diseñada para facilitar la navegación y el uso por parte de administradores, supervisores y personal académico.</p>
                 </div>
             </div>
-        </section>
-
-
-    </main>
-
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/js/bootstrap.bundle.min.js"></script>
-
-</body>
-</html>
-
-<!--<!DOCTYPE html>
-<html>
-<head>
-    <meta charset="utf-8" />
-    <title>En Construcción - Sistema de Monitoreo</title>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/css/bootstrap.min.css" rel="stylesheet">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
-    <style>
-        .maintenance-section {
-            color: white;
-            padding: 6rem 1rem 3rem 1rem;
-            text-align: center;
-        }
-
-        .maintenance-icon {
-            font-size: 5rem;
-            color: #ffc107;
-            margin-bottom: 1rem;
-        }
-
-        .maintenance-content {
-            background: white;
-            margin-top: -3rem;
-            padding: 3rem;
-            border-radius: 1rem;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.2);
-        }
-
-            .maintenance-content h2 {
-                color: #7b0000;
-            }
-
-            .maintenance-content p {
-                color: #6c757d;
-            }
-    </style>
-</head>
-<body>
-    <main>
-        <section class="maintenance-section">
-            <div class="container">
-                <i class="fas fa-tools maintenance-icon"></i>
-                <h1 class="display-1 fw-bold" style="color:black">Página en Construcción</h1>
-                <p class="lead">Estamos trabajando para ofrecerte esta sección muy pronto.</p>
+            <div class="col-md-6 col-lg-3">
+                <div class="feature-card">
+                    <div class="icon-wrapper">
+                        <i class="fas fa-clock fa-lg"></i>
+                    </div>
+                    <h3 class="h5 mb-3">Gestión Centralizada</h3>
+                    <p class="text-muted">Permite agendar, visualizar y administrar las sesiones programadas para docentes subcontratados.</p>
+                </div>
             </div>
-        </section>
+            <div class="col-md-6 col-lg-3">
+                <div class="feature-card">
+                    <div class="icon-wrapper">
+                        <i class="fas fa-file-alt fa-lg"></i>
+                    </div>
+                    <h3 class="h5 mb-3">Reportes Detallados</h3>
+                    <p class="text-muted">Generación de informes descargables que incluyen datos clave como docente, materia, aula y observaciones.</p>
+                </div>
+            </div>
+            <div class="col-md-6 col-lg-3">
+                <div class="feature-card">
+                    <div class="icon-wrapper">
+                        <i class="fas fa-bell fa-lg"></i>
+                    </div>
+                    <h3 class="h5 mb-3">Sistema de Alertas</h3>
+                    <p class="text-muted">Notificaciones automáticas ante incidentes críticos o eventos relevantes durante los monitoreos.</p>
+                </div>
+            </div>
+        </div>
+    </section>
 
-        <section class="container maintenance-content">
-            <h2>Lineamientos del Sistema</h2>
-            <p>La sección de acerca del sistema estará disponible próximamente. Nuestro equipo se encuentra en fase de redacción y revisión para asegurar que toda la información sea clara, útil y actualizada.</p>
-            <hr>
-            <p class="mb-0"><i class="fas fa-hourglass-half me-2 text-warning"></i> Gracias por tu paciencia.</p>
-        </section>
-    </main>
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/js/bootstrap.bundle.min.js"></script>
-</body>
-</html>
--->
+</main>
+
