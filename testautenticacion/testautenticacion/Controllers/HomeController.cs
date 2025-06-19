@@ -1385,20 +1385,22 @@ namespace testautenticacion.Controllers
                 using (SqlConnection conexion = new SqlConnection(connectionString))
                 {
                     conexion.Open();
-                    string query = "UPDATE USUARIOS SET Estado = 0 WHERE Correo = @Correo";
+
+                    // Consultar estado actual
+                    string obtenerEstado = "SELECT Estado FROM USUARIOS WHERE Correo = @Correo";
+                    SqlCommand cmdConsulta = new SqlCommand(obtenerEstado, conexion);
+                    cmdConsulta.Parameters.AddWithValue("@Correo", correo);
+                    var estadoActual = Convert.ToBoolean(cmdConsulta.ExecuteScalar());
+
+                    // Invertir el estado
+                    string nuevoEstado = estadoActual ? "0" : "1";
+                    string query = "UPDATE USUARIOS SET Estado = @NuevoEstado WHERE Correo = @Correo";
                     SqlCommand cmd = new SqlCommand(query, conexion);
+                    cmd.Parameters.AddWithValue("@NuevoEstado", nuevoEstado);
                     cmd.Parameters.AddWithValue("@Correo", correo);
+                    cmd.ExecuteNonQuery();
 
-                    int filasAfectadas = cmd.ExecuteNonQuery();
-
-                    if (filasAfectadas > 0)
-                    {
-                        TempData["Success"] = "Usuario deshabilitado exitosamente.";
-                    }
-                    else
-                    {
-                        TempData["Error"] = "No se encontró el usuario.";
-                    }
+                    TempData["Success"] = $"Usuario {(estadoActual ? "deshabilitado" : "habilitado")} exitosamente.";
                 }
             }
             catch (Exception ex)

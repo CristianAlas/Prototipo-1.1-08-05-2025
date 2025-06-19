@@ -115,9 +115,9 @@
                                     Editar
                                 </button>
                                 <a href="@Url.Action("DeshabilitarUsuario", "Home", new { correo = u.Correo })"
-                                   class="btn btn-sm btn-danger"
-                                   onclick="return confirm('¿Deshabilitar este usuario?')">
-                                    Desabilitar
+                                   class="btn btn-sm @(u.Estado ? "btn-danger" : "btn-success")"
+                                   onclick="return confirm('¿Estás seguro de @(u.Estado ? "deshabilitar" : "habilitar") este usuario?')">
+                                    @(u.Estado ? "Deshabilitar" : "Habilitar")
                                 </a>
                             </div>
                         </td>

@@ -24,7 +24,7 @@ namespace testautenticacion.logica
             //using (SqlConnection conexion = new SqlConnection("Data source=DESKTOP-1FFVD4R\\SQLEXPRESS ; Initial Catalog=autentication; Integrated Security=true"))
             using (SqlConnection conexion = new SqlConnection(connectionString))
             {
-                string query = "SELECT Nombres, Correo, Clave, IdRol from USUARIOS where Correo = @pcorreo and Clave = @pclave";
+                string query = "SELECT Nombres, Correo, Clave, IdRol, Estado from USUARIOS where Correo = @pcorreo and Clave = @pclave";
 
                 SqlCommand comando = new SqlCommand(query, conexion);
                 comando.Parameters.AddWithValue("@pcorreo", correo);
@@ -41,7 +41,8 @@ namespace testautenticacion.logica
                             Nombres = reader["Nombres"].ToString(),
                             Correo = reader["Correo"].ToString(),
                             Clave = reader["Clave"].ToString(),
-                            IdRol = (Rol)reader["IdRol"]
+                            IdRol = (Rol)reader["IdRol"],
+                            Estado = Convert.ToBoolean(reader["Estado"])
                         };
                     }
                 }
