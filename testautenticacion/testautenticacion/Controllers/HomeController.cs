@@ -1122,10 +1122,6 @@ namespace testautenticacion.Controllers
             return Json(aulas, JsonRequestBehavior.AllowGet);
         }
 
-
-
-
-
         //logica para obtener la lista de edificios
         private List<SelectListItem> ObtenerEdificios()
         {
@@ -1155,7 +1151,6 @@ namespace testautenticacion.Controllers
 
             return edificios;
         }
-
 
         ////////////////////////////////////////// Post Programar Monitoreo //////////////////////////////////////////
         /*[HttpPost]
@@ -1210,6 +1205,7 @@ namespace testautenticacion.Controllers
             return View(monitoreo);
         }
         */
+
         [HttpPost]
         [PermisosRol(Rol.Administrador | Rol.Coordinador)]
         public ActionResult ProgramarMonitoreo(MonitoreosProgramados monitoreo)
@@ -1223,50 +1219,127 @@ namespace testautenticacion.Controllers
             if (ModelState.IsValid)
             {
                 string nombreAula = "";
+                string nombreMateria = ""; //nuevo
 
                 using (SqlConnection conexion = new SqlConnection(connectionString))
                 {
-                    // 1. Obtener el nombre del aula usando el IdAula seleccionado
-                    string obtenerAulaQuery = "SELECT Nombre FROM Aulas WHERE IdAula = @IdAula";
-                    SqlCommand cmdAula = new SqlCommand(obtenerAulaQuery, conexion);
-                    cmdAula.Parameters.AddWithValue("@IdAula", monitoreo.IdAula);
-
                     conexion.Open();
-                    var resultado = cmdAula.ExecuteScalar();
-                    if (resultado != null)
+
+                    // 1. Obtener el nombre del aula
+                    string obtenerAulaQuery = "SELECT Nombre FROM Aulas WHERE IdAula = @IdAula";
+                    using (SqlCommand cmdAula = new SqlCommand(obtenerAulaQuery, conexion))
                     {
-                        nombreAula = resultado.ToString();
+                        cmdAula.Parameters.AddWithValue("@IdAula", monitoreo.IdAula);
+                        var resultado = cmdAula.ExecuteScalar();
+                        if (resultado != null)
+                        {
+                            nombreAula = resultado.ToString();
+                        }
                     }
 
-                    // 2. Insertar el monitoreo con el nombre del aula
-                    string query = @"INSERT INTO MonitoreosProgramados
+                    // 2. Obtener el nombre de la materia desde la tabla Materias
+                    string obtenerMateriaQuery = "SELECT Nombre FROM Materias WHERE IdMateria = @IdMateria";
+                    using (SqlCommand cmdMateria = new SqlCommand(obtenerMateriaQuery, conexion))
+                    {
+                        cmdMateria.Parameters.AddWithValue("@IdMateria", monitoreo.Materia); // aún es el ID
+                        var resultado = cmdMateria.ExecuteScalar();
+                        if (resultado != null)
+                        {
+                            nombreMateria = resultado.ToString();
+                        }
+                    }
+
+                    // 3. Insertar monitoreo programado con nombre de materia y aula
+                    string query = @"
+                INSERT INTO MonitoreosProgramados
                 (Materia, Docente, Responsable, Aula, HoraInicio, HoraFin, Fecha, Recorrido, Jornada, Ciclo, EstadoMonitoreo)
                 VALUES (@Materia, @Docente, @Responsable, @Aula, @HoraInicio, @HoraFin, @Fecha, @Recorrido, @Jornada, @Ciclo, @EstadoMonitoreo)";
 
-                    SqlCommand cmdInsert = new SqlCommand(query, conexion);
-                    cmdInsert.Parameters.AddWithValue("@Materia", monitoreo.Materia);
-                    cmdInsert.Parameters.AddWithValue("@Docente", monitoreo.Docente);
-                    cmdInsert.Parameters.AddWithValue("@Responsable", monitoreo.Responsable);
-                    cmdInsert.Parameters.AddWithValue("@Aula", nombreAula);
-                    cmdInsert.Parameters.AddWithValue("@HoraInicio", monitoreo.HoraInicio);
-                    cmdInsert.Parameters.AddWithValue("@HoraFin", monitoreo.HoraFin);
-                    cmdInsert.Parameters.AddWithValue("@Fecha", monitoreo.Fecha);
-                    cmdInsert.Parameters.AddWithValue("@Recorrido", monitoreo.Recorrido);
-                    cmdInsert.Parameters.AddWithValue("@Jornada", monitoreo.Jornada);
-                    cmdInsert.Parameters.AddWithValue("@Ciclo", monitoreo.Ciclo);
-                    cmdInsert.Parameters.AddWithValue("@EstadoMonitoreo", monitoreo.Fecha.Date < DateTime.Today ? "Expirado" : "Pendiente");
+                    using (SqlCommand cmdInsert = new SqlCommand(query, conexion))
+                    {
+                        cmdInsert.Parameters.AddWithValue("@Materia", nombreMateria); // 👍 ahora guardamos el nombre
+                        cmdInsert.Parameters.AddWithValue("@Docente", monitoreo.Docente);
+                        cmdInsert.Parameters.AddWithValue("@Responsable", monitoreo.Responsable);
+                        cmdInsert.Parameters.AddWithValue("@Aula", nombreAula);
+                        cmdInsert.Parameters.AddWithValue("@HoraInicio", monitoreo.HoraInicio);
+                        cmdInsert.Parameters.AddWithValue("@HoraFin", monitoreo.HoraFin);
+                        cmdInsert.Parameters.AddWithValue("@Fecha", monitoreo.Fecha);
+                        cmdInsert.Parameters.AddWithValue("@Recorrido", monitoreo.Recorrido);
+                        cmdInsert.Parameters.AddWithValue("@Jornada", monitoreo.Jornada);
+                        cmdInsert.Parameters.AddWithValue("@Ciclo", monitoreo.Ciclo);
+                        cmdInsert.Parameters.AddWithValue("@EstadoMonitoreo", monitoreo.Fecha.Date < DateTime.Today ? "Expirado" : "Pendiente");
 
-                    cmdInsert.ExecuteNonQuery();
+                        cmdInsert.ExecuteNonQuery();
+                    }
                 }
 
                 return RedirectToAction("Filtro");
             }
 
-            // repoblar dropdowns en caso de error
+            // En caso de error, volver a poblar combos
             ViewBag.IdEdificio = ObtenerEdificios();
             monitoreo.Monitores = ObtenerMonitores();
+            monitoreo.Materias = ObtenerMaterias();
             return View(monitoreo);
         }
+
+        //[HttpPost]
+        //[PermisosRol(Rol.Administrador | Rol.Coordinador)]
+        //public ActionResult ProgramarMonitoreo(MonitoreosProgramados monitoreo)
+        //{
+        //    // Validación para que solo permita sábados o domingos
+        //    if (monitoreo.Fecha.DayOfWeek != DayOfWeek.Saturday && monitoreo.Fecha.DayOfWeek != DayOfWeek.Sunday)
+        //    {
+        //        ModelState.AddModelError("Fecha", "Solo se pueden programar monitoreos en sábado o domingo.");
+        //    }
+
+        //    if (ModelState.IsValid)
+        //    {
+        //        string nombreAula = "";
+
+        //        using (SqlConnection conexion = new SqlConnection(connectionString))
+        //        {
+        //            // 1. Obtener el nombre del aula usando el IdAula seleccionado
+        //            string obtenerAulaQuery = "SELECT Nombre FROM Aulas WHERE IdAula = @IdAula";
+        //            SqlCommand cmdAula = new SqlCommand(obtenerAulaQuery, conexion);
+        //            cmdAula.Parameters.AddWithValue("@IdAula", monitoreo.IdAula);
+
+        //            conexion.Open();
+        //            var resultado = cmdAula.ExecuteScalar();
+        //            if (resultado != null)
+        //            {
+        //                nombreAula = resultado.ToString();
+        //            }
+
+        //            // 2. Insertar el monitoreo con el nombre del aula
+        //            string query = @"INSERT INTO MonitoreosProgramados
+        //        (Materia, Docente, Responsable, Aula, HoraInicio, HoraFin, Fecha, Recorrido, Jornada, Ciclo, EstadoMonitoreo)
+        //        VALUES (@Materia, @Docente, @Responsable, @Aula, @HoraInicio, @HoraFin, @Fecha, @Recorrido, @Jornada, @Ciclo, @EstadoMonitoreo)";
+
+        //            SqlCommand cmdInsert = new SqlCommand(query, conexion);
+        //            cmdInsert.Parameters.AddWithValue("@Materia", monitoreo.Materia);
+        //            cmdInsert.Parameters.AddWithValue("@Docente", monitoreo.Docente);
+        //            cmdInsert.Parameters.AddWithValue("@Responsable", monitoreo.Responsable);
+        //            cmdInsert.Parameters.AddWithValue("@Aula", nombreAula);
+        //            cmdInsert.Parameters.AddWithValue("@HoraInicio", monitoreo.HoraInicio);
+        //            cmdInsert.Parameters.AddWithValue("@HoraFin", monitoreo.HoraFin);
+        //            cmdInsert.Parameters.AddWithValue("@Fecha", monitoreo.Fecha);
+        //            cmdInsert.Parameters.AddWithValue("@Recorrido", monitoreo.Recorrido);
+        //            cmdInsert.Parameters.AddWithValue("@Jornada", monitoreo.Jornada);
+        //            cmdInsert.Parameters.AddWithValue("@Ciclo", monitoreo.Ciclo);
+        //            cmdInsert.Parameters.AddWithValue("@EstadoMonitoreo", monitoreo.Fecha.Date < DateTime.Today ? "Expirado" : "Pendiente");
+
+        //            cmdInsert.ExecuteNonQuery();
+        //        }
+
+        //        return RedirectToAction("Filtro");
+        //    }
+
+        //    // repoblar dropdowns en caso de error
+        //    ViewBag.IdEdificio = ObtenerEdificios();
+        //    monitoreo.Monitores = ObtenerMonitores();
+        //    return View(monitoreo);
+        //}
 
         //Logica CURD para Usuarios-------------------------------------------------------------------------------------
         //Listar usuarios
